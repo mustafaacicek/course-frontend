@@ -1,0 +1,104 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="user-form">
+  <div class="alert alert-danger" *ngIf="error">
+    {{ error }}
+    <button type="button" class="close-button" (click)="error = null">&times;</button>
+  </div>
+
+  <div class="form-group">
+    <label for="username">Kullanıcı Adı</label>
+    <input 
+      type="text" 
+      id="username" 
+      formControlName="username"
+      [class.is-invalid]="userForm.get('username')?.invalid && userForm.get('username')?.touched"
+    >
+    <div class="error-message" *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched">
+      <span *ngIf="userForm.get('username')?.errors?.['required']">Kullanıcı adı zorunludur.</span>
+      <span *ngIf="userForm.get('username')?.errors?.['minlength']">Kullanıcı adı en az 3 karakter olmalıdır.</span>
+      <span *ngIf="userForm.get('username')?.errors?.['maxlength']">Kullanıcı adı en fazla 50 karakter olabilir.</span>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="firstName">Ad</label>
+      <input 
+        type="text" 
+        id="firstName" 
+        formControlName="firstName"
+        [class.is-invalid]="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched"
+      >
+      <div class="error-message" *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
+        <span *ngIf="userForm.get('firstName')?.errors?.['maxlength']">Ad en fazla 50 karakter olabilir.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Soyad</label>
+      <input 
+        type="text" 
+        id="lastName" 
+        formControlName="lastName"
+        [class.is-invalid]="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched"
+      >
+      <div class="error-message" *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
+        <span *ngIf="userForm.get('lastName')?.errors?.['maxlength']">Soyad en fazla 50 karakter olabilir.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Telefon</label>
+    <input 
+      type="text" 
+      id="phone" 
+      formControlName="phone"
+      placeholder="0555 XXX XX XX"
+      [class.is-invalid]="userForm.get('phone')?.invalid && userForm.get('phone')?.touched"
+    >
+    <div class="error-message" *ngIf="userForm.get('phone')?.invalid && userForm.get('phone')?.touched">
+      <span *ngIf="userForm.get('phone')?.errors?.['maxlength']">Telefon en fazla 20 karakter olabilir.</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="password">
+      Şifre
+      <span *ngIf="user" class="optional-text">(Değiştirmek için doldurun)</span>
+    </label>
+    <input 
+      type="password" 
+      id="password" 
+      formControlName="password"
+      [class.is-invalid]="userForm.get('password')?.invalid && userForm.get('password')?.touched"
+    >
+    <div class="error-message" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+      <span *ngIf="userForm.get('password')?.errors?.['required']">Şifre zorunludur.</span>
+      <span *ngIf="userForm.get('password')?.errors?.['minlength']">Şifre en az 6 karakter olmalıdır.</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="role">Rol</label>
+    <select 
+      id="role" 
+      formControlName="role"
+      [class.is-invalid]="userForm.get('role')?.invalid && userForm.get('role')?.touched"
+    >
+      <option value="ADMIN">Admin</option>
+      <option value="SUPERADMIN">Süper Admin</option>
+      <option value="STUDENT">Öğrenci</option>
+    </select>
+    <div class="error-message" *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched">
+      <span *ngIf="userForm.get('role')?.errors?.['required']">Rol seçimi zorunludur.</span>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="cancel-button" (click)="onCancel()">İptal</button>
+    <button type="submit" class="submit-button" [disabled]="isSubmitting">
+      <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+      {{ user ? 'Güncelle' : 'Kaydet' }}
+    </button>
+  </div>
+</form>

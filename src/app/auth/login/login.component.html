@@ -1,0 +1,64 @@
+<div class="login-page">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="assets/images/course-logo.svg" alt="Course App Logo" class="logo-image">
+        <h2 class="system-title">Kurs Yönetim Sistemi</h2>
+      </div>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="form-group">
+          <label for="username">Kullanıcı Adı</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user"></i>
+            <input 
+              type="text" 
+              id="username" 
+              formControlName="username" 
+              placeholder="Kullanıcı adınızı giriniz"
+              [ngClass]="{'is-invalid': loginForm.get('username')?.invalid && loginForm.get('username')?.touched}"
+            >
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            <span *ngIf="loginForm.get('username')?.errors?.['required']">Kullanıcı adı zorunludur</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Şifre</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password" 
+              placeholder="Şifrenizi giriniz"
+              [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}"
+            >
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <i class="fas fa-exclamation-circle"></i>
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Şifre zorunludur</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Şifre en az 6 karakter olmalıdır</span>
+          </div>
+        </div>
+        
+        <div class="error-alert" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ errorMessage }}
+        </div>
+        
+        <button type="submit" class="login-button" [disabled]="loginForm.invalid || isSubmitting">
+          <i class="fas fa-sign-in-alt" *ngIf="!isSubmitting"></i>
+          <span *ngIf="!isSubmitting">Giriş Yap</span>
+          <span *ngIf="isSubmitting">Giriş Yapılıyor...</span>
+        </button>
+      </form>
+      
+      <div class="login-footer">
+        <p>© 2025 Kurs Yönetim Sistemi. Tüm hakları saklıdır.</p>
+      </div>
+    </div>
+  </div>
+</div>

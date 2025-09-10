@@ -1,0 +1,92 @@
+@use 'sass:color';
+
+// Custom Variables
+$primary: #4f46e5;
+$secondary: #7c3aed;
+$success: #10b981;
+$danger: #ef4444;
+$warning: #f59e0b;
+$info: #3b82f6;
+$dark: #1e293b;
+$light: #f8fafc;
+
+// Layout Variables
+$sidebar-width: 280px;
+$sidebar-collapsed-width: 80px;
+$transition-speed: 0.3s;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+
+// Mobile Toggle Button
+.mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  color: $primary;
+  box-shadow: $shadow-md;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  i {
+    font-size: 1.25rem;
+  }
+
+  &:hover {
+    background: color.adjust($light, $lightness: -2%);
+    color: $secondary;
+  }
+
+  &.active {
+    color: $secondary;
+  }
+  
+  @media (max-width: 991px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Base Layout
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: $light;
+  transition: all $transition-speed ease;
+  
+  &.sidebar-collapsed {
+    .main-content {
+      margin-left: $sidebar-collapsed-width;
+    }
+  }
+  
+  @media (max-width: 991px) {
+    &.sidebar-collapsed {
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+// Main Content
+.main-content {
+  flex: 1;
+  margin-left: $sidebar-width;
+  padding: 2rem;
+  transition: all $transition-speed ease;
+  
+  @media (max-width: 991px) {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}

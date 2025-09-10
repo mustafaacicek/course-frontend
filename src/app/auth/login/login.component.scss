@@ -1,0 +1,231 @@
+// Modern Admin Layout Design
+@use 'sass:color';
+
+// Custom Variables
+$primary: #4f46e5;
+$secondary: #7c3aed;
+$success: #10b981;
+$danger: #ef4444;
+$warning: #f59e0b;
+$info: #3b82f6;
+$dark: #1e293b;
+$light: #f8fafc;
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, $primary, $secondary);
+$gradient-accent: linear-gradient(45deg, $success, color.adjust($success, $lightness: 15%));
+
+// Layout Variables
+$border-radius: 8px;
+$transition-speed: 0.3s;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, color.adjust($primary, $lightness: 40%), color.adjust($secondary, $lightness: 40%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.login-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  perspective: 1000px;
+}
+
+.login-card {
+  width: 100%;
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  position: relative;
+  animation: cardAppear 0.5s ease-out forwards;
+  transform-style: preserve-3d;
+  
+  @keyframes cardAppear {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) rotateX(5deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) rotateX(0);
+    }
+  }
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: $gradient-primary;
+  }
+}
+
+.login-header {
+  padding: 2rem 2rem 1rem;
+  text-align: center;
+  
+  .logo-image {
+    height: 60px;
+    max-width: 100%;
+    object-fit: contain;
+    margin-bottom: 1rem;
+  }
+  
+  .system-title {
+    color: $primary;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+}
+
+.login-form {
+  padding: 1.5rem 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: $dark;
+    font-size: 0.875rem;
+  }
+  
+  .input-wrapper {
+    position: relative;
+    width: 100%;
+    
+    i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: color.adjust($dark, $lightness: 40%);
+      font-size: 1rem;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 2.5rem;
+      border: 1px solid color.adjust($light, $lightness: -10%);
+      border-radius: $border-radius;
+      font-size: 0.9375rem;
+      transition: all $transition-speed ease;
+      background-color: color.adjust($light, $lightness: -2%);
+      box-sizing: border-box;
+      
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        background-color: white;
+        box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      }
+      
+      &.is-invalid {
+        border-color: $danger;
+        background-color: rgba($danger, 0.05);
+      }
+      
+      &::placeholder {
+        color: color.adjust($dark, $lightness: 50%);
+      }
+    }
+  }
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: $danger;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  
+  i {
+    font-size: 0.875rem;
+  }
+}
+
+.error-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba($danger, 0.1);
+  color: $danger;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  
+  i {
+    font-size: 1rem;
+  }
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: $primary;
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-speed ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 5px rgba($primary, 0.3);
+  
+  i {
+    font-size: 1.125rem;
+  }
+  
+  &:hover:not(:disabled) {
+    background: color.adjust($primary, $lightness: -5%);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba($primary, 0.3);
+  }
+  
+  &:disabled {
+    background: color.adjust($dark, $lightness: 70%);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+.login-footer {
+  padding: 1rem 2rem;
+  text-align: center;
+  border-top: 1px solid color.adjust($light, $lightness: -5%);
+  
+  p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: color.adjust($dark, $lightness: 40%);
+  }
+}

@@ -1,0 +1,434 @@
+@use '../../../../scss/variables' as vars;
+@use 'sass:color';
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    color: vars.$dark;
+  }
+
+  .add-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: vars.$primary;
+    color: white;
+    border: none;
+    border-radius: vars.$border-radius-sm;
+    padding: 0.75rem 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: color.adjust(vars.$primary, $lightness: -5%);
+    }
+
+    i {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.filter-section {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .location-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    label {
+      font-weight: 500;
+      color: vars.$dark;
+    }
+
+    select {
+      padding: 0.5rem;
+      border: 1px solid #e5e7eb;
+      border-radius: vars.$border-radius-sm;
+      min-width: 200px;
+    }
+  }
+}
+
+.alert {
+  padding: 12px 15px;
+  border-radius: vars.$border-radius-sm;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  &.alert-success {
+    background-color: rgba(vars.$success, 0.1);
+    border: 1px solid rgba(vars.$success, 0.2);
+    color: vars.$success;
+  }
+  
+  &.alert-danger {
+    background-color: rgba(vars.$danger, 0.1);
+    border: 1px solid rgba(vars.$danger, 0.2);
+    color: vars.$danger;
+  }
+  
+  .notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    i {
+      font-size: 1.2rem;
+    }
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: vars.$primary;
+  font-weight: 500;
+  
+  i {
+    margin-right: 0.5rem;
+    font-size: 1.25rem;
+  }
+}
+
+.data-container {
+  background-color: white;
+  border-radius: vars.$border-radius-sm;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .locations-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    
+    .location-badge {
+      background-color: rgba(vars.$primary, 0.1);
+      color: vars.$primary;
+      padding: 0.2rem 0.5rem;
+      border-radius: vars.$border-radius-sm;
+      font-size: 0.85rem;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+
+    .table-action {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.25rem;
+      border-radius: vars.$border-radius-sm;
+      transition: background-color 0.2s;
+
+      &.edit {
+        color: vars.$primary;
+
+        &:hover {
+          background-color: rgba(vars.$primary, 0.1);
+        }
+      }
+
+      &.location {
+        color: vars.$warning;
+
+        &:hover {
+          background-color: rgba(vars.$warning, 0.1);
+        }
+      }
+
+      &.delete {
+        color: vars.$danger;
+
+        &:hover {
+          background-color: rgba(vars.$danger, 0.1);
+        }
+      }
+    }
+  }
+}
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #6c757d;
+  text-align: center;
+
+  i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0.25s, opacity 0.25s;
+
+  &.show {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    position: relative;
+    background-color: white;
+    border-radius: vars.$border-radius-sm;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+
+    h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: vars.$dark;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: #6c757d;
+      padding: 0.25rem;
+      border-radius: vars.$border-radius-sm;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f8f9fa;
+        color: vars.$dark;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+}
+
+// Location assignment styles
+.course-info {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: vars.$border-radius-sm;
+  border-left: 4px solid vars.$primary;
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: vars.$dark;
+  }
+
+  p {
+    margin: 0.25rem 0;
+    color: #6c757d;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      margin-right: 0.5rem;
+      color: vars.$dark;
+    }
+  }
+}
+
+.location-assignment-container {
+  display: flex;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  .location-column {
+    flex: 1;
+    min-width: 0;
+
+    h5 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e9ecef;
+      color: vars.$dark;
+    }
+  }
+
+  .location-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 400px;
+    overflow-y: auto;
+
+    .empty-list {
+      padding: 1rem;
+      text-align: center;
+      color: #6c757d;
+      font-style: italic;
+      background-color: #f8f9fa;
+      border-radius: vars.$border-radius-sm;
+    }
+
+    .location-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background-color: white;
+      border: 1px solid #e9ecef;
+      border-radius: vars.$border-radius-sm;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+
+      .location-details {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        flex: 1;
+
+        .location-name {
+          font-weight: 500;
+          color: vars.$dark;
+          margin-bottom: 0.25rem;
+        }
+
+        .location-address {
+          font-size: 0.85rem;
+          color: #6c757d;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .add-button, .remove-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.25rem;
+        padding: 0.25rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s;
+      }
+
+      .add-button {
+        color: vars.$success;
+
+        &:hover {
+          background-color: rgba(vars.$success, 0.1);
+        }
+      }
+
+      .remove-button {
+        color: vars.$danger;
+
+        &:hover {
+          background-color: rgba(vars.$danger, 0.1);
+        }
+      }
+    }
+  }
+}

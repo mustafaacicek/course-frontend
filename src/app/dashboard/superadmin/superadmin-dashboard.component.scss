@@ -1,0 +1,404 @@
+@use 'sass:color';
+
+// Custom Variables
+$primary: #4f46e5;
+$secondary: #7c3aed;
+$success: #10b981;
+$danger: #ef4444;
+$warning: #f59e0b;
+$info: #3b82f6;
+$dark: #1e293b;
+$light: #f8fafc;
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, $primary, $secondary);
+
+// Layout Variables
+$sidebar-width: 260px;
+$header-height: 70px;
+$border-radius: 12px;
+$transition-speed: 0.3s;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+}
+
+.dashboard-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $header-height;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  box-shadow: $shadow-sm;
+  z-index: 100;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .logo-image {
+      height: 40px;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $dark;
+      margin: 0;
+    }
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .username {
+      font-weight: 500;
+      color: $dark;
+    }
+
+    .logout-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: transparent;
+      border: 1px solid color.adjust($light, $lightness: -10%);
+      border-radius: 8px;
+      color: $dark;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all $transition-speed ease;
+
+      &:hover {
+        background-color: color.adjust($light, $lightness: -5%);
+      }
+    }
+  }
+}
+
+.dashboard-content {
+  display: flex;
+  padding-top: $header-height;
+  min-height: calc(100vh - #{$header-height});
+}
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: white;
+  border-right: 1px solid color.adjust($light, $lightness: -10%);
+  height: calc(100vh - #{$header-height});
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  overflow-y: auto;
+  z-index: 90;
+}
+
+.sidebar-nav {
+  padding: 1.5rem 0;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-item {
+    margin-bottom: 0.25rem;
+
+    &.active .nav-link {
+      background-color: color.adjust($primary, $lightness: 90%);
+      color: $primary;
+      font-weight: 600;
+
+      i {
+        color: $primary;
+      }
+    }
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: color.adjust($dark, $lightness: 20%);
+    text-decoration: none;
+    transition: all $transition-speed ease;
+    border-radius: 0;
+
+    i {
+      font-size: 1.125rem;
+      width: 1.5rem;
+      text-align: center;
+      color: color.adjust($dark, $lightness: 40%);
+    }
+
+    &:hover {
+      background-color: color.adjust($light, $lightness: -5%);
+    }
+  }
+}
+
+.main-content {
+  flex: 1;
+  margin-left: $sidebar-width;
+  padding: 2rem;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $dark;
+    margin: 0;
+  }
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  box-shadow: $shadow-sm;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all $transition-speed ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-md;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: $gradient-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+  }
+
+  .card-content {
+    flex: 1;
+
+    h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: color.adjust($dark, $lightness: 30%);
+      margin: 0 0 0.25rem;
+    }
+
+    .card-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $dark;
+      margin: 0;
+    }
+  }
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $dark;
+  margin: 0 0 1rem;
+}
+
+.admin-section {
+  margin-bottom: 2rem;
+}
+
+.admin-card {
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+}
+
+.admin-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid color.adjust($light, $lightness: -5%);
+
+  h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $dark;
+    margin: 0;
+  }
+
+  .add-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: $primary;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all $transition-speed ease;
+
+    &:hover {
+      background-color: color.adjust($primary, $lightness: -10%);
+    }
+  }
+}
+
+.admin-table {
+  width: 100%;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+    }
+
+    th {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: color.adjust($dark, $lightness: 30%);
+      background-color: color.adjust($light, $lightness: -2%);
+    }
+
+    td {
+      font-size: 0.875rem;
+      color: $dark;
+      border-top: 1px solid color.adjust($light, $lightness: -5%);
+    }
+
+    tr:hover td {
+      background-color: color.adjust($light, $lightness: -2%);
+    }
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &.badge-primary {
+    background-color: color.adjust($primary, $lightness: 90%);
+    color: $primary;
+  }
+
+  &.badge-secondary {
+    background-color: color.adjust($secondary, $lightness: 90%);
+    color: $secondary;
+  }
+}
+
+.action-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all $transition-speed ease;
+  margin-right: 0.5rem;
+
+  &.edit {
+    background-color: color.adjust($info, $lightness: 90%);
+    color: $info;
+
+    &:hover {
+      background-color: color.adjust($info, $lightness: 80%);
+    }
+  }
+
+  &.delete {
+    background-color: color.adjust($danger, $lightness: 90%);
+    color: $danger;
+
+    &:hover {
+      background-color: color.adjust($danger, $lightness: 80%);
+    }
+  }
+}
+
+.activity-list {
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid color.adjust($light, $lightness: -5%);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .activity-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: color.adjust($primary, $lightness: 90%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary;
+    font-size: 1rem;
+  }
+
+  .activity-content {
+    flex: 1;
+
+    .activity-text {
+      font-size: 0.875rem;
+      color: $dark;
+      margin: 0 0 0.25rem;
+    }
+
+    .activity-time {
+      font-size: 0.75rem;
+      color: color.adjust($dark, $lightness: 40%);
+      margin: 0;
+    }
+  }
+}

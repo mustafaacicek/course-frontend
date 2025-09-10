@@ -1,0 +1,95 @@
+<div class="page-header">
+  <h2>Kurs Yönetimi</h2>
+  <button class="add-button" (click)="openAddForm()">
+    <i class="fas fa-plus"></i> Yeni Kurs Ekle
+  </button>
+</div>
+
+<div class="admin-info-panel" *ngIf="adminLocations.length > 0">
+  <div class="admin-info-header">
+    <h3>Yönetici Bilgileri</h3>
+  </div>
+  <div class="admin-info-content">
+    <div class="admin-locations">
+      <h4>Sorumlu Olduğunuz Lokasyonlar:</h4>
+      <ul>
+        <li *ngFor="let location of adminLocations">
+          <span class="location-name">{{ location.name }}</span>
+          <span class="location-address">{{ location.address }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-success" *ngIf="successMessage">
+  <i class="fas fa-check-circle"></i> {{ successMessage }}
+</div>
+
+<div class="alert alert-danger" *ngIf="error">
+  <i class="fas fa-exclamation-circle"></i> {{ error }}
+</div>
+
+<div class="loading-spinner" *ngIf="isLoading">
+  <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+</div>
+
+<div class="data-container" *ngIf="!isLoading">
+  <table class="data-table" *ngIf="courses.length > 0; else noCourses">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Kurs Adı</th>
+        <th>Lokasyon</th>
+        <th>Başlangıç Tarihi</th>
+        <th>Bitiş Tarihi</th>
+        <th>Oluşturulma Tarihi</th>
+        <th>İşlemler</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let course of courses">
+        <td>{{ course.id }}</td>
+        <td>{{ course.name }}</td>
+        <td>{{ course.courseLocation && course.courseLocation.name || '-' }}</td>
+        <td>{{ course.startDate | date:'dd.MM.yyyy' }}</td>
+        <td>{{ course.endDate | date:'dd.MM.yyyy' }}</td>
+        <td>{{ course.createdAt | date:'dd.MM.yyyy' }}</td>
+        <td class="actions">
+          <button class="table-action edit" (click)="editCourse(course)" title="Düzenle">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="table-action delete" (click)="deleteCourse(course.id)" title="Sil">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noCourses>
+    <div class="no-data">
+      <i class="fas fa-info-circle"></i>
+      <p>Henüz kurs bulunmamaktadır.</p>
+    </div>
+  </ng-template>
+</div>
+
+<div class="modal" [class.show]="showAddForm">
+  <div class="modal-backdrop" (click)="closeForm()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ editingCourse ? 'Kurs Düzenle' : 'Yeni Kurs Ekle' }}</h3>
+      <button class="close-button" (click)="closeForm()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-course-form 
+        [course]="editingCourse"
+        [adminLocations]="adminLocations"
+        (formSubmit)="onCourseSaved($event)"
+        (formCancel)="closeForm()">
+      </app-course-form>
+    </div>
+  </div>
+</div>

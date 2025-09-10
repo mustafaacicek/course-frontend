@@ -1,0 +1,122 @@
+@use '../../../../scss/variables' as vars;
+@use '../../../../scss/color-functions' as cf;
+@use '../../../../scss/components' as comp;
+
+.locations-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Page Header
+.page-header {
+  @include comp.page-header;
+}
+
+// Action Button
+.action-button {
+  @include comp.button;
+}
+
+// Notifications
+.notification {
+  @include comp.notification;
+}
+
+// Loading State
+.loading-container {
+  @include comp.loading-spinner;
+}
+
+// Location Card
+.location-card {
+  @include comp.card;
+  margin-bottom: 1.5rem;
+  overflow: visible;
+}
+
+// Table Styles
+.table-responsive {
+  overflow-x: auto;
+  
+  .data-table {
+    @include comp.table;
+  }
+}
+
+// Admin Badges
+.admin-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  
+  .admin-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    background-color: rgba(vars.$secondary, 0.1);
+    color: vars.$secondary;
+  }
+}
+
+// Table Actions
+.table-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  
+  &.edit {
+    color: vars.$warning;
+    
+    &:hover {
+      background-color: rgba(vars.$warning, 0.1);
+    }
+  }
+  
+  &.delete {
+    color: vars.$danger;
+    
+    &:hover {
+      background-color: rgba(vars.$danger, 0.1);
+    }
+  }
+  
+  i {
+    font-size: 1rem;
+  }
+}
+
+// Modal Styles
+.modal {
+  @include comp.modal;
+}
+
+// Media Queries
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 1rem;
+    
+    .header-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+  
+  .table-responsive {
+    .data-table {
+      th, td {
+        padding: 8px 10px;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}

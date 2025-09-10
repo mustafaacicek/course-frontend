@@ -1,0 +1,66 @@
+<div class="page-header">
+  <h2>Admin Paneli</h2>
+</div>
+
+<div class="dashboard-cards">
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-book"></i>
+    </div>
+    <div class="card-content">
+      <h3>Kurslar</h3>
+      <p class="card-value">{{ courseCount }}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-user-graduate"></i>
+    </div>
+    <div class="card-content">
+      <h3>Öğrenciler</h3>
+      <p class="card-value">{{ studentCount }}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-chalkboard-teacher"></i>
+    </div>
+    <div class="card-content">
+      <h3>Dersler</h3>
+      <p class="card-value">{{ lessonCount }}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-sticky-note"></i>
+    </div>
+    <div class="card-content">
+      <h3>Ders Notları</h3>
+      <p class="card-value">{{ noteCount }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="recent-activity">
+  <h3 class="section-title">Son Aktiviteler</h3>
+  <div class="activity-list">
+    <div class="activity-item" *ngFor="let activity of recentActivities">
+      <div class="activity-icon">
+        <i class="fas" 
+          [ngClass]="{
+            'fa-plus-circle': activity.type === 'add',
+            'fa-edit': activity.type === 'edit',
+            'fa-book': activity.type === 'create'
+          }">
+        </i>
+      </div>
+      <div class="activity-content">
+        <p class="activity-text" [innerHTML]="activity.text"></p>
+        <p class="activity-time">{{ activity.time }}</p>
+      </div>
+    </div>
+  </div>
+</div>

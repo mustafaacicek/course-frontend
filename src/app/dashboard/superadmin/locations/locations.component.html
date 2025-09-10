@@ -1,0 +1,102 @@
+<div class="locations-container">
+  <div class="page-header">
+    <h1 class="page-title">Kurs Lokasyonları</h1>
+    <div class="header-actions">
+      <button class="action-button" (click)="openAddForm()">
+        <i class="fas fa-plus"></i>
+        <span>Yeni Lokasyon</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="notification success" *ngIf="successMessage">
+    <div class="notification-content">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ successMessage }}</span>
+    </div>
+    <button class="notification-close" (click)="successMessage = ''">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="notification error" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button class="notification-close" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner">
+      <div class="spinner-inner"></div>
+    </div>
+    <p class="loading-text">Kurs lokasyonları yükleniyor...</p>
+  </div>
+
+  <div class="location-card" *ngIf="!isLoading">
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Lokasyon Adı</th>
+            <th>Adres</th>
+            <th>Telefon</th>
+            <th>Yöneticiler</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let location of locations">
+            <td>{{ location.id }}</td>
+            <td>{{ location.name }}</td>
+            <td>{{ location.address }}</td>
+            <td>{{ location.phone || '-' }}</td>
+            <td>
+              <div class="admin-badges">
+                <span class="admin-badge" *ngFor="let admin of location.admins">
+                  {{ admin.firstName || admin.username }} {{ admin.lastName ? admin.lastName : '' }}
+                </span>
+                <span *ngIf="location.admins.length === 0">-</span>
+              </div>
+            </td>
+            <td class="actions">
+              <button class="table-action edit" (click)="editLocation(location)" title="Düzenle">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="table-action delete" (click)="deleteLocation(location.id)" title="Sil">
+                <i class="fas fa-trash"></i>  
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="locations.length === 0">
+            <td colspan="6" class="no-data">Henüz hiç kurs lokasyonu bulunmamaktadır.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal" [class.show]="showAddForm">
+    <div class="modal-backdrop" (click)="closeForm()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ editingLocation ? 'Lokasyon Düzenle' : 'Yeni Lokasyon Ekle' }}</h3>
+        <button class="close-button" (click)="closeForm()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-location-form 
+          [location]="editingLocation"
+          [adminUsers]="adminUsers"
+          (formSubmit)="onLocationSaved($event)"
+          (formCancel)="closeForm()">
+        </app-location-form>
+      </div>
+    </div>
+  </div>
+</div>

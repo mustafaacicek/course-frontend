@@ -1,0 +1,216 @@
+<form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="student-form">
+  <div class="alert alert-danger" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button type="button" class="close-button" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="validation-summary" *ngIf="Object.keys(validationErrors).length > 0">
+    <ul>
+      <li *ngFor="let error of Object.entries(validationErrors)">
+        <strong>{{ error[0] }}</strong>: {{ error[1] }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="nationalId">TC Kimlik No <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="nationalId" 
+        formControlName="nationalId"
+        [class.is-invalid]="hasError('nationalId')"
+        maxlength="11"
+        placeholder="12345678901"
+      >
+      <div class="error-message" *ngIf="hasError('nationalId')">
+        {{ getErrorMessage('nationalId') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="firstName">Ad <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="firstName" 
+        formControlName="firstName"
+        [class.is-invalid]="hasError('firstName')"
+        maxlength="50"
+      >
+      <div class="error-message" *ngIf="hasError('firstName')">
+        {{ getErrorMessage('firstName') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Soyad <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="lastName" 
+        formControlName="lastName"
+        [class.is-invalid]="hasError('lastName')"
+        maxlength="50"
+      >
+      <div class="error-message" *ngIf="hasError('lastName')">
+        {{ getErrorMessage('lastName') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="motherName">Anne Adı</label>
+      <input 
+        type="text" 
+        id="motherName" 
+        formControlName="motherName"
+        [class.is-invalid]="hasError('motherName')"
+        maxlength="50"
+      >
+      <div class="error-message" *ngIf="hasError('motherName')">
+        {{ getErrorMessage('motherName') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="fatherName">Baba Adı</label>
+      <input 
+        type="text" 
+        id="fatherName" 
+        formControlName="fatherName"
+        [class.is-invalid]="hasError('fatherName')"
+        maxlength="50"
+      >
+      <div class="error-message" *ngIf="hasError('fatherName')">
+        {{ getErrorMessage('fatherName') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="phone">Telefon</label>
+      <input 
+        type="text" 
+        id="phone" 
+        formControlName="phone"
+        placeholder="5XX XXX XX XX"
+        [class.is-invalid]="hasError('phone')"
+        maxlength="11"
+      >
+      <div class="error-message" *ngIf="hasError('phone')">
+        {{ getErrorMessage('phone') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="birthDate">Doğum Tarihi</label>
+      <input 
+        type="date" 
+        id="birthDate" 
+        formControlName="birthDate"
+        [class.is-invalid]="hasError('birthDate')"
+      >
+      <div class="error-message" *ngIf="hasError('birthDate')">
+        {{ getErrorMessage('birthDate') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group full-width">
+    <label for="address">Adres</label>
+    <textarea 
+      id="address" 
+      formControlName="address"
+      rows="3"
+      [class.is-invalid]="hasError('address')"
+      maxlength="255"
+    ></textarea>
+    <div class="error-message" *ngIf="hasError('address')">
+      {{ getErrorMessage('address') }}
+    </div>
+  </div>
+
+  <div class="form-row" *ngIf="!student">
+    <div class="form-group">
+      <label for="username">Kullanıcı Adı <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="username" 
+        formControlName="username"
+        [class.is-invalid]="hasError('username')"
+        maxlength="50"
+      >
+      <div class="error-message" *ngIf="hasError('username')">
+        {{ getErrorMessage('username') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="password">
+        Şifre
+        <span class="required" *ngIf="!student">*</span>
+        <span *ngIf="student" class="optional-text">(Değiştirmek için doldurun)</span>
+      </label>
+      <input 
+        type="password" 
+        id="password" 
+        formControlName="password"
+        [class.is-invalid]="hasError('password')"
+      >
+      <div class="error-message" *ngIf="hasError('password')">
+        {{ getErrorMessage('password') }}
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-row">
+    <div class="form-group">
+      <label for="adminId">Yönetici Ata</label>
+      <div class="admin-selection-container" *ngIf="!isLoadingAdmins; else loadingAdmins">
+        <select 
+          id="adminId" 
+          formControlName="adminId"
+          class="admin-select"
+        >
+          <option [ngValue]="null">Yönetici seçiniz</option>
+          <option *ngFor="let admin of adminUsers" [ngValue]="admin.id">
+            {{ admin.firstName || admin.username }} {{ admin.lastName || '' }}
+          </option>
+        </select>
+        <div class="admin-info" *ngIf="studentForm.get('adminId')?.value">
+          <p class="info-text">
+            <i class="fas fa-info-circle"></i>
+            Seçilen yöneticinin kurs lokasyonlarına öğrenci otomatik olarak atanacaktır.
+          </p>
+        </div>
+      </div>
+      <ng-template #loadingAdmins>
+        <div class="loading-admins">
+          <i class="fas fa-spinner fa-spin"></i> Yöneticiler yükleniyor...
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="cancel-button" (click)="onCancel()">
+      <i class="fas fa-times"></i>
+      <span>İptal</span>
+    </button>
+    <button type="submit" class="submit-button" [disabled]="isSubmitting || studentForm.invalid">
+      <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+      <i class="fas fa-save" *ngIf="!isSubmitting"></i>
+      <span>{{ student ? 'Güncelle' : 'Kaydet' }}</span>
+    </button>
+  </div>
+</form>

@@ -1,0 +1,18 @@
+<div class="admin-layout" [class.sidebar-collapsed]="isSidebarCollapsed">
+  <!-- Mobile Toggle Button -->
+  <button class="mobile-toggle" [class.active]="isMobileMenuOpen" (click)="toggleMobileMenu()">
+    <i class="fas" [class.fa-bars]="!isMobileMenuOpen" [class.fa-times]="isMobileMenuOpen"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <app-sidebar 
+    [isSidebarCollapsed]="isSidebarCollapsed" 
+    [class.mobile-open]="isMobileMenuOpen"
+    (toggleSidebar)="toggleSidebar()">
+  </app-sidebar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

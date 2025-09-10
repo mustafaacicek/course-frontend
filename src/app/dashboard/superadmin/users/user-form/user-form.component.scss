@@ -1,0 +1,145 @@
+@use 'sass:color';
+
+// Custom Variables
+$primary: #4f46e5;
+$secondary: #7c3aed;
+$success: #10b981;
+$danger: #ef4444;
+$warning: #f59e0b;
+$info: #3b82f6;
+$dark: #1e293b;
+$light: #f8fafc;
+
+// Border radius and transitions
+$border-radius: 8px;
+$transition-speed: 0.3s;
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: $border-radius;
+  position: relative;
+  
+  &.alert-danger {
+    background-color: color.adjust($danger, $lightness: 45%);
+    color: $danger;
+    border: 1px solid color.adjust($danger, $lightness: 35%);
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.25rem;
+    cursor: pointer;
+    opacity: 0.7;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  label {
+    font-weight: 500;
+    color: $dark;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    .optional-text {
+      font-size: 0.75rem;
+      font-weight: normal;
+      color: color.adjust($dark, $lightness: 40%);
+      font-style: italic;
+    }
+  }
+  
+  input, select {
+    padding: 0.75rem 1rem;
+    border: 1px solid color.adjust($light, $lightness: -10%);
+    border-radius: $border-radius;
+    font-size: 0.9375rem;
+    transition: all $transition-speed ease;
+    background-color: white;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+    
+    &.is-invalid {
+      border-color: $danger;
+      background-color: rgba($danger, 0.05);
+    }
+  }
+  
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231e293b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+  
+  .error-message {
+    color: $danger;
+    font-size: 0.8125rem;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  
+  button {
+    padding: 0.75rem 1.5rem;
+    border-radius: $border-radius;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all $transition-speed ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    &.cancel-button {
+      background-color: color.adjust($light, $lightness: -5%);
+      color: $dark;
+      
+      &:hover {
+        background-color: color.adjust($light, $lightness: -10%);
+      }
+    }
+    
+    &.submit-button {
+      background-color: $primary;
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background-color: color.adjust($primary, $lightness: -10%);
+      }
+      
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

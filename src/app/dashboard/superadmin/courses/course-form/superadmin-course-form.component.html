@@ -1,0 +1,118 @@
+<form [formGroup]="courseForm" (ngSubmit)="onSubmit()" class="course-form">
+  <div class="alert alert-danger" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button type="button" class="close-button" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="validation-summary" *ngIf="Object.keys(validationErrors).length > 0">
+    <ul>
+      <li *ngFor="let error of Object.entries(validationErrors)">
+        <strong>{{ error[0] }}</strong>: {{ error[1] }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="name">Kurs Adı <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name"
+        [class.is-invalid]="hasError('name')"
+      >
+      <div class="error-message" *ngIf="hasError('name')">
+        {{ getErrorMessage('name') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="description">Açıklama</label>
+      <textarea 
+        id="description" 
+        formControlName="description"
+        rows="3"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group half-width">
+      <label for="startDate">Başlangıç Tarihi <span class="required">*</span></label>
+      <input 
+        type="date" 
+        id="startDate" 
+        formControlName="startDate"
+        [class.is-invalid]="hasError('startDate')"
+      >
+      <div class="error-message" *ngIf="hasError('startDate')">
+        {{ getErrorMessage('startDate') }}
+      </div>
+    </div>
+
+    <div class="form-group half-width">
+      <label for="endDate">Bitiş Tarihi</label>
+      <input 
+        type="date" 
+        id="endDate" 
+        formControlName="endDate"
+      >
+    </div>
+  </div>
+
+  <div class="form-group full-width">
+    <label class="location-header">
+      <span>Lokasyonlar <span class="required">*</span></span>
+      <div class="select-all-container">
+        <input 
+          type="checkbox" 
+          id="selectAll" 
+          [checked]="selectAllLocations" 
+          (change)="toggleSelectAll()"
+        >
+        <label for="selectAll">Tümünü Seç</label>
+      </div>
+    </label>
+    
+    <div class="locations-grid">
+      <div class="location-item" *ngFor="let location of allLocations">
+        <div class="location-checkbox">
+          <input 
+            type="checkbox" 
+            [id]="'location-' + location.id" 
+            [checked]="isLocationSelected(location.id)" 
+            (change)="toggleLocation(location.id)"
+          >
+          <label [for]="'location-' + location.id">
+            <span class="location-name">{{ location.name }}</span>
+            <span class="location-address">{{ location.address }}</span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="no-locations" *ngIf="allLocations.length === 0">
+        <i class="fas fa-info-circle"></i>
+        <span>Henüz lokasyon bulunmamaktadır.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="cancel-button" (click)="cancel()" [disabled]="isSubmitting">
+      <i class="fas fa-times"></i>
+      <span>İptal</span>
+    </button>
+    <button type="submit" class="submit-button" [disabled]="isSubmitting || courseForm.invalid">
+      <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+      <i class="fas fa-save" *ngIf="!isSubmitting"></i>
+      <span>{{ course ? 'Güncelle' : 'Kaydet' }}</span>
+    </button>
+  </div>
+</form>

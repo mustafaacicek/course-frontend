@@ -1,0 +1,330 @@
+@use 'variables' as vars;
+@use 'color-functions' as cf;
+
+// Card Styles
+@mixin card {
+  background-color: white;
+  border-radius: vars.$border-radius;
+  box-shadow: vars.$shadow-md;
+  overflow: hidden;
+}
+
+// Button Styles
+@mixin button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: vars.$primary;
+  color: white;
+  border-radius: vars.$border-radius-sm;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: cf.custom-darken(vars.$primary, 5%);
+  }
+  
+  &.secondary {
+    background-color: #e5e7eb;
+    color: #4b5563;
+    
+    &:hover {
+      background-color: cf.custom-darken(#e5e7eb, 5%);
+    }
+  }
+  
+  &.edit {
+    background-color: vars.$warning;
+    
+    &:hover {
+      background-color: cf.custom-darken(vars.$warning, 5%);
+    }
+  }
+  
+  &.danger {
+    background-color: vars.$danger;
+    
+    &:hover {
+      background-color: cf.custom-darken(vars.$danger, 5%);
+    }
+  }
+  
+  &.success {
+    background-color: vars.$success;
+    
+    &:hover {
+      background-color: cf.custom-darken(vars.$success, 5%);
+    }
+  }
+  
+  i {
+    font-size: 0.875rem;
+  }
+}
+
+// Notification Styles
+@mixin notification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: vars.$border-radius-sm;
+  margin-bottom: 1rem;
+  
+  &.success {
+    background-color: rgba(vars.$success, 0.1);
+    border-left: 4px solid vars.$success;
+    
+    .notification-content {
+      i {
+        color: vars.$success;
+      }
+      
+      span {
+        color: cf.custom-darken(vars.$success, 10%);
+      }
+    }
+  }
+  
+  &.error {
+    background-color: rgba(vars.$danger, 0.1);
+    border-left: 4px solid vars.$danger;
+    
+    .notification-content {
+      i {
+        color: vars.$danger;
+      }
+      
+      span {
+        color: cf.custom-darken(vars.$danger, 10%);
+      }
+    }
+  }
+  
+  .notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    
+    i {
+      font-size: 1.25rem;
+    }
+    
+    span {
+      font-weight: 500;
+    }
+  }
+  
+  .notification-close {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+// Page Header Styles
+@mixin page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: vars.$dark;
+    margin: 0;
+  }
+  
+  .header-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+}
+
+// Loading Spinner
+@mixin loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 1rem;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid rgba(vars.$primary, 0.1);
+    }
+    
+    .spinner-inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: vars.$primary;
+      animation: spin 1s linear infinite;
+    }
+  }
+  
+  .loading-text {
+    color: #6b7280;
+    font-weight: 500;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Table Styles
+@mixin table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+  }
+  
+  tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .no-data {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+  }
+  
+  .actions {
+    white-space: nowrap;
+    
+    .action-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      margin-right: 5px;
+      border-radius: 4px;
+      
+      &.edit {
+        color: vars.$warning;
+        
+        &:hover {
+          background-color: rgba(vars.$warning, 0.1);
+        }
+      }
+      
+      &.delete {
+        color: vars.$danger;
+        
+        &:hover {
+          background-color: rgba(vars.$danger, 0.1);
+        }
+      }
+    }
+  }
+}
+
+// Modal Styles
+@mixin modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  
+  &.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    position: relative;
+    background-color: white;
+    border-radius: vars.$border-radius;
+    box-shadow: vars.$shadow-lg;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1001;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    
+    h3 {
+      margin: 0;
+      font-size: 20px;
+      color: #333;
+    }
+    
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      padding: 0;
+    }
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+}

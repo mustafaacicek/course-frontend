@@ -1,0 +1,135 @@
+<div class="page-header">
+  <h2>Süper Admin Paneli</h2>
+</div>
+
+<div class="dashboard-cards">
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-book"></i>
+    </div>
+    <div class="card-content">
+      <h3>Kurslar</h3>
+      <p class="card-value">{{ courseCount }}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-user-graduate"></i>
+    </div>
+    <div class="card-content">
+      <h3>Öğrenciler</h3>
+      <p class="card-value">{{ studentCount }}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-users"></i>
+    </div>
+    <div class="card-content">
+      <h3>Kullanıcılar</h3>
+      <p class="card-value">{{ userCount }}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-chalkboard-teacher"></i>
+    </div>
+    <div class="card-content">
+      <h3>Dersler</h3>
+      <p class="card-value">{{ lessonCount }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="admin-section">
+  <h3 class="section-title">Kullanıcı Yönetimi</h3>
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h4>Sistem Kullanıcıları</h4>
+      <button class="add-button">
+        <i class="fas fa-plus"></i> Yeni Kullanıcı
+      </button>
+    </div>
+    <div class="admin-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Kullanıcı Adı</th>
+            <th>Rol</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Son Giriş</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>superadmin</td>
+            <td><span class="badge badge-primary">Süper Admin</span></td>
+            <td>01.01.2025</td>
+            <td>08.09.2025</td>
+            <td>
+              <button class="action-button edit">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="action-button delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>admin</td>
+            <td><span class="badge badge-secondary">Admin</span></td>
+            <td>01.01.2025</td>
+            <td>07.09.2025</td>
+            <td>
+              <button class="action-button edit">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="action-button delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="recent-activity">
+  <h3 class="section-title">Sistem Aktiviteleri</h3>
+  <div class="activity-list">
+    <div class="activity-item">
+      <div class="activity-icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <div class="activity-content">
+        <p class="activity-text">Yeni kullanıcı eklendi: <strong>eğitmen1</strong></p>
+        <p class="activity-time">Bugün, 15:45</p>
+      </div>
+    </div>
+    
+    <div class="activity-item">
+      <div class="activity-icon">
+        <i class="fas fa-cog"></i>
+      </div>
+      <div class="activity-content">
+        <p class="activity-text">Sistem ayarları güncellendi</p>
+        <p class="activity-time">Bugün, 14:30</p>
+      </div>
+    </div>
+    
+    <div class="activity-item">
+      <div class="activity-icon">
+        <i class="fas fa-database"></i>
+      </div>
+      <div class="activity-content">
+        <p class="activity-text">Veritabanı yedeklemesi tamamlandı</p>
+        <p class="activity-time">Dün, 23:00</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+@use "sass:color";
+
+// Custom darken function
+@function custom-darken($color, $amount) {
+  @return color.adjust($color, $lightness: -$amount);
+}
+
+// Custom lighten function
+@function custom-lighten($color, $amount) {
+  @return color.adjust($color, $lightness: $amount);
+}

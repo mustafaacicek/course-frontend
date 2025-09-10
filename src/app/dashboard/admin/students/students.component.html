@@ -1,0 +1,100 @@
+<div class="students-container">
+  <div class="page-header">
+    <h1 class="page-title">Öğrenci Yönetimi</h1>
+    <div class="header-actions">
+      <button class="action-button" (click)="openAddForm()">
+        <i class="fas fa-plus"></i>
+        <span>Yeni Öğrenci</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="notification success" *ngIf="successMessage">
+    <div class="notification-content">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ successMessage }}</span>
+    </div>
+    <button class="notification-close" (click)="successMessage = ''">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="notification error" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button class="notification-close" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner">
+      <div class="spinner-inner"></div>
+    </div>
+    <p class="loading-text">Öğrenciler yükleniyor...</p>
+  </div>
+
+<div class="student-card" *ngIf="!isLoading">
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>TC Kimlik No</th>
+          <th>Ad</th>
+          <th>Soyad</th>
+          <th>Kullanıcı Adı</th>
+          <th>Telefon</th>
+          <th>Doğum Tarihi</th>
+          <th>Yönetici</th>
+          <th>İşlemler</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students">
+          <td>{{ student.id }}</td>
+          <td>{{ student.nationalId }}</td>
+          <td>{{ student.firstName }}</td>
+          <td>{{ student.lastName }}</td>
+          <td>{{ student.username }}</td>
+          <td>{{ student.phone || '-' }}</td>
+          <td>{{ student.birthDate | date:'dd.MM.yyyy' }}</td>
+          <td>{{ getAdminName(student.id) || '-' }}</td>
+          <td class="actions">
+            <button class="table-action edit" (click)="editStudent(student)" title="Düzenle">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="table-action delete" (click)="deleteStudent(student.id)" title="Sil">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="students.length === 0">
+          <td colspan="8" class="no-data">Henüz hiç öğrenci bulunmamaktadır.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal" [class.show]="showAddForm">
+  <div class="modal-backdrop" (click)="closeForm()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ editingStudent ? 'Öğrenci Düzenle' : 'Yeni Öğrenci Ekle' }}</h3>
+      <button class="close-button" (click)="closeForm()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-student-form 
+        [student]="editingStudent"
+        (formSubmit)="onStudentSaved($event)"
+        (formCancel)="closeForm()">
+      </app-student-form>
+    </div>
+  </div>
+</div>
+</div>

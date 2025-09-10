@@ -1,0 +1,217 @@
+@use '../../../../../scss/variables' as vars;
+@use '../../../../../scss/color-functions' as cf;
+
+.student-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  
+  &.full-width {
+    width: 100%;
+  }
+  
+  label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: vars.$dark;
+    
+    .required {
+      color: vars.$danger;
+    }
+    
+    .optional-text {
+      font-size: 0.85em;
+      color: #6b7280;
+      font-weight: normal;
+      font-style: italic;
+    }
+  }
+  
+  input, select, textarea {
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: vars.$border-radius-sm;
+    font-size: 16px;
+    transition: all 0.2s;
+    
+    &:focus {
+      outline: none;
+      border-color: vars.$primary;
+      box-shadow: 0 0 0 3px rgba(vars.$primary, 0.1);
+    }
+    
+    &.is-invalid {
+      border-color: vars.$danger;
+    }
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+}
+
+.error-message {
+  margin-top: 6px;
+  color: vars.$danger;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.admin-selection-container {
+  display: flex;
+  flex-direction: column;
+  
+  .admin-select {
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: vars.$border-radius-sm;
+    font-size: 16px;
+    transition: all 0.2s;
+    
+    &:focus {
+      outline: none;
+      border-color: vars.$primary;
+      box-shadow: 0 0 0 3px rgba(vars.$primary, 0.1);
+    }
+  }
+  
+  .admin-info {
+    margin-top: 10px;
+    
+    .info-text {
+      font-size: 0.85em;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      
+      i {
+        margin-right: 8px;
+        color: vars.$primary;
+      }
+    }
+  }
+}
+
+.loading-admins {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  font-size: 0.9em;
+  
+  i {
+    margin-right: 8px;
+  }
+}
+
+.validation-summary {
+  background-color: rgba(vars.$danger, 0.05);
+  border: 1px solid rgba(vars.$danger, 0.2);
+  border-radius: vars.$border-radius-sm;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  
+  ul {
+    margin: 0;
+    padding-left: 20px;
+    
+    li {
+      margin-bottom: 5px;
+      color: #e74c3c;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      strong {
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+.alert {
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: vars.$border-radius-sm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  &.alert-danger {
+    background-color: rgba(vars.$danger, 0.1);
+    color: cf.custom-darken(vars.$danger, 10%);
+    border-left: 4px solid vars.$danger;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: inherit;
+    padding: 0;
+    margin-left: 10px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  
+  button {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    
+    &.cancel-button {
+      background-color: #e5e7eb;
+      border: none;
+      color: #4b5563;
+      
+      &:hover {
+        background-color: cf.custom-darken(#e5e7eb, 5%);
+      }
+    }
+    
+    &.submit-button {
+      background-color: vars.$primary;
+      border: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      i {
+        margin-right: 8px;
+      }
+      
+      &:hover {
+        background-color: cf.custom-darken(vars.$primary, 5%);
+      }
+      
+      &:disabled {
+        background-color: cf.custom-lighten(vars.$primary, 20%);
+        cursor: not-allowed;
+      }
+    }
+  }
+}
