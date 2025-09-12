@@ -7,6 +7,9 @@ import { UserService } from '../../../../services/user.service';
 import { UserSummary, Role } from '../../../../models/user.models';
 import { HttpClientModule } from '@angular/common/http';
 import { TokenStorageService } from '../../../../services/token-storage.service';
+import { LocationService } from '../../../../services/location.service';
+import { CourseLocation } from '../../../../models/location.models';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-student-form',
@@ -24,6 +27,13 @@ export class StudentFormComponent implements OnInit, OnChanges {
   adminUsers: UserSummary[] = [];
   isLoadingAdmins = false;
   
+  // Current admin user
+  currentAdmin: any = null;
+  
+  // Admin's course locations
+  courseLocations: CourseLocation[] = [];
+  isLoadingLocations = false;
+  
   studentForm!: FormGroup;
   isSubmitting = false;
   error: string | null = null;
@@ -34,16 +44,18 @@ export class StudentFormComponent implements OnInit, OnChanges {
   get nationalIdControl() { return this.studentForm.get('nationalId'); }
   get firstNameControl() { return this.studentForm.get('firstName'); }
   get lastNameControl() { return this.studentForm.get('lastName'); }
-  get usernameControl() { return this.studentForm.get('username'); }
-  get passwordControl() { return this.studentForm.get('password'); }
+  get locationIdControl() { return this.studentForm.get('locationId'); }
   
   constructor(
     private fb: FormBuilder,
     private studentService: StudentService,
     private userService: UserService,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private locationService: LocationService,
+    private authService: AuthService
   ) {
     this.createForm();
+    this.currentAdmin = this.authService.getUser();
   }
   
   // Create form with validators
@@ -70,24 +82,17 @@ export class StudentFormComponent implements OnInit, OnChanges {
       address: ['', [Validators.maxLength(255)]],
       phone: ['', [Validators.pattern('^[0-9]{10,11}$|^$')]],
       birthDate: [''],
-      username: ['', [
-        Validators.required, 
-        Validators.minLength(3), 
-        Validators.maxLength(50)
-      ]],
-      password: ['', [
-        Validators.required, 
-        Validators.minLength(6)
-      ]],
-      adminId: [null]
+      locationId: [null, Validators.required],
+      adminId: [this.currentAdmin?.id || null]
     });
   }
   
   ngOnInit(): void {
     console.log('StudentFormComponent ngOnInit - Student input:', this.student);
+    console.log('Current admin:', this.currentAdmin);
     
-    // Load admin users
-    this.loadAdminUsers();
+    // Load admin's course locations
+    this.loadAdminLocations();
     
     // Initialize the form
     this.initializeForm();
@@ -121,11 +126,6 @@ export class StudentFormComponent implements OnInit, OnChanges {
         birthDate: this.student.birthDate
       });
       
-      // If editing, remove username and password validators since they're optional on update
-      this.studentForm.get('username')?.disable();
-      this.studentForm.get('password')?.clearValidators();
-      this.studentForm.get('password')?.updateValueAndValidity();
-      
       // Get the student's admin ID if available
       if (this.student.id) {
         console.log('Getting admin ID for student:', this.student.id);
@@ -145,16 +145,27 @@ export class StudentFormComponent implements OnInit, OnChanges {
           fatherName: this.student!.fatherName,
           address: this.student!.address,
           phone: this.student!.phone,
-          birthDate: this.student!.birthDate ? this.formatDateForInput(this.student!.birthDate) : '',
-          username: this.student!.username
+          birthDate: this.student!.birthDate ? this.formatDateForInput(this.student!.birthDate) : ''
         };
         
         console.log('Patching form with values:', formValues);
         this.studentForm.patchValue(formValues);
+        
+        // Eğer öğrencinin course location'ları varsa, ilk location'ı seç
+        if (this.student!.courseLocations && this.student!.courseLocations.length > 0) {
+          const locationId = this.student!.courseLocations[0].id;
+          console.log('Setting locationId from student data:', locationId);
+          this.studentForm.patchValue({ locationId: locationId });
+        }
+        
         console.log('Form values after patch:', this.studentForm.value);
       }, 0);
     } else {
       console.log('No student data available - creating new student');
+      // For new students, auto-assign the current admin
+      if (this.currentAdmin) {
+        this.studentForm.patchValue({ adminId: this.currentAdmin.id });
+      }
     }
   }
   
@@ -182,13 +193,8 @@ export class StudentFormComponent implements OnInit, OnChanges {
         address: this.studentForm.value.address,
         phone: this.studentForm.value.phone,
         birthDate: this.studentForm.value.birthDate ? new Date(this.studentForm.value.birthDate).toISOString().split('T')[0] : undefined,
-        adminId: this.studentForm.value.adminId || null
+        adminId: this.studentForm.value.adminId || this.currentAdmin?.id || null
       };
-      
-      // Only include password if provided
-      if (this.studentForm.value.password) {
-        updateRequest.password = this.studentForm.value.password;
-      }
       
       this.studentService.updateStudent(this.student.id, updateRequest).subscribe({
         next: (updatedStudent) => {
@@ -211,9 +217,8 @@ export class StudentFormComponent implements OnInit, OnChanges {
         address: this.studentForm.value.address,
         phone: this.studentForm.value.phone,
         birthDate: this.studentForm.value.birthDate ? new Date(this.studentForm.value.birthDate).toISOString().split('T')[0] : undefined,
-        username: this.studentForm.value.username,
-        password: this.studentForm.value.password,
-        adminId: this.studentForm.value.adminId
+        locationId: this.studentForm.value.locationId,
+        adminId: this.studentForm.value.adminId || this.currentAdmin?.id
       };
       
       this.studentService.createStudent(createRequest).subscribe({
@@ -289,58 +294,38 @@ export class StudentFormComponent implements OnInit, OnChanges {
     return control ? control.invalid && control.touched : false;
   }
   
-  // Load admin users for selection
-  loadAdminUsers(): void {
-    this.isLoadingAdmins = true;
+  // Load admin's course locations
+  loadAdminLocations(): void {
+    this.isLoadingLocations = true;
     
     // Check if token exists
     const token = this.tokenStorage.getToken();
     if (!token) {
       console.error('No authentication token available');
       this.error = 'Oturum bilgisi bulunamadı. Lütfen tekrar giriş yapın.';
-      this.isLoadingAdmins = false;
+      this.isLoadingLocations = false;
       return;
     }
     
-    // Get admin users from the API
-    this.userService.getAdminUsers().subscribe({
+    // Get admin's course locations from the API
+    this.locationService.getAdminLocations().subscribe({
       next: (data) => {
-        console.log('Admin users loaded successfully:', data);
-        // Map the User type from service to UserSummary type
-        this.adminUsers = data.map(user => ({
-          id: user.id,
-          username: user.username,
-          role: this.mapStringToRoleEnum(user.role),
-          firstName: user.firstName || '',
-          lastName: user.lastName || ''
-        }));
-        console.log('Mapped admin users:', this.adminUsers);
-        this.isLoadingAdmins = false;
+        console.log('Admin locations loaded successfully:', data);
+        this.courseLocations = data;
+        this.isLoadingLocations = false;
       },
       error: (err) => {
-        console.error('Error loading admin users:', err);
-        this.error = 'Yönetici listesi yüklenirken bir hata oluştu.';
-        this.isLoadingAdmins = false;
-        
-        // Fallback to dummy data if API fails
-        this.adminUsers = [
-          {
-            id: 1,
-            username: 'admin1',
-            role: Role.ADMIN,
-            firstName: 'Admin',
-            lastName: 'One'
-          },
-          {
-            id: 2,
-            username: 'admin2',
-            role: Role.ADMIN,
-            firstName: 'Admin',
-            lastName: 'Two'
-          }
-        ];
+        console.error('Error loading admin locations:', err);
+        this.error = 'Lokasyon listesi yüklenirken bir hata oluştu.';
+        this.isLoadingLocations = false;
       }
     });
+  }
+  
+  // Load admin users for selection (not needed anymore but kept for reference)
+  loadAdminUsers(): void {
+    // This method is no longer used as we're auto-assigning the current admin
+    console.log('Admin users loading skipped - using current admin');
   }
   
   // Helper method to map string role to Role enum

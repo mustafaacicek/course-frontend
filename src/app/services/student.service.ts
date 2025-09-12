@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from '../../environments/environment';
 import { Student, StudentCreateRequest, StudentUpdateRequest } from '../models/student.models';
+import { StudentDetail } from '../models/student-detail.model';
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +83,32 @@ export class StudentService {
       tap(
         data => console.log('Student admin details received:', data),
         error => console.error('Error fetching student admin details:', error)
+      )
+    );
+  }
+  
+  /**
+   * Get detailed information about a student including courses, lesson notes, and statistics
+   */
+  getStudentDetails(studentId: number): Observable<StudentDetail> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<StudentDetail>(`${environment.apiUrl}/admin/students/${studentId}/details`, { headers }).pipe(
+      tap(
+        data => console.log('Student details received:', data),
+        error => console.error('Error fetching student details:', error)
+      )
+    );
+  }
+  
+  /**
+   * Update teacher comment for a student
+   */
+  updateTeacherComment(studentId: number, teacherComment: string): Observable<StudentDetail> {
+    const headers = this.getAuthHeaders();
+    return this.http.put<StudentDetail>(`${this.apiUrl}/${studentId}/teacher-comment`, teacherComment, { headers }).pipe(
+      tap(
+        data => console.log('Teacher comment updated:', data),
+        error => console.error('Error updating teacher comment:', error)
       )
     );
   }

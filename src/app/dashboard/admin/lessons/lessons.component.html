@@ -1,0 +1,117 @@
+<div class="page-header">
+  <h2>Ders Yönetimi</h2>
+  <button class="add-button" (click)="openAddForm()" [disabled]="!selectedCourse">
+    <i class="fas fa-plus"></i> Yeni Ders Ekle
+  </button>
+</div>
+
+<div class="alert alert-success" *ngIf="successMessage">
+  <div class="notification-content">
+    <i class="fas fa-check-circle"></i>
+    <span>{{ successMessage }}</span>
+  </div>
+  <button type="button" class="close-button" (click)="successMessage = ''">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="alert alert-danger" *ngIf="error">
+  <div class="notification-content">
+    <i class="fas fa-exclamation-circle"></i>
+    <span>{{ error }}</span>
+  </div>
+  <button type="button" class="close-button" (click)="error = null">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="course-selection-section">
+  <h3>Kurs Seçin</h3>
+  <div class="course-cards">
+    <div class="course-card" 
+         *ngFor="let course of courses" 
+         [class.selected]="selectedCourse?.id === course.id"
+         (click)="onCourseSelect(course)">
+      <div class="course-name">{{ course.name }}</div>
+      <div class="course-dates">
+        <span>{{ course.startDate | date:'dd.MM.yyyy' }}</span>
+        <span *ngIf="course.endDate"> - {{ course.endDate | date:'dd.MM.yyyy' }}</span>
+      </div>
+      <div class="course-location" *ngIf="course.courseLocation">
+        <i class="fas fa-map-marker-alt"></i> {{ course.courseLocation.name }}
+      </div>
+    </div>
+    
+    <div class="no-courses" *ngIf="courses.length === 0 && !isLoading">
+      <i class="fas fa-info-circle"></i>
+      <p>Henüz kurs bulunmamaktadır.</p>
+    </div>
+  </div>
+</div>
+
+<div class="loading-spinner" *ngIf="isLoading">
+  <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+</div>
+
+<div class="lessons-section" *ngIf="selectedCourse && !isLoading">
+  <h3>{{ selectedCourse.name }} - Dersler</h3>
+  
+  <div class="data-container">
+    <table class="data-table" *ngIf="lessons.length > 0; else noLessons">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Ders Adı</th>
+          <th>Açıklama</th>
+          <th>Tarih</th>
+          <th>Oluşturulma Tarihi</th>
+          <th>İşlemler</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lesson of lessons">
+          <td>{{ lesson.id }}</td>
+          <td>{{ lesson.name }}</td>
+          <td>{{ lesson.description || '-' }}</td>
+          <td>{{ lesson.date | date:'dd.MM.yyyy' }}</td>
+          <td>{{ lesson.createdAt | date:'dd.MM.yyyy' }}</td>
+          <td class="actions">
+            <button class="table-action edit" (click)="editLesson(lesson)" title="Düzenle">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="table-action delete" (click)="deleteLesson(lesson.id)" title="Sil">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noLessons>
+      <div class="no-data">
+        <i class="fas fa-info-circle"></i>
+        <p>Bu kursa ait henüz ders bulunmamaktadır.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Lesson Form Modal -->
+<div class="modal" [class.show]="showAddForm">
+  <div class="modal-backdrop" (click)="closeForm()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ editingLesson ? 'Ders Düzenle' : 'Yeni Ders Ekle' }}</h3>
+      <button class="close-button" (click)="closeForm()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-lesson-form 
+        [lesson]="editingLesson"
+        [course]="selectedCourse"
+        (formSubmit)="onLessonSaved($event)"
+        (formCancel)="closeForm()">
+      </app-lesson-form>
+    </div>
+  </div>
+</div>

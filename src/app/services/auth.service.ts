@@ -75,4 +75,9 @@ export class AuthService {
   getUser(): any {
     return this.tokenStorage.getUser();
   }
+  
+  getUserRole(): string {
+    const role = this.tokenStorage.getUserRole();
+    return role || '';
+  }
 }

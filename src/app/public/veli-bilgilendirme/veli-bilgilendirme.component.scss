@@ -1,0 +1,888 @@
+@use 'sass:color';
+
+// İslami renk paleti
+$primary-color: #00723F; // İslami yeşil
+$secondary-color: #C59D5F; // Altın/sarı
+$accent-color: #1D3557; // Koyu mavi
+$light-color: #F8F9FA;
+$dark-color: #212529;
+$pattern-color: rgba(197, 157, 95, 0.1); // Hafif altın rengi
+
+// İslami desenler için mixin
+@mixin islamic-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c59d5f' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.veli-bilgilendirme-container {
+  font-family: 'Amiri', 'Noto Sans', sans-serif;
+  color: $dark-color;
+  background-color: $light-color;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  
+  .islamic-pattern-top, .islamic-pattern-bottom {
+    height: 120px;
+    width: 100%;
+    @include islamic-pattern;
+    position: relative;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 40px;
+    }
+  }
+  
+  .islamic-pattern-top:after {
+    bottom: -1px;
+    background: linear-gradient(to bottom, transparent, $light-color);
+  }
+  
+  .islamic-pattern-bottom:after {
+    top: -1px;
+    background: linear-gradient(to top, transparent, $light-color);
+  }
+  
+  .content-container {
+    flex: 1;
+    padding: 20px 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: calc(100% - 30px);
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    
+    @media (max-width: 576px) {
+      padding: 15px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    
+    @media (max-width: 576px) {
+      margin-bottom: 20px;
+    }
+    
+    .logo {
+      margin-bottom: 15px;
+      
+      .logo-image {
+        height: 80px;
+        width: auto;
+        
+        @media (max-width: 576px) {
+          height: 60px;
+        }
+      }
+    }
+    
+    .mosque-icon {
+      font-size: 3rem;
+      color: $primary-color;
+      margin-bottom: 10px;
+      
+      i {
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+    }
+    
+    h1 {
+      font-family: 'Scheherazade New', serif;
+      font-size: 2.5rem;
+      color: $primary-color;
+      margin: 0 0 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      display: inline-block;
+      
+      @media (max-width: 768px) {
+        font-size: 2rem;
+      }
+      
+      @media (max-width: 576px) {
+        font-size: 1.8rem;
+      }
+      
+      &:before, &:after {
+        content: '';
+        position: absolute;
+        height: 2px;
+        width: 60px;
+        background-color: $secondary-color;
+        top: 50%;
+        
+        @media (max-width: 768px) {
+          width: 40px;
+        }
+        
+        @media (max-width: 576px) {
+          width: 30px;
+        }
+      }
+      
+      &:before {
+        left: -80px;
+        
+        @media (max-width: 768px) {
+          left: -60px;
+        }
+        
+        @media (max-width: 576px) {
+          left: -40px;
+        }
+      }
+      
+      &:after {
+        right: -80px;
+        
+        @media (max-width: 768px) {
+          right: -60px;
+        }
+        
+        @media (max-width: 576px) {
+          right: -40px;
+        }
+      }
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: $accent-color;
+      font-style: italic;
+      
+      @media (max-width: 576px) {
+        font-size: 1rem;
+      }
+    }
+  }
+  
+  .search-section {
+    margin-bottom: 40px;
+    
+    @media (max-width: 576px) {
+      margin-bottom: 30px;
+    }
+    
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .islamic-frame {
+      border: 2px solid $secondary-color;
+      border-radius: 15px;
+      padding: 30px;
+      background-color: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      
+      @media (max-width: 768px) {
+        padding: 25px;
+      }
+      
+      @media (max-width: 576px) {
+        padding: 20px 15px;
+        border-radius: 12px;
+      }
+      
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: linear-gradient(90deg, $primary-color, $secondary-color, $primary-color);
+      }
+      
+      .search-content {
+        text-align: center;
+        
+        h2 {
+          color: $primary-color;
+          margin-top: 0;
+          font-family: 'Scheherazade New', serif;
+          font-size: 1.8rem;
+          
+          @media (max-width: 768px) {
+            font-size: 1.6rem;
+          }
+          
+          @media (max-width: 576px) {
+            font-size: 1.4rem;
+          }
+        }
+        
+        p {
+          color: $accent-color;
+          margin-bottom: 25px;
+          
+          @media (max-width: 576px) {
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+          }
+        }
+        
+        .input-group {
+          margin-bottom: 20px;
+          text-align: left;
+          
+          label {
+            display: block;
+            margin-bottom: 8px;
+            color: $accent-color;
+            font-weight: 500;
+            
+            @media (max-width: 576px) {
+              font-size: 0.9rem;
+              margin-bottom: 6px;
+            }
+          }
+          
+          input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            
+            @media (max-width: 576px) {
+              padding: 10px 12px;
+              font-size: 0.95rem;
+              border-radius: 6px;
+            }
+            
+            &:focus {
+              border-color: $secondary-color;
+              outline: none;
+              box-shadow: 0 0 0 2px rgba($secondary-color, 0.2);
+            }
+          }
+        }
+        
+        .search-button {
+          background-color: $primary-color;
+          color: white;
+          border: none;
+          padding: 12px 25px;
+          border-radius: 8px;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.3s;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          
+          @media (max-width: 576px) {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            width: 100%;
+            justify-content: center;
+          }
+          
+          i {
+            font-size: 0.9rem;
+          }
+          
+          &:hover {
+            background-color: color.adjust($primary-color, $lightness: -10%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+          
+          &:active {
+            transform: translateY(0);
+          }
+        }
+        
+        .error-message {
+          margin-top: 15px;
+          color: #dc3545;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          
+          i {
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+  }
+  
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    
+    .islamic-spinner {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      position: relative;
+      margin-bottom: 15px;
+      
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 4px solid rgba($secondary-color, 0.3);
+        border-top-color: $secondary-color;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      .spinner-inner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border: 4px solid rgba($primary-color, 0.3);
+          border-top-color: $primary-color;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite reverse;
+        }
+      }
+    }
+    
+    p {
+      color: $accent-color;
+      font-size: 1.1rem;
+    }
+  }
+  
+  .results-section {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    
+    .student-header {
+      background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: -10%));
+      color: white;
+      padding: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      .student-name {
+        h2 {
+          margin: 0 0 5px;
+          font-size: 1.8rem;
+          font-family: 'Scheherazade New', serif;
+        }
+        
+        .student-info {
+          font-size: 0.9rem;
+          opacity: 0.9;
+          
+          .info-label {
+            font-weight: 500;
+          }
+        }
+      }
+      
+      .total-score {
+        .score-badge {
+          background-color: rgba(255, 255, 255, 0.2);
+          border-radius: 15px;
+          padding: 10px 15px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-width: 100px;
+          
+          i {
+            color: $secondary-color;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+          }
+          
+          .score-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1;
+          }
+          
+          .score-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+    
+    .performance-summary {
+      padding: 25px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+      
+      .summary-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        
+        .card-header {
+          background-color: $accent-color;
+          color: white;
+          padding: 15px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          
+          i {
+            font-size: 1.2rem;
+          }
+          
+          h3 {
+            margin: 0;
+            font-size: 1.2rem;
+          }
+        }
+        
+        .card-body {
+          padding: 20px;
+          
+          .performance-level {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            
+            &.excellent {
+              background-color: rgba(25, 135, 84, 0.1);
+              color: #198754;
+            }
+            
+            &.very-good {
+              background-color: rgba(13, 110, 253, 0.1);
+              color: #0d6efd;
+            }
+            
+            &.good {
+              background-color: rgba(13, 202, 240, 0.1);
+              color: #0dcaf0;
+            }
+            
+            &.average {
+              background-color: rgba(255, 193, 7, 0.1);
+              color: #ffc107;
+            }
+            
+            &.needs-improvement {
+              background-color: rgba(220, 53, 69, 0.1);
+              color: #dc3545;
+            }
+            
+            .level-label {
+              font-weight: 500;
+            }
+            
+            .level-value {
+              font-weight: 700;
+            }
+          }
+          
+          .performance-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            
+            @media (max-width: 576px) {
+              grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-item {
+              text-align: center;
+              padding: 15px 10px;
+              background-color: #f8f9fa;
+              border-radius: 8px;
+              
+              .stat-icon {
+                color: $primary-color;
+                font-size: 1.5rem;
+                margin-bottom: 5px;
+              }
+              
+              .stat-value {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: $accent-color;
+              }
+              
+              .stat-label {
+                font-size: 0.8rem;
+                color: #6c757d;
+              }
+            }
+          }
+          
+          .progress-section {
+            .progress-item {
+              margin-bottom: 15px;
+              
+              &:last-child {
+                margin-bottom: 0;
+              }
+              
+              .progress-label {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 5px;
+                font-size: 0.9rem;
+                
+                .progress-value {
+                  font-weight: 700;
+                  
+                  &.excellent { color: #198754; }
+                  &.very-good { color: #0d6efd; }
+                  &.good { color: #0dcaf0; }
+                  &.average { color: #ffc107; }
+                  &.needs-improvement { color: #dc3545; }
+                }
+              }
+              
+              .progress-bar {
+                height: 10px;
+                background-color: #e9ecef;
+                border-radius: 5px;
+                overflow: hidden;
+                
+                .progress-fill {
+                  height: 100%;
+                  background: linear-gradient(90deg, $primary-color, $secondary-color);
+                  border-radius: 5px;
+                  transition: width 0.5s ease;
+                  
+                  &.attendance {
+                    background: linear-gradient(90deg, $secondary-color, $primary-color);
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+        &.teacher-comment {
+          .card-body {
+            position: relative;
+            padding: 30px;
+            
+            .quote-icon {
+              position: absolute;
+              top: 15px;
+              right: 15px;
+              color: rgba($secondary-color, 0.2);
+              font-size: 2rem;
+            }
+            
+            .comment-text {
+              font-style: italic;
+              line-height: 1.6;
+              color: $accent-color;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+    
+    .details-section {
+      padding: 0 25px 25px;
+      
+      .section-tabs {
+        display: flex;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 20px;
+        overflow-x: auto;
+        
+        .tab-button {
+          padding: 12px 20px;
+          background: none;
+          border: none;
+          border-bottom: 2px solid transparent;
+          font-weight: 500;
+          color: #6c757d;
+          cursor: pointer;
+          transition: all 0.2s;
+          white-space: nowrap;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          
+          i {
+            font-size: 0.9rem;
+          }
+          
+          &:hover {
+            color: $primary-color;
+          }
+          
+          &.active {
+            color: $primary-color;
+            border-bottom-color: $primary-color;
+          }
+        }
+      }
+      
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease;
+        
+        &.active {
+          display: block;
+        }
+        
+        .courses-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 20px;
+          
+          .course-card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+            
+            .course-header {
+              padding: 15px;
+              background-color: #f8f9fa;
+              border-bottom: 1px solid #dee2e6;
+              
+              h4 {
+                margin: 0 0 5px;
+                color: $accent-color;
+              }
+              
+              .course-dates {
+                font-size: 0.8rem;
+                color: #6c757d;
+              }
+            }
+            
+            .course-body {
+              padding: 15px;
+              
+              .course-description {
+                margin: 0 0 15px;
+                color: #495057;
+                font-size: 0.9rem;
+              }
+              
+              .lesson-count {
+                font-size: 0.9rem;
+                color: $primary-color;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+              }
+            }
+          }
+        }
+        
+        .lessons-table-container {
+          overflow-x: auto;
+          
+          .lessons-table {
+            width: 100%;
+            border-collapse: collapse;
+            
+            th, td {
+              padding: 12px 15px;
+              text-align: left;
+              border-bottom: 1px solid #dee2e6;
+            }
+            
+            th {
+              background-color: #f8f9fa;
+              font-weight: 600;
+              color: $accent-color;
+            }
+            
+            tr:hover {
+              background-color: #f8f9fa;
+            }
+            
+            .note-score {
+              font-weight: 700;
+              color: $accent-color;
+            }
+            
+            .status-badge {
+              display: inline-block;
+              padding: 4px 8px;
+              border-radius: 12px;
+              font-size: 0.85rem;
+              font-weight: 500;
+              
+              &.status-passed {
+                background-color: rgba(25, 135, 84, 0.1);
+                color: #198754;
+              }
+              
+              &.status-failed {
+                background-color: rgba(220, 53, 69, 0.1);
+                color: #dc3545;
+              }
+              
+              &.status-unknown {
+                background-color: rgba(108, 117, 125, 0.1);
+                color: #6c757d;
+              }
+            }
+          }
+        }
+        
+        .locations-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 20px;
+          
+          .location-card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+            
+            .location-header {
+              padding: 15px;
+              background-color: #f8f9fa;
+              border-bottom: 1px solid #dee2e6;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              
+              .location-icon {
+                color: $primary-color;
+                font-size: 1.2rem;
+              }
+              
+              h4 {
+                margin: 0;
+                color: $accent-color;
+              }
+            }
+            
+            .location-body {
+              padding: 15px;
+              
+              .location-info {
+                margin-bottom: 15px;
+                
+                .info-item {
+                  display: flex;
+                  align-items: flex-start;
+                  gap: 10px;
+                  margin-bottom: 8px;
+                  
+                  i {
+                    color: $primary-color;
+                    margin-top: 3px;
+                  }
+                  
+                  span {
+                    color: #495057;
+                    font-size: 0.9rem;
+                  }
+                }
+              }
+              
+              .location-admins {
+                h5 {
+                  margin: 0 0 10px;
+                  font-size: 0.9rem;
+                  color: $accent-color;
+                }
+                
+                .admins-list {
+                  list-style: none;
+                  padding: 0;
+                  margin: 0;
+                  
+                  li {
+                    padding: 5px 0;
+                    font-size: 0.9rem;
+                    color: #495057;
+                    border-bottom: 1px solid #f1f1f1;
+                    
+                    &:last-child {
+                      border-bottom: none;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .footer {
+    background-color: $accent-color;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      
+      p {
+        margin: 0;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Özel font yükleme
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Scheherazade+New:wght@400;700&display=swap');

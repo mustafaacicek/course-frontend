@@ -1,7 +1,7 @@
 <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
   <div class="sidebar-header">
     <div class="logo">
-      <img src="assets/images/course-logo.svg" alt="Course Logo" class="logo-image" [ngClass]="{'small': isSidebarCollapsed}">
+      <img src="assets/images/applogo.png" alt="Course Logo" class="logo-image" [ngClass]="{'small': isSidebarCollapsed}">
     </div>
     <button class="toggle-btn" (click)="onToggleSidebar()">
       <i class="fas" [class.fa-chevron-left]="!isSidebarCollapsed" [class.fa-chevron-right]="isSidebarCollapsed"></i>
@@ -46,8 +46,8 @@
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Öğrenciler</span>
         </a>
       </li>
-      <li class="nav-item" *ngIf="userRole === 'ADMIN' || userRole === 'SUPERADMIN'">
-        <a class="nav-link" routerLink="/lessons" routerLinkActive="active">
+      <li class="nav-item" *ngIf="userRole === 'ADMIN'">
+        <a class="nav-link" routerLink="/admin/lessons" routerLinkActive="active">
           <i class="fas fa-chalkboard-teacher"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Dersler</span>
         </a>
@@ -55,9 +55,15 @@
       
       <!-- ADMIN specific menu items -->
       <li class="nav-item" *ngIf="userRole === 'ADMIN'">
-        <a class="nav-link" routerLink="/admin/notes" routerLinkActive="active">
+        <a class="nav-link" routerLink="/admin/lesson-notes" routerLinkActive="active">
           <i class="fas fa-sticky-note"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Ders Notları</span>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="userRole === 'ADMIN'">
+        <a class="nav-link" routerLink="/admin/student-lesson-notes" routerLinkActive="active">
+          <i class="fas fa-user-edit"></i>
+          <span class="nav-text" *ngIf="!isSidebarCollapsed">Öğrenci Not Yönetimi</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'ADMIN'">
@@ -84,6 +90,12 @@
         <a class="nav-link" routerLink="/superadmin/locations" routerLinkActive="active">
           <i class="fas fa-map-marker-alt"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Kurs Lokasyonları</span>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="userRole === 'SUPERADMIN'">
+        <a class="nav-link" routerLink="/superadmin/lessons" routerLinkActive="active">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <span class="nav-text" *ngIf="!isSidebarCollapsed">Dersler</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'SUPERADMIN'">

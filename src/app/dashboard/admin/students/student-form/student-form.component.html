@@ -138,65 +138,34 @@
     </div>
   </div>
 
-  <div class="form-row" *ngIf="!student">
-    <div class="form-group">
-      <label for="username">Kullanıcı Adı <span class="required">*</span></label>
-      <input 
-        type="text" 
-        id="username" 
-        formControlName="username"
-        [class.is-invalid]="hasError('username')"
-        maxlength="50"
-      >
-      <div class="error-message" *ngIf="hasError('username')">
-        {{ getErrorMessage('username') }}
-      </div>
-    </div>
-  </div>
-
   <div class="form-row">
     <div class="form-group">
-      <label for="password">
-        Şifre
-        <span class="required" *ngIf="!student">*</span>
-        <span *ngIf="student" class="optional-text">(Değiştirmek için doldurun)</span>
-      </label>
-      <input 
-        type="password" 
-        id="password" 
-        formControlName="password"
-        [class.is-invalid]="hasError('password')"
-      >
-      <div class="error-message" *ngIf="hasError('password')">
-        {{ getErrorMessage('password') }}
-      </div>
-    </div>
-  </div>
-  
-  <div class="form-row">
-    <div class="form-group">
-      <label for="adminId">Yönetici Ata</label>
-      <div class="admin-selection-container" *ngIf="!isLoadingAdmins; else loadingAdmins">
+      <label for="locationId">Lokasyon <span class="required">*</span></label>
+      <div class="location-selection-container" *ngIf="!isLoadingLocations; else loadingLocations">
         <select 
-          id="adminId" 
-          formControlName="adminId"
-          class="admin-select"
+          id="locationId" 
+          formControlName="locationId"
+          class="location-select"
+          [class.is-invalid]="hasError('locationId')"
         >
-          <option [ngValue]="null">Yönetici seçiniz</option>
-          <option *ngFor="let admin of adminUsers" [ngValue]="admin.id">
-            {{ admin.firstName || admin.username }} {{ admin.lastName || '' }}
+          <option [ngValue]="null">Lokasyon seçiniz</option>
+          <option *ngFor="let location of courseLocations" [ngValue]="location.id">
+            {{ location.name }} ({{ location.address }})
           </option>
         </select>
-        <div class="admin-info" *ngIf="studentForm.get('adminId')?.value">
+        <div class="error-message" *ngIf="hasError('locationId')">
+          {{ getErrorMessage('locationId') }}
+        </div>
+        <div class="location-info" *ngIf="studentForm.get('locationId')?.value">
           <p class="info-text">
             <i class="fas fa-info-circle"></i>
-            Seçilen yöneticinin kurs lokasyonlarına öğrenci otomatik olarak atanacaktır.
+            Öğrenci seçilen lokasyona atanacaktır.
           </p>
         </div>
       </div>
-      <ng-template #loadingAdmins>
-        <div class="loading-admins">
-          <i class="fas fa-spinner fa-spin"></i> Yöneticiler yükleniyor...
+      <ng-template #loadingLocations>
+        <div class="loading-locations">
+          <i class="fas fa-spinner fa-spin"></i> Lokasyonlar yükleniyor...
         </div>
       </ng-template>
     </div>

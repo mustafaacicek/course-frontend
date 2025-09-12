@@ -1,5 +1,6 @@
 import { CourseLocation } from './location.models';
 import { User } from './user.models';
+import { Lesson } from './lesson.models';
 
 export interface Course {
   id: number;
@@ -12,6 +13,7 @@ export interface Course {
   courseLocation?: CourseLocation; // For backward compatibility
   courseLocations?: CourseLocation[]; // For multi-location support
   createdBy: User;
+  lessons?: Lesson[];
 }
 
 export interface CourseCreateRequest {

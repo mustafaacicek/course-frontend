@@ -1,0 +1,186 @@
+<div class="page-header">
+  <h2>Ders Yönetimi (Superadmin)</h2>
+  <div class="header-actions">
+    <button class="add-button" (click)="openAddForm()">
+      <i class="fas fa-plus"></i> Yeni Ders Ekle
+    </button>
+    <div class="bulk-actions">
+      <button class="bulk-action-button" [disabled]="selectedLessons.size === 0" (click)="openBulkActionConfirm('delete')">
+        <i class="fas fa-trash"></i> Toplu Sil
+      </button>
+      <button class="bulk-action-button" [disabled]="selectedLessons.size === 0" (click)="openBulkActionConfirm('move')">
+        <i class="fas fa-exchange-alt"></i> Toplu Taşı
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-success" *ngIf="successMessage">
+  <div class="notification-content">
+    <i class="fas fa-check-circle"></i>
+    <span>{{ successMessage }}</span>
+  </div>
+  <button type="button" class="close-button" (click)="successMessage = ''">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="alert alert-danger" *ngIf="error">
+  <div class="notification-content">
+    <i class="fas fa-exclamation-circle"></i>
+    <span>{{ error }}</span>
+  </div>
+  <button type="button" class="close-button" (click)="error = null">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="course-filter-section">
+  <h3>Kurs Filtresi</h3>
+  <div class="filter-options">
+    <div class="course-select-wrapper">
+      <select class="course-select" (change)="onCourseSelectById($event)">
+        <option value="">Tüm Kurslar</option>
+        <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+      </select>
+      <i class="fas fa-chevron-down select-icon"></i>
+    </div>
+    <div class="selected-course" *ngIf="selectedCourse">
+      <span class="course-badge">
+        {{ selectedCourse.name }}
+        <button class="clear-filter" (click)="onCourseSelect(null)">
+          <i class="fas fa-times"></i>
+        </button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="loading-spinner" *ngIf="isLoading">
+  <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+</div>
+
+<div class="lessons-section" *ngIf="!isLoading">
+  <h3>{{ selectedCourse ? selectedCourse.name + ' - ' : '' }}Dersler</h3>
+  <div class="selection-info" *ngIf="selectedLessons.size > 0">
+    <span>{{ selectedLessons.size }} ders seçildi</span>
+    <button class="clear-selection" (click)="resetSelection()">
+      <i class="fas fa-times"></i> Seçimi Temizle
+    </button>
+  </div>
+  
+  <div class="data-container">
+    <table class="data-table" *ngIf="lessons.length > 0; else noLessons">
+      <thead>
+        <tr>
+          <th class="checkbox-column">
+            <input type="checkbox" [checked]="selectAllChecked" (change)="toggleSelectAll()">
+          </th>
+          <th>ID</th>
+          <th>Ders Adı</th>
+          <th>Açıklama</th>
+          <th>Tarih</th>
+          <th>Kurs</th>
+          <th>Oluşturulma Tarihi</th>
+          <th>İşlemler</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lesson of lessons" [class.selected]="isLessonSelected(lesson.id)">
+          <td class="checkbox-column">
+            <input type="checkbox" [checked]="isLessonSelected(lesson.id)" (change)="toggleLessonSelection(lesson.id)">
+          </td>
+          <td>{{ lesson.id }}</td>
+          <td>{{ lesson.name }}</td>
+          <td>{{ lesson.description || '-' }}</td>
+          <td>{{ lesson.date | date:'dd.MM.yyyy' }}</td>
+          <td>
+            <span class="course-badge small">{{ lesson.course && lesson.course.name || '-' }}</span>
+          </td>
+          <td>{{ lesson.createdAt | date:'dd.MM.yyyy' }}</td>
+          <td class="actions">
+            <button class="table-action edit" (click)="editLesson(lesson)" title="Düzenle">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="table-action delete" (click)="deleteLesson(lesson.id)" title="Sil">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noLessons>
+      <div class="no-data">
+        <i class="fas fa-info-circle"></i>
+        <p>{{ selectedCourse ? 'Bu kursa ait henüz ders bulunmamaktadır.' : 'Henüz ders bulunmamaktadır.' }}</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Lesson Form Modal -->
+<div class="modal" [class.show]="showAddForm">
+  <div class="modal-backdrop" (click)="closeForm()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ editingLesson ? 'Ders Düzenle' : 'Yeni Ders Ekle' }}</h3>
+      <button class="close-button" (click)="closeForm()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-lesson-form 
+        [lesson]="editingLesson"
+        [course]="selectedCourse"
+        [allCourses]="courses"
+        [isSuperadmin]="true"
+        (formSubmit)="onLessonSaved($event)"
+        (formCancel)="closeForm()">
+      </app-lesson-form>
+    </div>
+  </div>
+</div>
+
+<!-- Bulk Action Confirmation Modal -->
+<div class="modal" [class.show]="showBulkConfirmModal">
+  <div class="modal-backdrop" (click)="closeBulkActionConfirm()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ bulkAction === 'delete' ? 'Toplu Silme' : 'Toplu Taşıma' }}</h3>
+      <button class="close-button" (click)="closeBulkActionConfirm()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="bulkAction === 'delete'">
+        <p>{{ selectedLessons.size }} dersi silmek istediğinizden emin misiniz?</p>
+        <p class="warning">Bu işlem geri alınamaz!</p>
+      </div>
+      
+      <div *ngIf="bulkAction === 'move'">
+        <p>{{ selectedLessons.size }} dersi başka bir kursa taşımak istediğinizden emin misiniz?</p>
+        <div class="form-group">
+          <label for="targetCourse">Hedef Kurs</label>
+          <select id="targetCourse" [(ngModel)]="targetCourseId" required>
+            <option [ngValue]="null" disabled>Kurs Seçin</option>
+            <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="cancel-button" (click)="closeBulkActionConfirm()" [disabled]="bulkActionInProgress">
+          <i class="fas fa-times"></i>
+          <span>İptal</span>
+        </button>
+        <button type="button" class="confirm-button" 
+                [disabled]="bulkActionInProgress || (bulkAction === 'move' && !targetCourseId)" 
+                (click)="executeBulkAction()">
+          <i class="fas fa-spinner fa-spin" *ngIf="bulkActionInProgress"></i>
+          <i class="fas" [class.fa-trash]="bulkAction === 'delete'" [class.fa-exchange-alt]="bulkAction === 'move'" *ngIf="!bulkActionInProgress"></i>
+          <span>{{ bulkAction === 'delete' ? 'Sil' : 'Taşı' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

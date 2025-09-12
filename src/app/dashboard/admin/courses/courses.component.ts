@@ -39,7 +39,8 @@ export class CoursesComponent implements OnInit {
     
     this.courseService.getAdminCourses().subscribe({
       next: (data: Course[]) => {
-        this.courses = data;
+        // Convert date arrays to Date objects
+        this.courses = data.map(course => this.convertDateArrays(course));
         this.isLoading = false;
       },
       error: (err: any) => {
@@ -74,14 +75,15 @@ export class CoursesComponent implements OnInit {
     this.courseService.getCourseById(course.id).subscribe({
       next: (fullCourseData: Course) => {
         console.log('Full course data loaded:', fullCourseData);
-        this.editingCourse = fullCourseData;
+        // Convert date arrays to Date objects
+        this.editingCourse = this.convertDateArrays(fullCourseData);
         this.showAddForm = true;
       },
       error: (err: any) => {
         console.error('Error loading full course data:', err);
         this.error = 'Kurs bilgileri yüklenirken bir hata oluştu.';
         // Fallback to using the basic course data
-        this.editingCourse = course;
+        this.editingCourse = this.convertDateArrays(course);
         this.showAddForm = true;
       }
     });
@@ -117,5 +119,42 @@ export class CoursesComponent implements OnInit {
   closeForm(): void {
     this.showAddForm = false;
     this.editingCourse = null;
+  }
+  
+  /**
+   * Converts date arrays from API to proper Date objects
+   * API returns dates in format [year, month, day] or [year, month, day, hour, minute, second, nano]
+   */
+  private convertDateArrays(course: Course): Course {
+    // Create a copy of the course to avoid modifying the original
+    const result = { ...course };
+    
+    // Convert startDate if it's an array
+    if (Array.isArray(result.startDate)) {
+      // Format: [year, month, day]
+      const [year, month, day] = result.startDate;
+      result.startDate = new Date(year, month - 1, day); // Month is 0-indexed in JS Date
+    }
+    
+    // Convert endDate if it exists and is an array
+    if (result.endDate && Array.isArray(result.endDate)) {
+      const [year, month, day] = result.endDate;
+      result.endDate = new Date(year, month - 1, day);
+    }
+    
+    // Convert createdAt if it's an array
+    if (Array.isArray(result.createdAt)) {
+      // Format: [year, month, day, hour, minute, second, nano]
+      const [year, month, day, hour = 0, minute = 0, second = 0] = result.createdAt;
+      result.createdAt = new Date(year, month - 1, day, hour, minute, second);
+    }
+    
+    // Convert updatedAt if it exists and is an array
+    if (result.updatedAt && Array.isArray(result.updatedAt)) {
+      const [year, month, day, hour = 0, minute = 0, second = 0] = result.updatedAt;
+      result.updatedAt = new Date(year, month - 1, day, hour, minute, second);
+    }
+    
+    return result;
   }
 }

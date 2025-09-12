@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { Student } from '../../../models/student.models';
 import { StudentService } from '../../../services/student.service';
 import { StudentFormComponent } from './student-form/student-form.component';
 import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-students',
   standalone: true,
-  imports: [CommonModule, StudentFormComponent],
+  imports: [CommonModule, RouterModule, StudentFormComponent],
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.scss']
 })
@@ -23,13 +25,31 @@ export class StudentsComponent implements OnInit {
   // Map to store admin names by student ID
   private adminNames: Map<number, string> = new Map<number, string>();
 
+  userRole: string = '';
+
   constructor(
     private studentService: StudentService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.loadStudents();
+    this.getUserRole();
+  }
+  
+  getUserRole(): void {
+    const user = this.authService.getUser();
+    if (user) {
+      this.userRole = user.role;
+    }
+  }
+  
+  viewStudentDetails(studentId: number): void {
+    // Navigate to the correct route based on user role
+    const basePath = this.userRole === 'SUPERADMIN' ? '/superadmin/students' : '/admin/students';
+    this.router.navigate([basePath, studentId, 'details']);
   }
 
   loadStudents(): void {

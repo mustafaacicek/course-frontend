@@ -1,0 +1,257 @@
+<div class="veli-bilgilendirme-container">
+  <div class="islamic-pattern-top"></div>
+  
+  <div class="content-container">
+    <div class="header">
+      <div class="logo">
+        <img src="assets/images/applogo.png" alt="Kurs Logo" class="logo-image">
+      </div>
+      <h1>Veli Bilgilendirme Sistemi</h1>
+      <div class="subtitle">Öğrenci Performans Bilgileri</div>
+    </div>
+    
+    <div class="search-section">
+      <div class="search-container">
+        <div class="islamic-frame">
+          <div class="search-content">
+            <h2>Öğrenci Bilgilerini Görüntüle</h2>
+            <p>Öğrencinin TC kimlik numarasını girerek performans bilgilerini görüntüleyebilirsiniz.</p>
+            
+            <div class="input-group">
+              <label for="nationalId">TC Kimlik Numarası:</label>
+              <input 
+                type="text" 
+                id="nationalId" 
+                name="nationalId" 
+                [(ngModel)]="nationalId" 
+                placeholder="TC Kimlik Numarası Giriniz"
+                maxlength="11"
+              >
+            </div>
+            
+            <button class="search-button" (click)="searchStudent()">
+              <i class="fas fa-search"></i> Bilgileri Göster
+            </button>
+            
+            <div class="error-message" *ngIf="error">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ error }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Loading spinner -->
+    <div class="loading-container" *ngIf="loading">
+      <div class="islamic-spinner">
+        <div class="spinner-inner"></div>
+      </div>
+      <p>Bilgiler Yükleniyor...</p>
+    </div>
+    
+    <!-- Results section -->
+    <div class="results-section" *ngIf="showResults && studentPerformance">
+      <div class="student-header">
+        <div class="student-name">
+          <h2>{{ studentPerformance.firstName }} {{ studentPerformance.lastName }}</h2>
+          <div class="student-info">
+            <span class="info-label">TC Kimlik No:</span> {{ studentPerformance.nationalId }}
+          </div>
+        </div>
+        <div class="total-score">
+          <div class="score-badge">
+            <i class="fas fa-star"></i>
+            <span class="score-value">{{ studentPerformance.totalScore || 0 }}</span>
+            <span class="score-label">Toplam Puan</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="performance-summary">
+        <div class="summary-card">
+          <div class="card-header">
+            <i class="fas fa-chart-line"></i>
+            <h3>Performans Özeti</h3>
+          </div>
+          <div class="card-body">
+            <div class="performance-level" [ngClass]="getPerformanceClass(studentPerformance.performanceLevel)">
+              <span class="level-label">Performans Seviyesi:</span>
+              <span class="level-value">{{ studentPerformance.performanceLevel }}</span>
+            </div>
+            
+            <div class="performance-stats">
+              <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div class="stat-value">{{ studentPerformance.totalCourses }}</div>
+                <div class="stat-label">Toplam Kurs</div>
+              </div>
+              
+              <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                <div class="stat-value">{{ studentPerformance.totalLessons }}</div>
+                <div class="stat-label">Toplam Ders</div>
+              </div>
+              
+              <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-value">{{ studentPerformance.passedLessons }}</div>
+                <div class="stat-label">Geçilen Dersler</div>
+              </div>
+              
+              <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                <div class="stat-value">{{ studentPerformance.failedLessons }}</div>
+                <div class="stat-label">Kalınan Dersler</div>
+              </div>
+            </div>
+            
+            <div class="progress-section">
+              <div class="progress-item">
+                <div class="progress-label">
+                  <span>Ortalama Not:</span>
+                  <span class="progress-value">{{ studentPerformance.averageScore }}</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width]="(studentPerformance.averageScore) + '%'"></div>
+                </div>
+              </div>
+              
+              <div class="progress-item">
+                <div class="progress-label">
+                  <span>Katılım Oranı:</span>
+                  <span class="progress-value" [ngClass]="getAttendanceClass(studentPerformance.attendanceRate)">
+                    {{ studentPerformance.attendanceRate }}%
+                  </span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill attendance" [style.width]="studentPerformance.attendanceRate + '%'"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="summary-card teacher-comment">
+          <div class="card-header">
+            <i class="fas fa-comment"></i>
+            <h3>Öğretmen Yorumu</h3>
+          </div>
+          <div class="card-body">
+            <div class="quote-icon">
+              <i class="fas fa-quote-right"></i>
+            </div>
+            <p class="comment-text">{{ studentPerformance.teacherComment }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="details-section">
+        <div class="section-tabs">
+          <button class="tab-button" [class.active]="activeTab === 'courses'" (click)="showTab('courses')">
+            <i class="fas fa-book"></i> Kurslar
+          </button>
+          <button class="tab-button" [class.active]="activeTab === 'lessons'" (click)="showTab('lessons')">
+            <i class="fas fa-clipboard-list"></i> Dersler
+          </button>
+          <button class="tab-button" [class.active]="activeTab === 'locations'" (click)="showTab('locations')">
+            <i class="fas fa-map-marker-alt"></i> Lokasyonlar
+          </button>
+        </div>
+        
+        <div class="tab-content" [class.active]="activeTab === 'courses'">
+          <div class="courses-grid">
+            <div class="course-card" *ngFor="let course of studentPerformance.courses">
+              <div class="course-header">
+                <h4>{{ course.name }}</h4>
+                <div class="course-dates">
+                  {{ course.startDate | date:'dd.MM.yyyy' }} - {{ course.endDate | date:'dd.MM.yyyy' }}
+                </div>
+              </div>
+              <div class="course-body">
+                <p class="course-description">{{ course.description || 'Açıklama bulunmamaktadır.' }}</p>
+                
+                <div class="lesson-count">
+                  <i class="fas fa-list"></i> {{ course.lessons?.length || 0 }} Ders
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-content" [class.active]="activeTab === 'lessons'">
+          <div class="lessons-table-container">
+            <table class="lessons-table">
+              <thead>
+                <tr>
+                  <th>Ders Adı</th>
+                  <th>Kurs</th>
+                  <th>Not</th>
+                  <th>Durum</th>
+                  <th>Açıklama</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let note of studentPerformance.lessonNotes">
+                  <td>{{ note.lesson?.name }}</td>
+                  <td>{{ note.lesson?.course?.name }}</td>
+                  <td class="note-score">{{ note.score !== null ? note.score : '-' }}</td>
+                  <td>
+                    <span class="status-badge" 
+                          [ngClass]="{'status-passed': note.passed === true, 
+                                     'status-failed': note.passed === false, 
+                                     'status-unknown': note.passed === null}">
+                      {{ note.passed === true ? 'Geçti' : note.passed === false ? 'Kaldı' : 'Belirlenmedi' }}
+                    </span>
+                  </td>
+                  <td>{{ note.remark || '-' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="tab-content" [class.active]="activeTab === 'locations'">
+          <div class="locations-grid">
+            <div class="location-card" *ngFor="let location of studentPerformance.courseLocations">
+              <div class="location-header">
+                <i class="fas fa-mosque location-icon"></i>
+                <h4>{{ location.name }}</h4>
+              </div>
+              <div class="location-body">
+                <div class="location-info">
+                  <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ location.address || 'Adres belirtilmemiş' }}</span>
+                  </div>
+                  <div class="info-item" *ngIf="location.phone">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ location.phone }}</span>
+                  </div>
+                </div>
+                
+                <div class="location-admins" *ngIf="location.admins && location.admins.length > 0">
+                  <h5>Yöneticiler</h5>
+                  <ul class="admins-list">
+                    <li *ngFor="let admin of location.admins">
+                      {{ admin.firstName }} {{ admin.lastName }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="islamic-pattern-bottom"></div>
+  
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© {{ currentYear }} Kuran Kursu Öğrenci Bilgilendirme Sistemi</p>
+    </div>
+  </footer>
+</div>
+

@@ -1,0 +1,89 @@
+<form [formGroup]="lessonForm" (ngSubmit)="onSubmit()" class="lesson-form">
+  <div class="alert alert-danger" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button type="button" class="close-button" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="validation-summary" *ngIf="Object.keys(validationErrors).length > 0">
+    <ul>
+      <li *ngFor="let error of Object.entries(validationErrors)">
+        <strong>{{ error[0] }}</strong>: {{ error[1] }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="name">Ders Adı <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name"
+        [class.is-invalid]="hasError('name')"
+      >
+      <div class="error-message" *ngIf="hasError('name')">
+        {{ getErrorMessage('name') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="description">Açıklama</label>
+      <textarea 
+        id="description" 
+        formControlName="description"
+        rows="3"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="date">Ders Tarihi <span class="required">*</span></label>
+      <input 
+        type="date" 
+        id="date" 
+        formControlName="date"
+        [class.is-invalid]="hasError('date')"
+      >
+      <div class="error-message" *ngIf="hasError('date')">
+        {{ getErrorMessage('date') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="courseId">Kurs <span class="required">*</span></label>
+      <input 
+        type="text" 
+        id="courseId" 
+        formControlName="courseId"
+        [value]="course?.name || ''"
+        readonly
+        [class.is-invalid]="hasError('courseId')"
+      >
+      <div class="error-message" *ngIf="hasError('courseId')">
+        {{ getErrorMessage('courseId') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="cancel-button" (click)="cancel()" [disabled]="isSubmitting">
+      <i class="fas fa-times"></i>
+      <span>İptal</span>
+    </button>
+    <button type="submit" class="submit-button" [disabled]="isSubmitting || lessonForm.invalid">
+      <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+      <i class="fas fa-save" *ngIf="!isSubmitting"></i>
+      <span>{{ lesson ? 'Güncelle' : 'Kaydet' }}</span>
+    </button>
+  </div>
+</form>

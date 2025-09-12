@@ -1,5 +1,15 @@
 <div class="page-header">
   <h2>Admin Paneli</h2>
+  <p *ngIf="adminName" class="admin-name">Hoş geldiniz, {{adminName}}</p>
+</div>
+
+<!-- Loading and error states -->
+<div *ngIf="isLoading" class="loading-indicator">
+  <p>Yükleniyor...</p>
+</div>
+
+<div *ngIf="error" class="error-message">
+  <p>{{error}}</p>
 </div>
 
 <div class="dashboard-cards">
@@ -44,6 +54,23 @@
   </div>
 </div>
 
+<!-- Locations section -->
+<div class="locations-section" *ngIf="locations && locations.length > 0">
+  <h3 class="section-title">Lokasyonlarınız</h3>
+  <div class="locations-grid">
+    <div class="location-card" *ngFor="let location of locations">
+      <div class="location-header">
+        <h4>{{location.name}}</h4>
+      </div>
+      <div class="location-details">
+        <p *ngIf="location.address"><i class="fas fa-map-marker-alt"></i> {{location.address}}</p>
+        <p *ngIf="location.phone"><i class="fas fa-phone"></i> {{location.phone}}</p>
+        <p><i class="fas fa-user-graduate"></i> {{location.studentCount}} Öğrenci</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="recent-activity">
   <h3 class="section-title">Son Aktiviteler</h3>
   <div class="activity-list">
@@ -61,6 +88,9 @@
         <p class="activity-text" [innerHTML]="activity.text"></p>
         <p class="activity-time">{{ activity.time }}</p>
       </div>
+    </div>
+    <div *ngIf="!recentActivities || recentActivities.length === 0" class="no-activities">
+      <p>Henüz aktivite bulunmamaktadır.</p>
     </div>
   </div>
 </div>

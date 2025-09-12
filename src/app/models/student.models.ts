@@ -26,9 +26,10 @@ export interface StudentCreateRequest {
   address?: string;
   phone?: string;
   birthDate?: string;
-  username: string;
-  password: string;
+  username?: string; // Now optional
+  password?: string; // Now optional
   adminId?: number; // Admin ID for automatic course location assignment
+  locationId?: number; // Course location ID for student assignment
 }
 
 export interface StudentUpdateRequest {

@@ -1,0 +1,138 @@
+<form [formGroup]="lessonNoteForm" (ngSubmit)="onSubmit()" class="lesson-note-form">
+  <div class="alert alert-danger" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button type="button" class="close-button" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="form-row" *ngIf="!lessonNote">
+    <div class="form-group">
+      <label for="courseId">Kurs <span class="required">*</span></label>
+      <select 
+        id="courseId" 
+        formControlName="courseId"
+        [class.is-invalid]="hasError('courseId')"
+      >
+        <option [ngValue]="''" disabled>Kurs Seçin</option>
+        <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+      </select>
+      <div class="error-message" *ngIf="hasError('courseId')">
+        {{ getErrorMessage('courseId') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row" *ngIf="!lessonNote">
+    <div class="form-group">
+      <label for="lessonId">Ders <span class="required">*</span></label>
+      <select 
+        id="lessonId" 
+        formControlName="lessonId"
+        [class.is-invalid]="hasError('lessonId')"
+        [disabled]="!lessonNoteForm.get('courseId')?.value"
+      >
+        <option [ngValue]="''" disabled>Ders Seçin</option>
+        <option *ngFor="let lesson of filteredLessons" [value]="lesson.id">{{ lesson.name }}</option>
+      </select>
+      <div class="error-message" *ngIf="hasError('lessonId')">
+        {{ getErrorMessage('lessonId') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row" *ngIf="!lessonNote">
+    <div class="form-group">
+      <label for="studentId">Öğrenci <span class="required">*</span></label>
+      <select 
+        id="studentId" 
+        formControlName="studentId"
+        [class.is-invalid]="hasError('studentId')"
+      >
+        <option [ngValue]="''" disabled>Öğrenci Seçin</option>
+        <option *ngFor="let student of students" [value]="student.id">{{ student.firstName }} {{ student.lastName }}</option>
+      </select>
+      <div class="error-message" *ngIf="hasError('studentId')">
+        {{ getErrorMessage('studentId') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="score">Not (0-100)</label>
+      <input 
+        type="number" 
+        id="score" 
+        formControlName="score"
+        min="0"
+        max="100"
+        [class.is-invalid]="hasError('score')"
+      >
+      <div class="error-message" *ngIf="hasError('score')">
+        {{ getErrorMessage('score') }}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>Durum</label>
+      <div class="status-options">
+        <div class="status-option">
+          <input 
+            type="radio" 
+            id="passed-yes" 
+            [value]="true" 
+            formControlName="passed"
+          >
+          <label for="passed-yes">Geçti</label>
+        </div>
+        <div class="status-option">
+          <input 
+            type="radio" 
+            id="passed-no" 
+            [value]="false" 
+            formControlName="passed"
+          >
+          <label for="passed-no">Kaldı</label>
+        </div>
+        <div class="status-option">
+          <input 
+            type="radio" 
+            id="passed-null" 
+            [value]="null" 
+            formControlName="passed"
+          >
+          <label for="passed-null">Belirlenmedi</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="remark">Açıklama</label>
+      <textarea 
+        id="remark" 
+        formControlName="remark"
+        rows="3"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="cancel-button" (click)="cancel()" [disabled]="isSubmitting">
+      <i class="fas fa-times"></i>
+      <span>İptal</span>
+    </button>
+    <button type="submit" class="submit-button" [disabled]="isSubmitting || lessonNoteForm.invalid">
+      <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+      <i class="fas fa-save" *ngIf="!isSubmitting"></i>
+      <span>{{ lessonNote ? 'Güncelle' : 'Kaydet' }}</span>
+    </button>
+  </div>
+</form>

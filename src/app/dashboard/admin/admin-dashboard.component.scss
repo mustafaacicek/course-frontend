@@ -168,8 +168,30 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
     font-size: 1.75rem;
     font-weight: 700;
     color: $dark;
+    margin: 0 0 0.5rem;
+  }
+  
+  .admin-name {
+    font-size: 1rem;
+    color: color.adjust($dark, $lightness: 30%);
     margin: 0;
   }
+}
+
+.loading-indicator, .error-message {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: $border-radius;
+}
+
+.loading-indicator {
+  background-color: color.adjust($light, $lightness: -2%);
+  text-align: center;
+}
+
+.error-message {
+  background-color: color.adjust($danger, $lightness: 40%);
+  color: $danger;
 }
 
 .dashboard-cards {
@@ -232,11 +254,69 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
   margin: 0 0 1rem;
 }
 
+.locations-section {
+  margin-bottom: 2rem;
+  
+  .locations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    
+    .location-card {
+      background-color: white;
+      border-radius: $border-radius;
+      box-shadow: $shadow-sm;
+      overflow: hidden;
+      transition: all $transition-speed ease;
+      
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: $shadow-md;
+      }
+      
+      .location-header {
+        background: $gradient-primary;
+        padding: 1rem 1.5rem;
+        
+        h4 {
+          margin: 0;
+          color: white;
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
+      }
+      
+      .location-details {
+        padding: 1rem 1.5rem;
+        
+        p {
+          margin: 0.75rem 0;
+          color: color.adjust($dark, $lightness: 20%);
+          display: flex;
+          align-items: center;
+          
+          i {
+            width: 20px;
+            margin-right: 0.75rem;
+            color: $primary;
+          }
+        }
+      }
+    }
+  }
+}
+
 .activity-list {
   background-color: white;
   border-radius: $border-radius;
   box-shadow: $shadow-sm;
   overflow: hidden;
+  
+  .no-activities {
+    padding: 2rem;
+    text-align: center;
+    color: color.adjust($dark, $lightness: 40%);
+  }
 }
 
 .activity-item {

@@ -1,0 +1,200 @@
+<div class="student-lesson-notes-container">
+  <div class="page-header">
+    <h2>Öğrenci Ders Notları</h2>
+    <button class="save-all-button" (click)="saveAllChanges()" *ngIf="students.length > 0">
+      <i class="fas fa-save"></i>
+      <span>Tüm Değişiklikleri Kaydet</span>
+    </button>
+  </div>
+
+  <div class="alert alert-success" *ngIf="success">
+    <div class="notification-content">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ success }}</span>
+    </div>
+    <button type="button" class="close-button" (click)="success = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button type="button" class="close-button" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="filters-section">
+    <h3>Filtreler</h3>
+    <div class="filter-options">
+      <div class="filter-group">
+        <label for="courseFilter">Kurs</label>
+        <select id="courseFilter" (change)="onCourseSelect($event)">
+          <option value="">Kurs Seçiniz</option>
+          <option *ngFor="let course of courses" [value]="course.id">
+            {{ course.name }} 
+            <ng-container *ngIf="course.courseLocation">
+              ({{ course.courseLocation.name }})
+            </ng-container>
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="lessonFilter">Ders</label>
+        <select id="lessonFilter" (change)="onLessonSelect($event)" [disabled]="!selectedCourseId">
+          <option value="">Ders Seçiniz</option>
+          <option *ngFor="let lesson of lessons" [value]="lesson.id">{{ lesson.name }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i>
+    <span>Yükleniyor...</span>
+  </div>
+
+  <div class="no-data-message" *ngIf="!isLoading && selectedCourseId && selectedLessonId && students.length === 0">
+    <i class="fas fa-info-circle"></i>
+    <span>Bu ders için öğrenci bulunamadı.</span>
+  </div>
+
+  <div class="no-selection-message" *ngIf="!isLoading && (!selectedCourseId || !selectedLessonId)">
+    <i class="fas fa-info-circle"></i>
+    <span>Öğrenci notlarını görmek için lütfen kurs ve ders seçiniz.</span>
+  </div>
+
+  <form [formGroup]="studentNotesForm" *ngIf="!isLoading && students.length > 0" class="student-notes-form">
+    <div class="table-container">
+      <table class="student-notes-table">
+        <thead>
+          <tr>
+            <th>Öğrenci</th>
+            <th>Not</th>
+            <th>Durum</th>
+            <th>Açıklama</th>
+            <th>Geçmiş</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="students">
+          <tr *ngFor="let studentForm of studentsArray.controls; let i = index" [formGroupName]="i">
+            <td class="student-info">
+              <div class="student-name">{{ students[i].firstName }} {{ students[i].lastName }}</div>
+              <div class="student-id">{{ students[i].nationalId }}</div>
+            </td>
+            <td>
+              <input type="number" formControlName="score" class="score-input" min="0" max="100">
+            </td>
+            <td>
+              <div class="status-buttons">
+                <button 
+                  type="button" 
+                  class="status-button pass" 
+                  [class.active]="studentForm.get('passed')?.value === true"
+                  (click)="setPassStatus(i, true)">
+                  <i class="fas fa-check"></i> Geçti
+                </button>
+                <button 
+                  type="button" 
+                  class="status-button fail" 
+                  [class.active]="studentForm.get('passed')?.value === false"
+                  (click)="setPassStatus(i, false)">
+                  <i class="fas fa-times"></i> Kaldı
+                </button>
+              </div>
+            </td>
+            <td>
+              <input type="text" formControlName="remark" class="remark-input" placeholder="Açıklama...">
+            </td>
+            <td>
+              <button 
+                type="button" 
+                class="history-button" 
+                *ngIf="students[i].lessonNote"
+                (click)="openHistoryModal(students[i])">
+                <i class="fas fa-history"></i> Geçmiş
+              </button>
+            </td>
+            <td>
+              <button 
+                type="button" 
+                class="save-button" 
+                [disabled]="!studentForm.get('changed')?.value"
+                (click)="saveStudentNote(i)">
+                <i class="fas fa-save"></i> Kaydet
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </form>
+</div>
+
+<!-- History Modal -->
+<div class="modal" *ngIf="showHistoryModal">
+  <div class="modal-backdrop" (click)="closeHistoryModal()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Not Geçmişi</h3>
+      <button class="close-button" (click)="closeHistoryModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="history-info" *ngIf="selectedLessonNoteForHistory">
+        <p><strong>Öğrenci:</strong> {{ selectedLessonNoteForHistory.student.firstName }} {{ selectedLessonNoteForHistory.student.lastName }}</p>
+        <p><strong>Ders:</strong> {{ selectedLessonNoteForHistory.lesson.name }}</p>
+        <p><strong>Kurs:</strong> {{ selectedLessonNoteForHistory.lesson.course.name }}</p>
+      </div>
+      
+      <div class="loading-spinner" *ngIf="!selectedLessonNoteForHistory?.history">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>Geçmiş yükleniyor...</span>
+      </div>
+      
+      <div class="no-data-message" *ngIf="hasEmptyHistory()">
+        <i class="fas fa-info-circle"></i>
+        <span>Geçmiş bulunamadı.</span>
+      </div>
+      
+      <div class="history-table-container" *ngIf="hasHistory()">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Tarih</th>
+              <th>Eski Not</th>
+              <th>Eski Durum</th>
+              <th>Eski Açıklama</th>
+              <th>Değiştiren</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let history of selectedLessonNoteForHistory?.history || []">
+              <td>{{ history.changeDate | date:'dd.MM.yyyy HH:mm' }}</td>
+              <td>{{ history.oldScore !== null ? history.oldScore : '-' }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getPassStatusClass(history.oldPassed)">
+                  {{ getPassStatusText(history.oldPassed) }}
+                </span>
+              </td>
+              <td>{{ history.oldRemark || '-' }}</td>
+              <td>
+                <span class="user-badge" [ngClass]="{'admin-badge': history.modifiedBy && history.modifiedBy.role === 'ADMIN', 'superadmin-badge': history.modifiedBy && history.modifiedBy.role === 'SUPERADMIN'}" *ngIf="history.modifiedBy">
+                  {{ history.modifiedBy.username }}
+                  <small>({{ history.modifiedBy.role }})</small>
+                </span>
+                <span class="system-badge" *ngIf="!history.modifiedBy">Sistem</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

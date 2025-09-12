@@ -2,10 +2,12 @@ import { Routes } from '@angular/router';
 import { adminGuard } from './guards/admin.guard';
 import { superadminGuard } from './guards/superadmin.guard';
 import { AuthGuard } from './guards/auth.guard';
+import { PUBLIC_ROUTES } from './public/public.routes';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
+  ...PUBLIC_ROUTES,
   {
     path: '',
     loadComponent: () => import('./shared/layout/admin-layout.component').then(m => m.AdminLayoutComponent),
@@ -41,8 +43,24 @@ export const routes: Routes = [
             loadComponent: () => import('./dashboard/admin/students/students.component').then(m => m.StudentsComponent)
           },
           {
+            path: 'students/:id/details',
+            loadComponent: () => import('./dashboard/admin/students/student-detail/student-detail.component').then(m => m.StudentDetailComponent)
+          },
+          {
             path: 'courses',
             loadComponent: () => import('./dashboard/admin/courses/courses.component').then(m => m.CoursesComponent)
+          },
+          {
+            path: 'lessons',
+            loadComponent: () => import('./dashboard/admin/lessons/lessons.component').then(m => m.LessonsComponent)
+          },
+          {
+            path: 'lesson-notes',
+            loadComponent: () => import('./dashboard/admin/lesson-notes/lesson-notes.component').then(m => m.LessonNotesComponent)
+          },
+          {
+            path: 'student-lesson-notes',
+            loadComponent: () => import('./dashboard/admin/student-lesson-notes/student-lesson-notes.component').then(m => m.StudentLessonNotesComponent)
           }
         ]
       },
@@ -71,6 +89,14 @@ export const routes: Routes = [
           {
             path: 'students',
             loadComponent: () => import('./dashboard/admin/students/students.component').then(m => m.StudentsComponent)
+          },
+          {
+            path: 'students/:id/details',
+            loadComponent: () => import('./dashboard/admin/students/student-detail/student-detail.component').then(m => m.StudentDetailComponent)
+          },
+          {
+            path: 'lessons',
+            loadComponent: () => import('./dashboard/superadmin/lessons/lessons.component').then(m => m.SuperadminLessonsComponent)
           }
         ]
       }

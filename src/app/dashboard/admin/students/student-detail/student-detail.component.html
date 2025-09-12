@@ -1,0 +1,425 @@
+<div class="student-detail-container">
+  <!-- Loading spinner -->
+  <div class="loading-spinner" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i>
+    <span>Yükleniyor...</span>
+  </div>
+
+  <!-- Error message -->
+  <div class="alert alert-danger" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button class="close-button" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Student details -->
+  <div class="student-content" *ngIf="!isLoading && !error && student">
+    <!-- Header section -->
+    <div class="student-header">
+      <div class="student-info">
+        <div class="name-score-container">
+          <h1>{{ student.firstName }} {{ student.lastName }}</h1>
+          <div class="total-score-badge" *ngIf="student.totalScore !== null && student.totalScore !== undefined">
+            <i class="fas fa-star"></i> {{ student.totalScore }} Puan
+          </div>
+        </div>
+        <div class="student-meta">
+          <span class="student-id">ID: {{ student.id }}</span>
+          <span class="student-tc">TC: {{ student.nationalId }}</span>
+        </div>
+      </div>
+      <div class="student-actions">
+        <button class="btn btn-primary" [routerLink]="['/dashboard/admin/students', student.id, 'edit']">
+          <i class="fas fa-edit"></i> Düzenle
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation tabs -->
+    <div class="student-tabs">
+      <button class="tab-button" [class.active]="activeTab === 'overview'" (click)="setActiveTab('overview')">
+        <i class="fas fa-user"></i> Genel Bilgiler
+      </button>
+      <button class="tab-button" [class.active]="activeTab === 'courses'" (click)="setActiveTab('courses')">
+        <i class="fas fa-book"></i> Kurslar ({{ student.totalCourses }})
+      </button>
+      <button class="tab-button" [class.active]="activeTab === 'notes'" (click)="setActiveTab('notes')">
+        <i class="fas fa-clipboard-list"></i> Notlar ({{ student.totalLessons }})
+      </button>
+      <button class="tab-button" [class.active]="activeTab === 'locations'" (click)="setActiveTab('locations')">
+        <i class="fas fa-map-marker-alt"></i> Lokasyonlar ({{ student.courseLocations?.length || 0 }})
+      </button>
+    </div>
+
+    <!-- Tab content -->
+    <div class="tab-content">
+      <!-- Overview tab -->
+      <div class="tab-pane" *ngIf="activeTab === 'overview'">
+        <div class="overview-grid">
+          <!-- Personal information -->
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fas fa-user"></i> Kişisel Bilgiler</h3>
+            </div>
+            <div class="card-body">
+              <div class="info-row">
+                <span class="info-label">Ad:</span>
+                <span class="info-value">{{ student.firstName }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Soyad:</span>
+                <span class="info-value">{{ student.lastName }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">TC Kimlik No:</span>
+                <span class="info-value">{{ student.nationalId }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Anne Adı:</span>
+                <span class="info-value">{{ student.motherName || '-' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Baba Adı:</span>
+                <span class="info-value">{{ student.fatherName || '-' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Doğum Tarihi:</span>
+                <span class="info-value">{{ student.birthDate | date:'dd.MM.yyyy' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Telefon:</span>
+                <span class="info-value">{{ student.phone || '-' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Adres:</span>
+                <span class="info-value">{{ student.address || '-' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account information -->
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fas fa-user-circle"></i> Hesap Bilgileri</h3>
+            </div>
+            <div class="card-body">
+              <div class="info-row">
+                <span class="info-label">Kullanıcı Adı:</span>
+                <span class="info-value">{{ student.username }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Kullanıcı ID:</span>
+                <span class="info-value">{{ student.userId }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Kayıt Tarihi:</span>
+                <span class="info-value">{{ student.createdAt | date:'dd.MM.yyyy HH:mm' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Son Güncelleme:</span>
+                <span class="info-value">{{ student.updatedAt | date:'dd.MM.yyyy HH:mm' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Statistics -->
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fas fa-chart-pie"></i> İstatistikler</h3>
+            </div>
+            <div class="card-body">
+              <div class="info-row">
+                <span class="info-label">Toplam Kurs:</span>
+                <span class="info-value">{{ student.totalCourses }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Toplam Ders:</span>
+                <span class="info-value">{{ student.totalLessons }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Geçilen Dersler:</span>
+                <span class="info-value">{{ student.passedLessons }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Kalınan Dersler:</span>
+                <span class="info-value">{{ student.failedLessons }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Ortalama Not:</span>
+                <span class="info-value">{{ student.averageScore }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Toplam Puan:</span>
+                <span class="info-value total-score-value">{{ student.totalScore || 0 }}</span>
+              </div>
+              
+              <!-- Progress bars -->
+              <div class="progress-section" *ngIf="student.totalLessons > 0">
+                <h4>Başarı Oranı</h4>
+                <div class="progress-container">
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-success" 
+                         [style.width]="getPassRatePercentage() + '%'">
+                      {{ getPassRatePercentage() }}%
+                    </div>
+                    <div class="progress-bar progress-bar-danger" 
+                         [style.width]="getFailRatePercentage() + '%'">
+                      {{ getFailRatePercentage() }}%
+                    </div>
+                    <div class="progress-bar progress-bar-warning" 
+                         [style.width]="getUndeterminedRatePercentage() + '%'">
+                      {{ getUndeterminedRatePercentage() }}%
+                    </div>
+                  </div>
+                  <div class="progress-legend">
+                    <div class="legend-item">
+                      <span class="legend-color success"></span>
+                      <span>Geçti</span>
+                    </div>
+                    <div class="legend-item">
+                      <span class="legend-color danger"></span>
+                      <span>Kaldı</span>
+                    </div>
+                    <div class="legend-item">
+                      <span class="legend-color warning"></span>
+                      <span>Belirlenmedi</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Teacher Comment -->
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fas fa-comment"></i> Öğretmen Yorumu</h3>
+            </div>
+            <div class="card-body">
+              <div class="teacher-comment-container">
+                <textarea 
+                  class="teacher-comment-textarea" 
+                  placeholder="Öğrenci hakkında yorum ekleyin..."
+                  [(ngModel)]="teacherComment"
+                  rows="4"
+                ></textarea>
+                <div class="teacher-comment-actions">
+                  <button class="btn btn-primary" (click)="saveTeacherComment()">
+                    <i class="fas fa-save"></i> Kaydet
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Courses tab -->
+      <div class="tab-pane" *ngIf="activeTab === 'courses'">
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fas fa-book"></i> Kurslar</h3>
+          </div>
+          <div class="card-body">
+            <div class="no-data-message" *ngIf="!student.courses || student.courses.length === 0">
+              <i class="fas fa-info-circle"></i>
+              <span>Öğrenciye ait kurs bulunamadı.</span>
+            </div>
+            
+            <div class="courses-grid" *ngIf="student.courses && student.courses.length > 0">
+              <div class="course-card" *ngFor="let course of student.courses">
+                <div class="course-header">
+                  <h4>{{ course.name }}</h4>
+                  <span class="course-dates">
+                    {{ course.startDate | date:'dd.MM.yyyy' }} - {{ course.endDate | date:'dd.MM.yyyy' }}
+                  </span>
+                </div>
+                <div class="course-body">
+                  <p class="course-description">{{ course.description || 'Açıklama yok' }}</p>
+                  
+                  <div class="course-lessons" *ngIf="course.lessons && course.lessons.length > 0">
+                    <h5>Dersler ({{ course.lessons.length }})</h5>
+                    <ul class="lessons-list">
+                      <li *ngFor="let lesson of course.lessons">
+                        <span class="lesson-name">{{ lesson.name }}</span>
+                        <span class="lesson-date">{{ lesson.date | date:'dd.MM.yyyy' }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes tab -->
+      <div class="tab-pane" *ngIf="activeTab === 'notes'">
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fas fa-clipboard-list"></i> Ders Notları</h3>
+          </div>
+          <div class="card-body">
+            <div class="no-data-message" *ngIf="!student.lessonNotes || student.lessonNotes.length === 0">
+              <i class="fas fa-info-circle"></i>
+              <span>Öğrenciye ait ders notu bulunamadı.</span>
+            </div>
+            
+            <div class="table-responsive" *ngIf="student.lessonNotes && student.lessonNotes.length > 0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Ders</th>
+                    <th>Kurs</th>
+                    <th>Not</th>
+                    <th>Durum</th>
+                    <th>Açıklama</th>
+                    <th>Tarih</th>
+                    <th>Geçmiş</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let note of student.lessonNotes">
+                    <td>{{ note.lesson.name }}</td>
+                    <td>{{ note.lesson.course.name }}</td>
+                    <td>{{ note.score !== null ? note.score : '-' }}</td>
+                    <td>
+                      <span class="status-badge" 
+                            [ngClass]="{'status-passed': note.passed === true, 
+                                       'status-failed': note.passed === false, 
+                                       'status-unknown': note.passed === null}">
+                        {{ note.passed === true ? 'Geçti' : note.passed === false ? 'Kaldı' : 'Belirlenmedi' }}
+                      </span>
+                    </td>
+                    <td>{{ note.remark || '-' }}</td>
+                    <td>{{ note.createdAt | date:'dd.MM.yyyy' }}</td>
+                    <td>
+                      <button class="history-button" (click)="showNoteHistory(note)" *ngIf="note.history">
+                        <i class="fas fa-history"></i> Geçmiş ({{ note.history.length }})
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Locations tab -->
+      <div class="tab-pane" *ngIf="activeTab === 'locations'">
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fas fa-map-marker-alt"></i> Lokasyonlar ve Yöneticiler</h3>
+          </div>
+          <div class="card-body">
+            <div class="no-data-message" *ngIf="!student.courseLocations || student.courseLocations.length === 0">
+              <i class="fas fa-info-circle"></i>
+              <span>Öğrenciye ait lokasyon bulunamadı.</span>
+            </div>
+            
+            <div class="locations-grid" *ngIf="student.courseLocations && student.courseLocations.length > 0">
+              <div class="location-card" *ngFor="let location of student.courseLocations">
+                <div class="location-header">
+                  <h4>{{ location.name }}</h4>
+                </div>
+                <div class="location-body">
+                  <div class="info-row">
+                    <span class="info-label">Adres:</span>
+                    <span class="info-value">{{ location.address || '-' }}</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Telefon:</span>
+                    <span class="info-value">{{ location.phone || '-' }}</span>
+                  </div>
+                  
+                  <div class="location-admins" *ngIf="location.admins && location.admins.length > 0">
+                    <h5>Yöneticiler</h5>
+                    <div class="admins-list">
+                      <div class="admin-item" *ngFor="let admin of location.admins">
+                        <div class="admin-info">
+                          <span class="admin-name">{{ admin.firstName || '' }} {{ admin.lastName || '' }}</span>
+                          <span class="admin-username">({{ admin.username }})</span>
+                        </div>
+                        <span class="admin-role" [ngClass]="{'role-admin': admin.role === 'ADMIN', 'role-superadmin': admin.role === 'SUPERADMIN'}">
+                          {{ admin.role }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Note History Modal -->
+  <div class="modal" [class.show]="showHistoryModal">
+    <div class="modal-backdrop" (click)="closeHistoryModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Not Geçmişi</h3>
+        <button class="close-button" (click)="closeHistoryModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="selectedNote">
+        <div class="note-info">
+          <p><strong>Ders:</strong> {{ selectedNote.lesson?.name }}</p>
+          <p><strong>Kurs:</strong> {{ selectedNote.lesson?.course?.name }}</p>
+          <p><strong>Güncel Not:</strong> {{ selectedNote.score !== null ? selectedNote.score : '-' }}</p>
+          <p><strong>Güncel Durum:</strong> 
+            <span class="status-badge" [ngClass]="getPassStatusClass(selectedNote.passed)">
+              {{ getPassStatusText(selectedNote.passed) }}
+            </span>
+          </p>
+        </div>
+        
+        <div class="history-table-container" *ngIf="selectedNote.history">
+          <h4>Değişiklik Geçmişi</h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tarih</th>
+                <th>Eski Not</th>
+                <th>Eski Durum</th>
+                <th>Eski Açıklama</th>
+                <th>Değiştiren</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let history of selectedNote.history">
+                <td>{{ history.changeDate | date:'dd.MM.yyyy HH:mm' }}</td>
+                <td>{{ history.oldScore !== null ? history.oldScore : '-' }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="getPassStatusClass(history.oldPassed)">
+                    {{ getPassStatusText(history.oldPassed) }}
+                  </span>
+                </td>
+                <td>{{ history.oldRemark || '-' }}</td>
+                <td>
+                  <span class="user-badge" *ngIf="history.modifiedBy">
+                    {{ history.modifiedBy.username }}
+                  </span>
+                  <span class="system-badge" *ngIf="!history.modifiedBy">Sistem</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="no-data-message" *ngIf="!selectedNote.history || selectedNote.history.length === 0">
+          <i class="fas fa-info-circle"></i>
+          <span>Not geçmişi bulunamadı.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

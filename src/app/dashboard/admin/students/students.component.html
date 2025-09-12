@@ -48,6 +48,7 @@
           <th>Kullanıcı Adı</th>
           <th>Telefon</th>
           <th>Doğum Tarihi</th>
+          <th>Lokasyon</th>
           <th>Yönetici</th>
           <th>İşlemler</th>
         </tr>
@@ -61,8 +62,19 @@
           <td>{{ student.username }}</td>
           <td>{{ student.phone || '-' }}</td>
           <td>{{ student.birthDate | date:'dd.MM.yyyy' }}</td>
+          <td>
+            <span *ngIf="student.courseLocations && student.courseLocations.length > 0">
+              <span *ngFor="let location of student.courseLocations; let last = last">
+                {{ location.name }}{{ !last ? ', ' : '' }}
+              </span>
+            </span>
+            <span *ngIf="!student.courseLocations || student.courseLocations.length === 0">-</span>
+          </td>
           <td>{{ getAdminName(student.id) || '-' }}</td>
           <td class="actions">
+            <button class="table-action view" (click)="viewStudentDetails(student.id)" title="Detaylar">
+              <i class="fas fa-eye"></i>
+            </button>
             <button class="table-action edit" (click)="editStudent(student)" title="Düzenle">
               <i class="fas fa-edit"></i>
             </button>
