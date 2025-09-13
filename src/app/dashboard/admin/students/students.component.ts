@@ -48,7 +48,7 @@ export class StudentsComponent implements OnInit {
   
   viewStudentDetails(studentId: number): void {
     // Navigate to the correct route based on user role
-    const basePath = this.userRole === 'SUPERADMIN' ? '/superadmin/students' : '/admin/students';
+    const basePath = this.userRole === 'SUPERADMIN' ? '/auth/superadmin/students' : '/auth/admin/students';
     this.router.navigate([basePath, studentId, 'details']);
   }
 

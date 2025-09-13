@@ -21,7 +21,7 @@
   <div class="sidebar-nav">
     <ul class="nav-list">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/dashboard" routerLinkActive="active">
           <i class="fas fa-home"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Ana Sayfa</span>
         </a>
@@ -29,25 +29,25 @@
       
       <!-- Common menu items for both ADMIN and SUPERADMIN -->
       <li class="nav-item" *ngIf="userRole === 'ADMIN'">
-        <a class="nav-link" routerLink="/admin/courses" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/admin/courses" routerLinkActive="active">
           <i class="fas fa-book"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Kurslar</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'SUPERADMIN'">
-        <a class="nav-link" routerLink="/superadmin/courses" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/superadmin/courses" routerLinkActive="active">
           <i class="fas fa-book"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Kurslar</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'ADMIN' || userRole === 'SUPERADMIN'">
-        <a class="nav-link" routerLink="/admin/students" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/admin/students" routerLinkActive="active">
           <i class="fas fa-user-graduate"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Öğrenciler</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'ADMIN'">
-        <a class="nav-link" routerLink="/admin/lessons" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/admin/lessons" routerLinkActive="active">
           <i class="fas fa-chalkboard-teacher"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Dersler</span>
         </a>
@@ -55,25 +55,25 @@
       
       <!-- ADMIN specific menu items -->
       <li class="nav-item" *ngIf="userRole === 'ADMIN'">
-        <a class="nav-link" routerLink="/admin/lesson-notes" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/admin/lesson-notes" routerLinkActive="active">
           <i class="fas fa-sticky-note"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Ders Notları</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'ADMIN'">
-        <a class="nav-link" routerLink="/admin/student-lesson-notes" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/admin/student-lesson-notes" routerLinkActive="active">
           <i class="fas fa-user-edit"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Öğrenci Not Yönetimi</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'ADMIN'">
-        <a class="nav-link" routerLink="/admin/attendance" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/admin/attendance" routerLinkActive="active">
           <i class="fas fa-calendar-check"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Yoklama</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'ADMIN'">
-        <a class="nav-link" routerLink="/admin/grades" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/admin/grades" routerLinkActive="active">
           <i class="fas fa-chart-line"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Not Yönetimi</span>
         </a>
@@ -81,31 +81,31 @@
       
       <!-- SUPERADMIN specific menu items -->
       <li class="nav-item" *ngIf="userRole === 'SUPERADMIN'">
-        <a class="nav-link" routerLink="/superadmin/users" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/superadmin/users" routerLinkActive="active">
           <i class="fas fa-users-cog"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Kullanıcı Yönetimi</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'SUPERADMIN'">
-        <a class="nav-link" routerLink="/superadmin/locations" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/superadmin/locations" routerLinkActive="active">
           <i class="fas fa-map-marker-alt"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Kurs Lokasyonları</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'SUPERADMIN'">
-        <a class="nav-link" routerLink="/superadmin/lessons" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/superadmin/lessons" routerLinkActive="active">
           <i class="fas fa-chalkboard-teacher"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Dersler</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'SUPERADMIN'">
-        <a class="nav-link" routerLink="/superadmin/reports" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/superadmin/reports" routerLinkActive="active">
           <i class="fas fa-chart-bar"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Raporlar</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userRole === 'SUPERADMIN'">
-        <a class="nav-link" routerLink="/superadmin/settings" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/superadmin/settings" routerLinkActive="active">
           <i class="fas fa-cogs"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Sistem Ayarları</span>
         </a>
@@ -113,7 +113,7 @@
       
       <!-- Common settings menu item -->
       <li class="nav-item">
-        <a class="nav-link" routerLink="/settings" routerLinkActive="active">
+        <a class="nav-link" routerLink="/auth/settings" routerLinkActive="active">
           <i class="fas fa-cog"></i>
           <span class="nav-text" *ngIf="!isSidebarCollapsed">Ayarlar</span>
         </a>

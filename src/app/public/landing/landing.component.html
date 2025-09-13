@@ -1,0 +1,384 @@
+<div class="landing-container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="navbar-logo">
+        <img src="assets/images/applogo.png" alt="Kuran Kursu Logo" class="logo-image">
+        <span class="logo-text">Kuran Kursu</span>
+      </div>
+      
+      <div class="navbar-links">
+        <a (click)="scrollToSection('home')" class="nav-link">Ana Sayfa</a>
+        <a (click)="scrollToSection('about')" class="nav-link">Hakkımızda</a>
+        <a (click)="scrollToSection('courses')" class="nav-link">Kurslarımız</a>
+        <a (click)="scrollToSection('gallery')" class="nav-link">Galeri</a>
+        <a (click)="scrollToSection('news')" class="nav-link">Haberler</a>
+        <a (click)="scrollToSection('contact')" class="nav-link">İletişim</a>
+      </div>
+      
+      <div class="navbar-buttons">
+        <a [routerLink]="['/veli-bilgilendirme']" class="nav-button secondary">Veli Bilgilendirme</a>
+        <a [routerLink]="['/ogrenci-siralamasi']" class="nav-button secondary">Öğrenci Sıralaması</a>
+        <a [routerLink]="['/auth/login']" class="nav-button primary">Öğretici Girişi</a>
+      </div>
+      
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <a (click)="scrollToSection('home')" class="mobile-nav-link">Ana Sayfa</a>
+      <a (click)="scrollToSection('about')" class="mobile-nav-link">Hakkımızda</a>
+      <a (click)="scrollToSection('courses')" class="mobile-nav-link">Kurslarımız</a>
+      <a (click)="scrollToSection('gallery')" class="mobile-nav-link">Galeri</a>
+      <a (click)="scrollToSection('news')" class="mobile-nav-link">Haberler</a>
+      <a (click)="scrollToSection('contact')" class="mobile-nav-link">İletişim</a>
+      <a [routerLink]="['/veli-bilgilendirme']" class="mobile-nav-link highlight">Veli Bilgilendirme</a>
+      <a [routerLink]="['/ogrenci-siralamasi']" class="mobile-nav-link highlight">Öğrenci Sıralaması</a>
+      <a [routerLink]="['/auth/login']" class="mobile-nav-link highlight">Öğretici Girişi</a>
+    </div>
+  </nav>
+  
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="hero-content">
+      <h1>Kuran Kursuna Hoş Geldiniz</h1>
+      <p>Kaliteli eğitim ve manevi gelişim için doğru adres</p>
+      <div class="hero-buttons">
+        <a [routerLink]="['/veli-bilgilendirme']" class="hero-button primary">
+          <i class="fas fa-info-circle"></i> Veli Bilgilendirme
+        </a>
+        <a [routerLink]="['/ogrenci-siralamasi']" class="hero-button secondary">
+          <i class="fas fa-trophy"></i> Öğrenci Sıralaması
+        </a>
+      </div>
+    </div>
+    <div class="hero-pattern"></div>
+  </section>
+  
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Hakkımızda</h2>
+        <div class="section-divider"></div>
+      </div>
+      
+      <div class="about-content">
+        <div class="about-image">
+          <img src="assets/images/about.jpg" alt="Kuran Kursu Hakkında">
+        </div>
+        <div class="about-text">
+          <h3>Kuran Kursumuz</h3>
+          <p>2005 yılında kurulan kursumuz, Diyanet İşleri Başkanlığı'na bağlı olarak hizmet vermektedir. Amacımız, öğrencilerimize Kuran-ı Kerim'i doğru okuma, anlama ve yaşama konusunda rehberlik etmektir.</p>
+          <p>Modern eğitim yöntemleri ve geleneksel değerleri bir araya getirerek, öğrencilerimizin hem dini hem de ahlaki gelişimlerine katkıda bulunuyoruz.</p>
+          
+          <div class="stats-container">
+            <div class="stat-item">
+              <div class="stat-number">15+</div>
+              <div class="stat-label">Yıllık Tecrübe</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">500+</div>
+              <div class="stat-label">Mezun Öğrenci</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">20+</div>
+              <div class="stat-label">Uzman Öğretici</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">3</div>
+              <div class="stat-label">Şube</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="section-container">
+      <div class="features-grid">
+        <div class="feature-item" *ngFor="let feature of features">
+          <div class="feature-icon">
+            <i class="fas {{ feature.icon }}"></i>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Courses Section -->
+  <section id="courses" class="courses-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Kurslarımız</h2>
+        <div class="section-divider"></div>
+      </div>
+      
+      <div class="courses-grid">
+        <div class="course-card">
+          <div class="course-image">
+            <img src="assets/images/courses/course1.jpg" alt="Yaz Kuran Kursu">
+            <div class="course-badge">Popüler</div>
+          </div>
+          <div class="course-content">
+            <h3>Yaz Kuran Kursu</h3>
+            <p>Yaz tatilinde çocuklarınızın dini eğitimlerini destekleyen, eğlenceli ve öğretici programımız.</p>
+            <ul class="course-details">
+              <li><i class="fas fa-calendar"></i> Haziran - Ağustos</li>
+              <li><i class="fas fa-clock"></i> Hafta içi 09:00 - 12:00</li>
+              <li><i class="fas fa-user-graduate"></i> 7-15 yaş</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="course-card">
+          <div class="course-image">
+            <img src="assets/images/courses/course2.jpg" alt="Hafızlık Eğitimi">
+          </div>
+          <div class="course-content">
+            <h3>Hafızlık Eğitimi</h3>
+            <p>Kuran-ı Kerim'i ezberleme konusunda uzman eğitmenler eşliğinde profesyonel eğitim.</p>
+            <ul class="course-details">
+              <li><i class="fas fa-calendar"></i> Yıl boyu</li>
+              <li><i class="fas fa-clock"></i> Tam gün program</li>
+              <li><i class="fas fa-user-graduate"></i> 10+ yaş</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="course-card">
+          <div class="course-image">
+            <img src="assets/images/courses/course3.jpg" alt="Yetişkin Kuran Kursu">
+          </div>
+          <div class="course-content">
+            <h3>Yetişkin Kuran Kursu</h3>
+            <p>Her yaştan yetişkinler için temel dini bilgiler ve Kuran-ı Kerim okuma eğitimi.</p>
+            <ul class="course-details">
+              <li><i class="fas fa-calendar"></i> Yıl boyu</li>
+              <li><i class="fas fa-clock"></i> Esnek saatler</li>
+              <li><i class="fas fa-user-graduate"></i> 18+ yaş</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Gallery Section -->
+  <section id="gallery" class="gallery-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Kurs Galerisi</h2>
+        <div class="section-divider"></div>
+      </div>
+      
+      <div class="gallery-grid">
+        <div class="gallery-item" *ngFor="let item of galleryItems">
+          <div class="gallery-image">
+            <img [src]="item.imageUrl" [alt]="item.title">
+            <div class="gallery-overlay">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Görüşler</h2>
+        <div class="section-divider"></div>
+      </div>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial-card" *ngFor="let testimonial of testimonials">
+          <div class="testimonial-content">
+            <div class="quote-icon">
+              <i class="fas fa-quote-right"></i>
+            </div>
+            <p class="testimonial-text">{{ testimonial.comment }}</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="author-image">
+              <img [src]="testimonial.imageUrl" [alt]="testimonial.name">
+            </div>
+            <div class="author-info">
+              <h4>{{ testimonial.name }}</h4>
+              <p>{{ testimonial.role }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- News Section -->
+  <section id="news" class="news-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Son Haberler</h2>
+        <div class="section-divider"></div>
+      </div>
+      
+      <div class="news-grid">
+        <div class="news-card" *ngFor="let news of newsItems">
+          <div class="news-image">
+            <img [src]="news.imageUrl" [alt]="news.title">
+            <div class="news-date">{{ news.date }}</div>
+          </div>
+          <div class="news-content">
+            <h3>{{ news.title }}</h3>
+            <p>{{ news.summary }}</p>
+            <a href="#" class="news-link">Devamını Oku <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>İletişim</h2>
+        <div class="section-divider"></div>
+      </div>
+      
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-text">
+              <h3>Adres</h3>
+              <p>Fatih Mahallesi, Kuran Caddesi No:123<br>İstanbul, Türkiye</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="contact-text">
+              <h3>Telefon</h3>
+              <p>+90 212 123 45 67</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-text">
+              <h3>E-posta</h3>
+              <p>info&#64;kurankursu.com</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="contact-text">
+              <h3>Çalışma Saatleri</h3>
+              <p>Pazartesi - Cuma: 08:00 - 17:00<br>Cumartesi: 09:00 - 13:00</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="contact-map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.2718440563!2d28.94150491541966!3d41.01917197929957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab9bde0c66ac9%3A0x60c02fe1ee6d8471!2zRmF0aWgsIMSwc3RhbmJ1bA!5e0!3m2!1str!2str!4v1631234567890!5m2!1str!2str" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="section-container">
+      <div class="cta-content">
+        <h2>Kurslarımıza Kayıt Olun</h2>
+        <p>Kaliteli eğitim ve manevi gelişim için hemen kayıt olun.</p>
+        <a href="#" class="cta-button">Kayıt Ol</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-pattern"></div>
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="assets/images/applogo.png" alt="Kuran Kursu Logo" class="logo-image">
+        <h3>Kuran Kursu</h3>
+      </div>
+      
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4>Hızlı Erişim</h4>
+          <ul>
+            <li><a (click)="scrollToSection('home')">Ana Sayfa</a></li>
+            <li><a (click)="scrollToSection('about')">Hakkımızda</a></li>
+            <li><a (click)="scrollToSection('courses')">Kurslarımız</a></li>
+            <li><a (click)="scrollToSection('gallery')">Galeri</a></li>
+            <li><a (click)="scrollToSection('news')">Haberler</a></li>
+            <li><a (click)="scrollToSection('contact')">İletişim</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Kurslarımız</h4>
+          <ul>
+            <li><a href="#">Yaz Kuran Kursu</a></li>
+            <li><a href="#">Hafızlık Eğitimi</a></li>
+            <li><a href="#">Yetişkin Kuran Kursu</a></li>
+            <li><a href="#">Tecvid Eğitimi</a></li>
+            <li><a href="#">Temel Dini Bilgiler</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Öğrenci & Veli</h4>
+          <ul>
+            <li><a [routerLink]="['/veli-bilgilendirme']">Veli Bilgilendirme</a></li>
+            <li><a [routerLink]="['/ogrenci-siralamasi']">Öğrenci Sıralaması</a></li>
+            <li><a href="#">Kayıt Formu</a></li>
+            <li><a href="#">Sıkça Sorulan Sorular</a></li>
+            <li><a href="#">Eğitim Takvimi</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>İletişim</h4>
+          <ul class="contact-list">
+            <li><i class="fas fa-map-marker-alt"></i> Fatih Mahallesi, Kuran Caddesi No:123, İstanbul</li>
+            <li><i class="fas fa-phone"></i> +90 212 123 45 67</li>
+            <li><i class="fas fa-envelope"></i> info&#64;kurankursu.com</li>
+          </ul>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; {{ currentYear }} Kuran Kursu. Tüm hakları saklıdır.</p>
+      </div>
+    </div>
+  </footer>
+</div>

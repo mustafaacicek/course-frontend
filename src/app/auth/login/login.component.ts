@@ -49,11 +49,11 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           // Redirect to the dashboard route which will use the shared layout
           if (response.role === 'SUPERADMIN') {
-            this.router.navigate(['/superadmin/dashboard']);
+            this.router.navigate(['/auth/superadmin/dashboard']);
           } else if (response.role === 'ADMIN') {
-            this.router.navigate(['/admin/dashboard']);
+            this.router.navigate(['/auth/admin/dashboard']);
           } else {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/auth/dashboard']);
           }
         },
         error: (error) => {
@@ -72,12 +72,12 @@ export class LoginComponent implements OnInit {
 
   private redirectBasedOnRole(): void {
     if (this.authService.isSuperAdmin()) {
-      this.router.navigate(['/superadmin/dashboard']);
+      this.router.navigate(['/auth/superadmin/dashboard']);
     } else if (this.authService.isAdmin()) {
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/auth/admin/dashboard']);
     } else {
       // Default route for other roles if needed
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/auth/dashboard']);
     }
   }
 }

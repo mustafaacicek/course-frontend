@@ -1,0 +1,163 @@
+<div class="student-rankings-container">
+  <div class="islamic-pattern-top"></div>
+  
+  <div class="content-container">
+    <div class="header">
+      <div class="logo">
+        <img src="assets/images/applogo.png" alt="Kurs Logo" class="logo-image">
+      </div>
+      <h1>Öğrenci Başarı Sıralaması</h1>
+      <div class="subtitle">En Başarılı Öğrencilerimiz</div>
+    </div>
+    
+    <div class="controls-section">
+      <div class="control-container">
+        <div class="islamic-frame">
+          <div class="control-content">
+            <div class="form-group">
+              <label for="limitSelect">Gösterilecek Öğrenci Sayısı:</label>
+              <select 
+                id="limitSelect" 
+                [(ngModel)]="limit" 
+                (change)="onLimitChange()"
+                class="form-control">
+                <option [value]="5">5 Öğrenci</option>
+                <option [value]="10">10 Öğrenci</option>
+                <option [value]="20">20 Öğrenci</option>
+                <option [value]="50">50 Öğrenci</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="locationSelect">Kurs Lokasyonu:</label>
+              <select 
+                id="locationSelect" 
+                [(ngModel)]="selectedLocationId" 
+                (change)="onLocationChange()"
+                class="form-control">
+                <option [ngValue]="null">Tüm Lokasyonlar</option>
+                <option *ngFor="let location of locations" [value]="location.id">
+                  {{ location.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Genel Sıralama -->
+    <div class="ranking-section" *ngIf="!selectedLocationId">
+      <h2 class="section-title">
+        <i class="fas fa-trophy"></i> Genel Başarı Sıralaması
+      </h2>
+      
+      <!-- Loading spinner -->
+      <div class="loading-container" *ngIf="loading">
+        <div class="islamic-spinner">
+          <div class="spinner-inner"></div>
+        </div>
+        <p>Sıralama Yükleniyor...</p>
+      </div>
+      
+      <!-- Error message -->
+      <div class="error-message" *ngIf="error">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ error }}
+      </div>
+      
+      <!-- Rankings table -->
+      <div class="table-responsive" *ngIf="!loading && !error && topStudents.length > 0">
+        <table class="rankings-table">
+          <thead>
+            <tr>
+              <th>Sıra</th>
+              <th>Öğrenci</th>
+              <th>Toplam Puan</th>
+              <th>Ortalama</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of topStudents; let i = index" [class.top-three]="i < 3">
+              <td class="rank-cell">
+                <div class="rank-badge" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
+                  {{ student.rank }}
+                </div>
+              </td>
+              <td>{{ student.firstName }} {{ student.lastName }}</td>
+              <td class="score-cell">{{ student.totalScore | number:'1.0-0' }}</td>
+              <td class="score-cell">{{ student.averageScore | number:'1.1-1' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- No data message -->
+      <div class="no-data-message" *ngIf="!loading && !error && topStudents.length === 0">
+        <i class="fas fa-info-circle"></i>
+        Henüz sıralama verisi bulunmamaktadır.
+      </div>
+    </div>
+    
+    <!-- Lokasyon Bazlı Sıralama -->
+    <div class="ranking-section" *ngIf="selectedLocationId">
+      <h2 class="section-title">
+        <i class="fas fa-map-marker-alt"></i> {{ getSelectedLocationName() }} Başarı Sıralaması
+      </h2>
+      
+      <!-- Loading spinner -->
+      <div class="loading-container" *ngIf="locationLoading">
+        <div class="islamic-spinner">
+          <div class="spinner-inner"></div>
+        </div>
+        <p>Lokasyon Sıralaması Yükleniyor...</p>
+      </div>
+      
+      <!-- Error message -->
+      <div class="error-message" *ngIf="locationError">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ locationError }}
+      </div>
+      
+      <!-- Rankings table -->
+      <div class="table-responsive" *ngIf="!locationLoading && !locationError && locationStudents.length > 0">
+        <table class="rankings-table">
+          <thead>
+            <tr>
+              <th>Sıra</th>
+              <th>Öğrenci</th>
+              <th>Toplam Puan</th>
+              <th>Ortalama</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of locationStudents; let i = index" [class.top-three]="i < 3">
+              <td class="rank-cell">
+                <div class="rank-badge" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
+                  {{ student.rank }}
+                </div>
+              </td>
+              <td>{{ student.firstName }} {{ student.lastName }}</td>
+              <td class="score-cell">{{ student.totalScore | number:'1.0-0' }}</td>
+              <td class="score-cell">{{ student.averageScore | number:'1.1-1' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- No data message -->
+      <div class="no-data-message" *ngIf="!locationLoading && !locationError && locationStudents.length === 0">
+        <i class="fas fa-info-circle"></i>
+        Bu lokasyon için henüz sıralama verisi bulunmamaktadır.
+      </div>
+    </div>
+  </div>
+  
+  <div class="islamic-pattern-bottom"></div>
+  
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© {{ 2025 }} Kuran Kursu Öğrenci Bilgilendirme Sistemi</p>
+    </div>
+  </footer>
+</div>

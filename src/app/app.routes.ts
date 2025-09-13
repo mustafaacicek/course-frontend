@@ -5,11 +5,10 @@ import { AuthGuard } from './guards/auth.guard';
 import { PUBLIC_ROUTES } from './public/public.routes';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
+  { path: 'auth/login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
   ...PUBLIC_ROUTES,
   {
-    path: '',
+    path: 'auth',
     loadComponent: () => import('./shared/layout/admin-layout.component').then(m => m.AdminLayoutComponent),
     canActivate: [AuthGuard],
     children: [
@@ -102,5 +101,5 @@ export const routes: Routes = [
       }
     ]
   },
-  { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: '/' }
 ];

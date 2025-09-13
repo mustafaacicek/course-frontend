@@ -12,9 +12,9 @@ export const superadminGuard = () => {
 
   // Redirect to login if not logged in, or to appropriate dashboard if logged in but wrong role
   if (!authService.isLoggedIn()) {
-    router.navigate(['/login']);
+    router.navigate(['/auth/login']);
   } else if (authService.isAdmin()) {
-    router.navigate(['/admin']);
+    router.navigate(['/auth/admin/dashboard']);
   } else {
     router.navigate(['/']);
   }

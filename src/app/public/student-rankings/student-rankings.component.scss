@@ -1,0 +1,461 @@
+@use 'sass:color';
+
+// İslami renk paleti
+$primary-color: #00723F; // İslami yeşil
+$secondary-color: #C59D5F; // Altın/sarı
+$accent-color: #1D3557; // Koyu mavi
+$light-color: #F8F9FA;
+$dark-color: #212529;
+$pattern-color: rgba(197, 157, 95, 0.1); // Hafif altın rengi
+
+// İslami desenler için mixin
+@mixin islamic-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c59d5f' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.student-rankings-container {
+  font-family: 'Amiri', 'Noto Sans', sans-serif;
+  color: $dark-color;
+  background-color: $light-color;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  
+  .islamic-pattern-top, .islamic-pattern-bottom {
+    height: 120px;
+    width: 100%;
+    @include islamic-pattern;
+    position: relative;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 40px;
+    }
+  }
+  
+  .islamic-pattern-top:after {
+    bottom: -1px;
+    background: linear-gradient(to bottom, transparent, $light-color);
+  }
+  
+  .islamic-pattern-bottom:after {
+    top: -1px;
+    background: linear-gradient(to top, transparent, $light-color);
+  }
+  
+  .content-container {
+    flex: 1;
+    padding: 20px 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: calc(100% - 30px);
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    
+    @media (max-width: 576px) {
+      padding: 15px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    
+    @media (max-width: 576px) {
+      margin-bottom: 20px;
+    }
+    
+    .logo {
+      margin-bottom: 15px;
+      
+      .logo-image {
+        height: 80px;
+        width: auto;
+        
+        @media (max-width: 576px) {
+          height: 60px;
+        }
+      }
+    }
+    
+    h1 {
+      font-family: 'Scheherazade New', serif;
+      font-size: 2.5rem;
+      color: $primary-color;
+      margin: 0 0 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      display: inline-block;
+      
+      @media (max-width: 768px) {
+        font-size: 2rem;
+      }
+      
+      @media (max-width: 576px) {
+        font-size: 1.8rem;
+      }
+      
+      &:before, &:after {
+        content: '';
+        position: absolute;
+        height: 2px;
+        width: 60px;
+        background-color: $secondary-color;
+        top: 50%;
+        
+        @media (max-width: 768px) {
+          width: 40px;
+        }
+        
+        @media (max-width: 576px) {
+          width: 30px;
+        }
+      }
+      
+      &:before {
+        left: -80px;
+        
+        @media (max-width: 768px) {
+          left: -60px;
+        }
+        
+        @media (max-width: 576px) {
+          left: -40px;
+        }
+      }
+      
+      &:after {
+        right: -80px;
+        
+        @media (max-width: 768px) {
+          right: -60px;
+        }
+        
+        @media (max-width: 576px) {
+          right: -40px;
+        }
+      }
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: $accent-color;
+      font-style: italic;
+      
+      @media (max-width: 576px) {
+        font-size: 1rem;
+      }
+    }
+  }
+  
+  .controls-section {
+    margin-bottom: 30px;
+    
+    .control-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .islamic-frame {
+      border: 2px solid $secondary-color;
+      border-radius: 15px;
+      padding: 25px;
+      background-color: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      
+      @media (max-width: 768px) {
+        padding: 20px;
+      }
+      
+      @media (max-width: 576px) {
+        padding: 15px;
+        border-radius: 12px;
+      }
+      
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, $primary-color, $secondary-color, $primary-color);
+      }
+      
+      .control-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        
+        @media (max-width: 576px) {
+          flex-direction: column;
+          gap: 15px;
+        }
+        
+        .form-group {
+          flex: 1;
+          min-width: 200px;
+          
+          label {
+            display: block;
+            margin-bottom: 8px;
+            color: $accent-color;
+            font-weight: 500;
+            font-size: 0.95rem;
+          }
+          
+          .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            
+            &:focus {
+              border-color: $secondary-color;
+              outline: none;
+              box-shadow: 0 0 0 2px rgba($secondary-color, 0.2);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .ranking-section {
+    margin-bottom: 40px;
+    
+    .section-title {
+      font-family: 'Scheherazade New', serif;
+      font-size: 1.8rem;
+      color: $primary-color;
+      margin: 0 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+      i {
+        color: $secondary-color;
+      }
+      
+      @media (max-width: 576px) {
+        font-size: 1.5rem;
+      }
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .rankings-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      
+      th, td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+        
+        @media (max-width: 576px) {
+          padding: 12px 10px;
+        }
+      }
+      
+      th {
+        background-color: $accent-color;
+        color: white;
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      
+      tr {
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background-color: rgba($secondary-color, 0.05);
+        }
+        
+        &.top-three {
+          background-color: rgba($secondary-color, 0.1);
+          
+          &:hover {
+            background-color: rgba($secondary-color, 0.15);
+          }
+        }
+      }
+      
+      .rank-cell {
+        width: 60px;
+        text-align: center;
+        
+        .rank-badge {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background-color: #e9ecef;
+          color: $dark-color;
+          font-weight: 700;
+          
+          &.gold {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #5D4037;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          }
+          
+          &.silver {
+            background: linear-gradient(135deg, #C0C0C0, #9E9E9E);
+            color: #263238;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+          }
+          
+          &.bronze {
+            background: linear-gradient(135deg, #CD7F32, #A1887F);
+            color: #FFFFFF;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+          }
+        }
+      }
+      
+      .score-cell {
+        text-align: right;
+        font-weight: 600;
+        color: $accent-color;
+      }
+    }
+  }
+  
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    
+    .islamic-spinner {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      position: relative;
+      margin-bottom: 15px;
+      
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 4px solid rgba($secondary-color, 0.3);
+        border-top-color: $secondary-color;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      .spinner-inner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border: 4px solid rgba($primary-color, 0.3);
+          border-top-color: $primary-color;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite reverse;
+        }
+      }
+    }
+    
+    p {
+      color: $accent-color;
+      font-size: 1.1rem;
+    }
+  }
+  
+  .error-message {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: rgba(#dc3545, 0.1);
+    border-left: 4px solid #dc3545;
+    color: #dc3545;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    i {
+      font-size: 1.2rem;
+    }
+  }
+  
+  .no-data-message {
+    padding: 30px;
+    text-align: center;
+    background-color: rgba($accent-color, 0.05);
+    border-radius: 10px;
+    color: $accent-color;
+    font-style: italic;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    
+    i {
+      font-size: 2rem;
+      color: $secondary-color;
+    }
+  }
+  
+  .footer {
+    background-color: $accent-color;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      
+      p {
+        margin: 0;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Özel font yükleme
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Scheherazade+New:wght@400;700&display=swap');
