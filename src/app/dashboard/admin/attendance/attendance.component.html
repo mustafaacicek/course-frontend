@@ -1,0 +1,160 @@
+<div class="attendance-container">
+  <div class="page-header">
+    <h1 class="page-title">Yoklama Yönetimi</h1>
+  </div>
+
+  <div class="notification success" *ngIf="successMessage">
+    <div class="notification-content">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ successMessage }}</span>
+    </div>
+    <button class="notification-close" (click)="successMessage = ''">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="notification error" *ngIf="error">
+    <div class="notification-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ error }}</span>
+    </div>
+    <button class="notification-close" (click)="error = null">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner">
+      <div class="spinner-inner"></div>
+    </div>
+    <p class="loading-text">Yükleniyor...</p>
+  </div>
+
+  <div class="attendance-card" *ngIf="!isLoading">
+    <div class="card-header">
+      <h2>Yoklama Yönetimi</h2>
+    </div>
+    
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="location">Lokasyon</label>
+          <select id="location" [(ngModel)]="selectedLocation" (change)="onLocationChange()" class="form-control">
+            <option [ngValue]="null">Lokasyon Seçin</option>
+            <option *ngFor="let location of locations" [value]="location.id">{{ location.name }}</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="course">Kurs</label>
+          <select id="course" [(ngModel)]="selectedCourse" class="form-control">
+            <option [ngValue]="null">Kurs Seçin</option>
+            <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="date">Tarih</label>
+          <input type="date" id="date" [(ngModel)]="selectedDate" class="form-control">
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button class="btn primary" (click)="loadStudentsForAttendance()" [disabled]="!selectedLocation || !selectedCourse || !selectedDate">
+          <i class="fas fa-plus"></i> Yeni Yoklama Oluştur
+        </button>
+        
+        <button class="btn secondary" (click)="loadExistingAttendance()" [disabled]="!selectedLocation || !selectedDate">
+          <i class="fas fa-search"></i> Mevcut Yoklamayı Görüntüle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="attendance-form-card" *ngIf="showForm && !isLoading">
+    <div class="card-header">
+      <h2>Yoklama Listesi</h2>
+      <div class="header-actions">
+        <button class="btn secondary" (click)="markAllPresent()">
+          <i class="fas fa-check"></i> Tümünü İşaretle
+        </button>
+        <button class="btn secondary" (click)="markAllAbsent()">
+          <i class="fas fa-times"></i> Tümünü Kaldır
+        </button>
+      </div>
+    </div>
+    
+    <div class="card-body">
+      <!-- Masaüstü Tablo Görünümü -->
+      <div class="desktop-view">
+        <div class="attendance-table-container">
+          <table class="attendance-table">
+            <thead>
+              <tr>
+                <th>Öğrenci No</th>
+                <th>Ad Soyad</th>
+                <th>Durum</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of studentRecords">
+                <td>{{ record.student.id }}</td>
+                <td>{{ record.student.firstName }} {{ record.student.lastName }}</td>
+                <td>
+                  <div class="attendance-toggle">
+                    <label class="toggle">
+                      <input type="checkbox" [(ngModel)]="record.isPresent">
+                      <span class="slider"></span>
+                      <span class="status">{{ record.isPresent ? 'Geldi' : 'Gelmedi' }}</span>
+                    </label>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="studentRecords.length === 0">
+                <td colspan="3" class="no-data">Seçilen lokasyonda öğrenci bulunamadı.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Mobil Kart Görünümü -->
+      <div class="mobile-view">
+        <div class="student-cards">
+          <div class="student-card" *ngFor="let record of studentRecords">
+            <div class="student-info">
+              <div class="student-name">{{ record.student.firstName }} {{ record.student.lastName }}</div>
+              <div class="student-id">Öğrenci No: {{ record.student.id }}</div>
+            </div>
+            <div class="attendance-status">
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="record.isPresent">
+                <span class="slider"></span>
+                <span class="status">{{ record.isPresent ? 'Geldi' : 'Gelmedi' }}</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="no-data-card" *ngIf="studentRecords.length === 0">
+            <i class="fas fa-info-circle"></i>
+            <p>Seçilen lokasyonda öğrenci bulunamadı.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group mt-4">
+        <label for="notes">Notlar</label>
+        <textarea id="notes" [(ngModel)]="notes" class="form-control" placeholder="Yoklama ile ilgili notlar..."></textarea>
+      </div>
+      
+      <div class="form-actions">
+        <button class="btn primary" (click)="saveAttendance()" [disabled]="studentRecords.length === 0">
+          <i class="fas fa-save"></i> Yoklamayı Kaydet
+        </button>
+        <button class="btn secondary" (click)="resetForm()">
+          <i class="fas fa-undo"></i> Formu Sıfırla
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -39,4 +39,8 @@ export class CourseLocationService {
   getLocationsByAdminId(adminId: number): Observable<CourseLocation[]> {
     return this.http.get<CourseLocation[]>(`${this.apiUrl}/admin/${adminId}`);
   }
+  
+  getLocationsForCurrentAdmin(): Observable<CourseLocation[]> {
+    return this.http.get<CourseLocation[]>(`${this.apiUrl}/admin`);
+  }
 }

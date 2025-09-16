@@ -457,6 +457,16 @@
     background-color: rgba(156, 163, 175, 0.1);
     color: #9CA3AF;
   }
+  
+  &.status-present {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+  }
+  
+  &.status-absent {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+  }
 }
 
 .locations-grid {
@@ -665,6 +675,150 @@
         color: #374151;
       }
     }
+  }
+}
+
+// Attendance styles
+.attendance-summary {
+  margin-bottom: 30px;
+  
+  h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+    
+    .stat {
+      background-color: white;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      
+      .stat-value {
+        display: block;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        
+        &.present {
+          color: #10B981;
+        }
+        
+        &.absent {
+          color: #EF4444;
+        }
+      }
+      
+      .stat-label {
+        font-size: 0.9rem;
+        color: #6B7280;
+      }
+    }
+  }
+}
+
+.attendance-progress {
+  margin-bottom: 20px;
+  
+  .progress {
+    height: 24px;
+    background-color: #F3F4F6;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    
+    .progress-bar {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 500;
+      
+      &.progress-present {
+        background-color: #10B981;
+      }
+      
+      &.progress-absent {
+        background-color: #EF4444;
+      }
+    }
+  }
+  
+  .progress-legend {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
+      
+      .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        
+        &.present {
+          background-color: #10B981;
+        }
+        
+        &.absent {
+          background-color: #EF4444;
+        }
+      }
+    }
+  }
+}
+
+.course-attendance {
+  margin-bottom: 30px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  overflow: hidden;
+  
+  .course-header {
+    padding: 15px;
+    background-color: #F9FAFB;
+    border-bottom: 1px solid #E5E7EB;
+    
+    h4 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .course-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 0.9rem;
+      
+      .stat {
+        &.present {
+          color: #10B981;
+        }
+        
+        &.absent {
+          color: #EF4444;
+        }
+      }
+    }
+  }
+  
+  .attendance-table-container {
+    padding: 15px;
   }
 }
 

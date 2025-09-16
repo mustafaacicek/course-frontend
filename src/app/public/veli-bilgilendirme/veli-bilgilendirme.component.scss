@@ -717,10 +717,10 @@ $pattern-color: rgba(197, 157, 95, 0.1); // Hafif altın rengi
           }
         }
         
-        .lessons-table-container {
+        .lessons-table-container, .attendance-table-container {
           overflow-x: auto;
           
-          .lessons-table {
+          .lessons-table, .attendance-table {
             width: 100%;
             border-collapse: collapse;
             
@@ -765,6 +765,157 @@ $pattern-color: rgba(197, 157, 95, 0.1); // Hafif altın rengi
               &.status-unknown {
                 background-color: rgba(108, 117, 125, 0.1);
                 color: #6c757d;
+              }
+            }
+          }
+        }
+        
+        // Attendance styles
+        .attendance-container {
+          .attendance-summary {
+            margin-bottom: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            
+            h4 {
+              margin-top: 0;
+              margin-bottom: 15px;
+              color: $accent-color;
+              font-weight: 600;
+            }
+            
+            .attendance-stats {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 15px;
+              margin-bottom: 20px;
+              
+              @media (max-width: 768px) {
+                grid-template-columns: repeat(2, 1fr);
+              }
+              
+              .stat-item {
+                text-align: center;
+                padding: 15px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                
+                .stat-icon {
+                  color: $primary-color;
+                  font-size: 1.5rem;
+                  margin-bottom: 5px;
+                }
+                
+                .stat-value {
+                  font-size: 1.5rem;
+                  font-weight: 700;
+                  color: $accent-color;
+                  
+                  &.present {
+                    color: #198754;
+                  }
+                  
+                  &.absent {
+                    color: #dc3545;
+                  }
+                }
+                
+                .stat-label {
+                  font-size: 0.8rem;
+                  color: #6c757d;
+                }
+              }
+            }
+            
+            .attendance-progress {
+              .progress-bar {
+                height: 20px;
+                background-color: #e9ecef;
+                border-radius: 10px;
+                overflow: hidden;
+                display: flex;
+                
+                .progress-fill {
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 0.8rem;
+                  font-weight: 500;
+                  
+                  &.present {
+                    background-color: #198754;
+                  }
+                  
+                  &.absent {
+                    background-color: #dc3545;
+                  }
+                }
+              }
+              
+              .progress-legend {
+                display: flex;
+                gap: 15px;
+                margin-top: 8px;
+                
+                .legend-item {
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  font-size: 0.8rem;
+                  
+                  .legend-color {
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 2px;
+                    
+                    &.present {
+                      background-color: #198754;
+                    }
+                    
+                    &.absent {
+                      background-color: #dc3545;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          
+          .course-attendance {
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+            
+            .course-header {
+              padding: 15px;
+              background-color: #f8f9fa;
+              border-bottom: 1px solid #dee2e6;
+              
+              h4 {
+                margin: 0 0 10px;
+                color: $accent-color;
+              }
+              
+              .course-stats {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                font-size: 0.9rem;
+                
+                .stat {
+                  &.present {
+                    color: #198754;
+                  }
+                  
+                  &.absent {
+                    color: #dc3545;
+                  }
+                }
               }
             }
           }

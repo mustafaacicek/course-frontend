@@ -2,10 +2,31 @@
 @use '../../../../scss/color-functions' as cf;
 @use '../../../../scss/components' as comp;
 
+// Responsive görünüm kontrolleri
+.desktop-view {
+  display: block;
+  
+  @media (max-width: 991px) {
+    display: none;
+  }
+}
+
+.mobile-view {
+  display: none;
+  
+  @media (max-width: 991px) {
+    display: block;
+  }
+}
+
 .students-container {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  
+  @media (max-width: 576px) {
+    padding: 15px 10px;
+  }
 }
 
 // Page Header
@@ -83,6 +104,134 @@
   @include comp.modal;
 }
 
+// Mobil kart görünümü
+.student-mobile-card {
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
+  .card-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #333;
+      font-weight: 600;
+    }
+    
+    .student-id {
+      font-size: 0.85rem;
+      color: #6c757d;
+      background-color: #e9ecef;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+  }
+  
+  .card-body {
+    padding: 1rem;
+    
+    .info-row {
+      display: flex;
+      margin-bottom: 0.75rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      .label {
+        min-width: 120px;
+        font-weight: 500;
+        color: #495057;
+      }
+      
+      .value {
+        color: #212529;
+        flex: 1;
+      }
+    }
+  }
+  
+  .card-footer {
+    display: flex;
+    border-top: 1px solid #e9ecef;
+    
+    .card-action {
+      flex: 1;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      
+      i {
+        font-size: 1rem;
+      }
+      
+      &.view {
+        color: vars.$primary;
+        
+        &:hover {
+          background-color: rgba(vars.$primary, 0.1);
+        }
+      }
+      
+      &.edit {
+        color: vars.$warning;
+        border-left: 1px solid #e9ecef;
+        border-right: 1px solid #e9ecef;
+        
+        &:hover {
+          background-color: rgba(vars.$warning, 0.1);
+        }
+      }
+      
+      &.delete {
+        color: vars.$danger;
+        
+        &:hover {
+          background-color: rgba(vars.$danger, 0.1);
+        }
+      }
+    }
+  }
+}
+
+// No data mesajı için mobil görünüm
+.mobile-view .no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
+  i {
+    font-size: 2rem;
+    color: #6c757d;
+    margin-bottom: 0.75rem;
+  }
+  
+  p {
+    margin: 0;
+    color: #6c757d;
+  }
+}
+
 // Media Queries
 @media (max-width: 768px) {
   .page-header {
@@ -92,6 +241,11 @@
     .header-actions {
       width: 100%;
       justify-content: flex-start;
+      
+      .action-button {
+        width: 100%;
+        justify-content: center;
+      }
     }
   }
   
@@ -100,6 +254,31 @@
       th, td {
         padding: 8px 10px;
         font-size: 0.875rem;
+      }
+    }
+  }
+  
+  .notification {
+    padding: 0.75rem;
+    
+    .notification-content {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .student-mobile-card {
+    .card-body {
+      .info-row {
+        flex-direction: column;
+        margin-bottom: 1rem;
+        
+        .label {
+          margin-bottom: 0.25rem;
+          color: #6c757d;
+          font-size: 0.85rem;
+        }
       }
     }
   }

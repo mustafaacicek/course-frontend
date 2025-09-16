@@ -35,37 +35,81 @@
 </div>
 
 <div class="data-container" *ngIf="!isLoading">
-  <table class="data-table" *ngIf="courses.length > 0; else noCourses">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Kurs Adı</th>
-        <th>Lokasyon</th>
-        <th>Başlangıç Tarihi</th>
-        <th>Bitiş Tarihi</th>
-        <th>Oluşturulma Tarihi</th>
-        <th>İşlemler</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let course of courses">
-        <td>{{ course.id }}</td>
-        <td>{{ course.name }}</td>
-        <td>{{ course.courseLocation && course.courseLocation.name || '-' }}</td>
-        <td>{{ course.startDate | date:'dd.MM.yyyy' }}</td>
-        <td>{{ course.endDate | date:'dd.MM.yyyy' }}</td>
-        <td>{{ course.createdAt | date:'dd.MM.yyyy' }}</td>
-        <td class="actions">
-          <button class="table-action edit" (click)="editCourse(course)" title="Düzenle">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="table-action delete" (click)="deleteCourse(course.id)" title="Sil">
-            <i class="fas fa-trash"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Masaüstü Tablo Görünümü -->
+  <div class="desktop-view" *ngIf="courses.length > 0; else noCourses">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Kurs Adı</th>
+          <th>Lokasyon</th>
+          <th>Başlangıç Tarihi</th>
+          <th>Bitiş Tarihi</th>
+          <th>Oluşturulma Tarihi</th>
+          <th>İşlemler</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses">
+          <td>{{ course.id }}</td>
+          <td>{{ course.name }}</td>
+          <td>{{ course.courseLocation && course.courseLocation.name || '-' }}</td>
+          <td>{{ course.startDate | date:'dd.MM.yyyy' }}</td>
+          <td>{{ course.endDate | date:'dd.MM.yyyy' }}</td>
+          <td>{{ course.createdAt | date:'dd.MM.yyyy' }}</td>
+          <td class="actions">
+            <button class="table-action edit" (click)="editCourse(course)" title="Düzenle">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="table-action delete" (click)="deleteCourse(course.id)" title="Sil">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Mobil Kart Görünümü -->
+  <div class="mobile-view" *ngIf="courses.length > 0">
+    <div class="course-card" *ngFor="let course of courses">
+      <div class="card-header">
+        <h3>{{ course.name }}</h3>
+        <span class="course-id">ID: {{ course.id }}</span>
+      </div>
+      
+      <div class="card-body">
+        <div class="info-row">
+          <span class="label">Lokasyon:</span>
+          <span class="value">{{ course.courseLocation && course.courseLocation.name || '-' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Başlangıç:</span>
+          <span class="value">{{ course.startDate | date:'dd.MM.yyyy' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Bitiş:</span>
+          <span class="value">{{ course.endDate | date:'dd.MM.yyyy' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Oluşturulma:</span>
+          <span class="value">{{ course.createdAt | date:'dd.MM.yyyy' }}</span>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <button class="card-action edit" (click)="editCourse(course)">
+          <i class="fas fa-edit"></i>
+          <span>Düzenle</span>
+        </button>
+        <button class="card-action delete" (click)="deleteCourse(course.id)">
+          <i class="fas fa-trash"></i>
+          <span>Sil</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
   <ng-template #noCourses>
     <div class="no-data">
       <i class="fas fa-info-circle"></i>

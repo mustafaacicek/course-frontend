@@ -22,13 +22,13 @@
         <a [routerLink]="['/auth/login']" class="nav-button primary">Öğretici Girişi</a>
       </div>
       
-      <button class="mobile-menu-button">
+      <button class="mobile-menu-button" (click)="toggleMobileMenu()">
         <i class="fas fa-bars"></i>
       </button>
     </div>
     
     <!-- Mobile Menu -->
-    <div class="mobile-menu">
+    <div class="mobile-menu" [class.active]="mobileMenuOpen">
       <a (click)="scrollToSection('home')" class="mobile-nav-link">Ana Sayfa</a>
       <a (click)="scrollToSection('about')" class="mobile-nav-link">Hakkımızda</a>
       <a (click)="scrollToSection('courses')" class="mobile-nav-link">Kurslarımız</a>

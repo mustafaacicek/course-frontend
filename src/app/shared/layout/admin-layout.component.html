@@ -4,6 +4,9 @@
     <i class="fas" [class.fa-bars]="!isMobileMenuOpen" [class.fa-times]="isMobileMenuOpen"></i>
   </button>
 
+  <!-- Overlay for mobile menu -->
+  <div class="mobile-overlay" *ngIf="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+
   <!-- Sidebar -->
   <app-sidebar 
     [isSidebarCollapsed]="isSidebarCollapsed" 

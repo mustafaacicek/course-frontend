@@ -36,58 +36,125 @@
     <p class="loading-text">Öğrenciler yükleniyor...</p>
   </div>
 
-<div class="student-card" *ngIf="!isLoading">
-  <div class="table-responsive">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>TC Kimlik No</th>
-          <th>Ad</th>
-          <th>Soyad</th>
-          <th>Kullanıcı Adı</th>
-          <th>Telefon</th>
-          <th>Doğum Tarihi</th>
-          <th>Lokasyon</th>
-          <th>Yönetici</th>
-          <th>İşlemler</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let student of students">
-          <td>{{ student.id }}</td>
-          <td>{{ student.nationalId }}</td>
-          <td>{{ student.firstName }}</td>
-          <td>{{ student.lastName }}</td>
-          <td>{{ student.username }}</td>
-          <td>{{ student.phone || '-' }}</td>
-          <td>{{ student.birthDate | date:'dd.MM.yyyy' }}</td>
-          <td>
-            <span *ngIf="student.courseLocations && student.courseLocations.length > 0">
-              <span *ngFor="let location of student.courseLocations; let last = last">
-                {{ location.name }}{{ !last ? ', ' : '' }}
-              </span>
+<div class="content-container" *ngIf="!isLoading">
+  <!-- Masaüstü Tablo Görünümü -->
+  <div class="desktop-view">
+    <div class="student-card">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>TC Kimlik No</th>
+              <th>Ad</th>
+              <th>Soyad</th>
+              <th>Kullanıcı Adı</th>
+              <th>Telefon</th>
+              <th>Doğum Tarihi</th>
+              <th>Lokasyon</th>
+              <th>Yönetici</th>
+              <th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of students">
+              <td>{{ student.id }}</td>
+              <td>{{ student.nationalId }}</td>
+              <td>{{ student.firstName }}</td>
+              <td>{{ student.lastName }}</td>
+              <td>{{ student.username }}</td>
+              <td>{{ student.phone || '-' }}</td>
+              <td>{{ student.birthDate | date:'dd.MM.yyyy' }}</td>
+              <td>
+                <span *ngIf="student.courseLocations && student.courseLocations.length > 0">
+                  <span *ngFor="let location of student.courseLocations; let last = last">
+                    {{ location.name }}{{ !last ? ', ' : '' }}
+                  </span>
+                </span>
+                <span *ngIf="!student.courseLocations || student.courseLocations.length === 0">-</span>
+              </td>
+              <td>{{ getAdminName(student.id) || '-' }}</td>
+              <td class="actions">
+                <button class="table-action view" (click)="viewStudentDetails(student.id)" title="Detaylar">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="table-action edit" (click)="editStudent(student)" title="Düzenle">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="table-action delete" (click)="deleteStudent(student.id)" title="Sil">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="students.length === 0">
+              <td colspan="10" class="no-data">Henüz hiç öğrenci bulunmamaktadır.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobil Kart Görünümü -->
+  <div class="mobile-view">
+    <div class="no-data" *ngIf="students.length === 0">
+      <i class="fas fa-info-circle"></i>
+      <p>Henüz hiç öğrenci bulunmamaktadır.</p>
+    </div>
+    
+    <div class="student-mobile-card" *ngFor="let student of students">
+      <div class="card-header">
+        <h3>{{ student.firstName }} {{ student.lastName }}</h3>
+        <span class="student-id">ID: {{ student.id }}</span>
+      </div>
+      
+      <div class="card-body">
+        <div class="info-row">
+          <span class="label">TC Kimlik No:</span>
+          <span class="value">{{ student.nationalId }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Kullanıcı Adı:</span>
+          <span class="value">{{ student.username }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Telefon:</span>
+          <span class="value">{{ student.phone || '-' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Doğum Tarihi:</span>
+          <span class="value">{{ student.birthDate | date:'dd.MM.yyyy' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Lokasyon:</span>
+          <span class="value" *ngIf="student.courseLocations && student.courseLocations.length > 0">
+            <span *ngFor="let location of student.courseLocations; let last = last">
+              {{ location.name }}{{ !last ? ', ' : '' }}
             </span>
-            <span *ngIf="!student.courseLocations || student.courseLocations.length === 0">-</span>
-          </td>
-          <td>{{ getAdminName(student.id) || '-' }}</td>
-          <td class="actions">
-            <button class="table-action view" (click)="viewStudentDetails(student.id)" title="Detaylar">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button class="table-action edit" (click)="editStudent(student)" title="Düzenle">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="table-action delete" (click)="deleteStudent(student.id)" title="Sil">
-              <i class="fas fa-trash"></i>
-            </button>
-          </td>
-        </tr>
-        <tr *ngIf="students.length === 0">
-          <td colspan="8" class="no-data">Henüz hiç öğrenci bulunmamaktadır.</td>
-        </tr>
-      </tbody>
-    </table>
+          </span>
+          <span class="value" *ngIf="!student.courseLocations || student.courseLocations.length === 0">-</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Yönetici:</span>
+          <span class="value">{{ getAdminName(student.id) || '-' }}</span>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <button class="card-action view" (click)="viewStudentDetails(student.id)">
+          <i class="fas fa-eye"></i>
+          <span>Detaylar</span>
+        </button>
+        <button class="card-action edit" (click)="editStudent(student)">
+          <i class="fas fa-edit"></i>
+          <span>Düzenle</span>
+        </button>
+        <button class="card-action delete" (click)="deleteStudent(student.id)">
+          <i class="fas fa-trash"></i>
+          <span>Sil</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 

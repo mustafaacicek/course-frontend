@@ -60,6 +60,10 @@ export const routes: Routes = [
           {
             path: 'student-lesson-notes',
             loadComponent: () => import('./dashboard/admin/student-lesson-notes/student-lesson-notes.component').then(m => m.StudentLessonNotesComponent)
+          },
+          {
+            path: 'attendance',
+            loadComponent: () => import('./dashboard/admin/attendance/attendance.component').then(m => m.AttendanceComponent)
           }
         ]
       },

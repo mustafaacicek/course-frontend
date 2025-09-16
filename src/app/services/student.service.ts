@@ -112,6 +112,19 @@ export class StudentService {
       )
     );
   }
+  
+  /**
+   * Get students by location ID
+   */
+  getStudentsByLocationId(locationId: number): Observable<Student[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Student[]>(`${environment.apiUrl}/course-locations/${locationId}/students`, { headers }).pipe(
+      tap(
+        data => console.log('Students by location received:', data),
+        error => console.error('Error fetching students by location:', error)
+      )
+    );
+  }
 
   private getAuthHeaders(): HttpHeaders {
     return new HttpHeaders({

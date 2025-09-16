@@ -10,11 +10,12 @@ import { Course } from '../../../models/course.models';
 import { Lesson } from '../../../models/lesson.models';
 import { Student } from '../../../models/student.models';
 import { LessonNoteFormComponent } from './lesson-note-form/lesson-note-form.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-lesson-notes',
   standalone: true,
-  imports: [CommonModule, FormsModule, LessonNoteFormComponent],
+  imports: [CommonModule, FormsModule, RouterModule, LessonNoteFormComponent],
   templateUrl: './lesson-notes.component.html',
   styleUrls: ['./lesson-notes.component.scss']
 })

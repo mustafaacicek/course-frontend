@@ -157,6 +157,9 @@
           <button class="tab-button" [class.active]="activeTab === 'locations'" (click)="showTab('locations')">
             <i class="fas fa-map-marker-alt"></i> Lokasyonlar
           </button>
+          <button class="tab-button" [class.active]="activeTab === 'attendance'" (click)="showTab('attendance')">
+            <i class="fas fa-calendar-check"></i> Yoklama
+          </button>
         </div>
         
         <div class="tab-content" [class.active]="activeTab === 'courses'">
@@ -240,6 +243,109 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        
+        <!-- Attendance tab content -->
+        <div class="tab-content" [class.active]="activeTab === 'attendance'">
+          <div class="attendance-container" *ngIf="studentPerformance.attendanceData">
+            <!-- Overall attendance statistics -->
+            <div class="attendance-summary">
+              <h4>Genel Yoklama İstatistikleri</h4>
+              <div class="attendance-stats">
+                <div class="stat-item">
+                  <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                  <div class="stat-value">{{ studentPerformance.attendanceData.totalDays }}</div>
+                  <div class="stat-label">Toplam Gün</div>
+                </div>
+                
+                <div class="stat-item">
+                  <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                  <div class="stat-value present">{{ studentPerformance.attendanceData.presentDays }}</div>
+                  <div class="stat-label">Katıldı</div>
+                </div>
+                
+                <div class="stat-item">
+                  <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                  <div class="stat-value absent">{{ studentPerformance.attendanceData.absentDays }}</div>
+                  <div class="stat-label">Katılmadı</div>
+                </div>
+                
+                <div class="stat-item">
+                  <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                  <div class="stat-value">{{ studentPerformance.attendanceData.attendanceRate }}%</div>
+                  <div class="stat-label">Katılım Oranı</div>
+                </div>
+              </div>
+              
+              <!-- Attendance progress bar -->
+              <div class="attendance-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill present" 
+                       [style.width]="(studentPerformance.attendanceData.presentDays / studentPerformance.attendanceData.totalDays * 100) + '%'">
+                    {{ (studentPerformance.attendanceData.presentDays / studentPerformance.attendanceData.totalDays * 100) | number:'1.0-0' }}%
+                  </div>
+                  <div class="progress-fill absent" 
+                       [style.width]="(studentPerformance.attendanceData.absentDays / studentPerformance.attendanceData.totalDays * 100) + '%'">
+                    {{ (studentPerformance.attendanceData.absentDays / studentPerformance.attendanceData.totalDays * 100) | number:'1.0-0' }}%
+                  </div>
+                </div>
+                <div class="progress-legend">
+                  <div class="legend-item">
+                    <span class="legend-color present"></span>
+                    <span>Katıldı</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-color absent"></span>
+                    <span>Katılmadı</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Course-based attendance -->
+            <div class="course-attendance" *ngFor="let course of studentPerformance.attendanceData.courseAttendance">
+              <div class="course-header">
+                <h4>{{ course.courseName }}</h4>
+                <div class="course-stats">
+                  <span class="stat">Toplam: {{ course.totalDays }} gün</span>
+                  <span class="stat present">Katıldı: {{ course.presentDays }}</span>
+                  <span class="stat absent">Katılmadı: {{ course.absentDays }}</span>
+                  <span class="stat">Oran: {{ course.attendanceRate }}%</span>
+                </div>
+              </div>
+              
+              <div class="attendance-table-container">
+                <table class="attendance-table">
+                  <thead>
+                    <tr>
+                      <th>Tarih</th>
+                      <th>Durum</th>
+                      <th>Lokasyon</th>
+                      <th>Notlar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of course.records">
+                      <td>{{ record.attendanceDate | date:'dd.MM.yyyy' }}</td>
+                      <td>
+                        <span class="status-badge" [ngClass]="record.isPresent ? 'status-passed' : 'status-failed'">
+                          {{ record.isPresent ? 'Katıldı' : 'Katılmadı' }}
+                        </span>
+                      </td>
+                      <td>{{ record.courseLocationName }}</td>
+                      <td>{{ record.notes || '-' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <!-- No attendance data message -->
+          <div class="no-data-message" *ngIf="!studentPerformance.attendanceData || !studentPerformance.attendanceData.totalDays">
+            <i class="fas fa-info-circle"></i>
+            <span>Öğrenciye ait yoklama kaydı bulunamadı.</span>
           </div>
         </div>
       </div>

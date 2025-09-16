@@ -56,42 +56,86 @@
 <div class="lessons-section" *ngIf="selectedCourse && !isLoading">
   <h3>{{ selectedCourse.name }} - Dersler</h3>
   
-  <div class="data-container">
-    <table class="data-table" *ngIf="lessons.length > 0; else noLessons">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Ders Adı</th>
-          <th>Açıklama</th>
-          <th>Tarih</th>
-          <th>Oluşturulma Tarihi</th>
-          <th>İşlemler</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let lesson of lessons">
-          <td>{{ lesson.id }}</td>
-          <td>{{ lesson.name }}</td>
-          <td>{{ lesson.description || '-' }}</td>
-          <td>{{ lesson.date | date:'dd.MM.yyyy' }}</td>
-          <td>{{ lesson.createdAt | date:'dd.MM.yyyy' }}</td>
-          <td class="actions">
-            <button class="table-action edit" (click)="editLesson(lesson)" title="Düzenle">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="table-action delete" (click)="deleteLesson(lesson.id)" title="Sil">
-              <i class="fas fa-trash"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <ng-template #noLessons>
-      <div class="no-data">
-        <i class="fas fa-info-circle"></i>
-        <p>Bu kursa ait henüz ders bulunmamaktadır.</p>
+  <!-- Masaüstü Tablo Görünümü -->
+  <div class="desktop-view">
+    <div class="data-container">
+      <table class="data-table" *ngIf="lessons.length > 0; else noLessonsDesktop">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ders Adı</th>
+            <th>Açıklama</th>
+            <th>Tarih</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let lesson of lessons">
+            <td>{{ lesson.id }}</td>
+            <td>{{ lesson.name }}</td>
+            <td>{{ lesson.description || '-' }}</td>
+            <td>{{ lesson.date | date:'dd.MM.yyyy' }}</td>
+            <td>{{ lesson.createdAt | date:'dd.MM.yyyy' }}</td>
+            <td class="actions">
+              <button class="table-action edit" (click)="editLesson(lesson)" title="Düzenle">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="table-action delete" (click)="deleteLesson(lesson.id)" title="Sil">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #noLessonsDesktop>
+        <div class="no-data">
+          <i class="fas fa-info-circle"></i>
+          <p>Bu kursa ait henüz ders bulunmamaktadır.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  
+  <!-- Mobil Kart Görünümü -->
+  <div class="mobile-view">
+    <div class="no-data" *ngIf="lessons.length === 0">
+      <i class="fas fa-info-circle"></i>
+      <p>Bu kursa ait henüz ders bulunmamaktadır.</p>
+    </div>
+    
+    <div class="lesson-mobile-card" *ngFor="let lesson of lessons">
+      <div class="card-header">
+        <h3>{{ lesson.name }}</h3>
+        <span class="lesson-id">ID: {{ lesson.id }}</span>
       </div>
-    </ng-template>
+      
+      <div class="card-body">
+        <div class="info-row" *ngIf="lesson.description">
+          <span class="label">Açıklama:</span>
+          <span class="value">{{ lesson.description }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Tarih:</span>
+          <span class="value">{{ lesson.date | date:'dd.MM.yyyy' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Oluşturulma:</span>
+          <span class="value">{{ lesson.createdAt | date:'dd.MM.yyyy' }}</span>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <button class="card-action edit" (click)="editLesson(lesson)">
+          <i class="fas fa-edit"></i>
+          <span>Düzenle</span>
+        </button>
+        <button class="card-action delete" (click)="deleteLesson(lesson.id)">
+          <i class="fas fa-trash"></i>
+          <span>Sil</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 

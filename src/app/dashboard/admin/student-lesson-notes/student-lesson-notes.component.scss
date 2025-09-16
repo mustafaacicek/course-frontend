@@ -10,14 +10,39 @@ $dark-color: #1e293b; // Slate
 $medium-color: #64748b; // Slate
 $light-color: #f8fafc; // Slate
 
+// Responsive görünüm kontrolleri
+.desktop-view {
+  display: block;
+  
+  @media (max-width: 991px) {
+    display: none;
+  }
+}
+
+.mobile-view {
+  display: none;
+  
+  @media (max-width: 991px) {
+    display: block;
+  }
+}
+
 .student-lesson-notes-container {
   padding: 20px;
+  max-width: 100%;
+  overflow-x: hidden;
   
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
     
     h2 {
       font-size: 1.5rem;
@@ -39,6 +64,11 @@ $light-color: #f8fafc; // Slate
       align-items: center;
       gap: 8px;
       transition: all 0.2s;
+      
+      @media (max-width: 768px) {
+        width: 100%;
+        justify-content: center;
+      }
       
       &:hover:not(:disabled) {
         background-color: color.adjust($primary-color, $lightness: -5%);
@@ -104,6 +134,12 @@ $light-color: #f8fafc; // Slate
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
+    
+    @media (max-width: 768px) {
+      padding: 12px;
+    }
     
     h3 {
       font-size: 1rem;
@@ -117,6 +153,11 @@ $light-color: #f8fafc; // Slate
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
+      
+      @media (max-width: 576px) {
+        flex-direction: column;
+        gap: 12px;
+      }
       
       .filter-group {
         flex: 1;
@@ -156,16 +197,111 @@ $light-color: #f8fafc; // Slate
   
   .student-notes-form {
     margin-top: 20px;
+    max-width: 100%;
     
     .table-container {
       overflow-x: auto;
       border-radius: 8px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 100%;
+    }
+    
+    // Mobil kart stilleri
+    .student-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      
+      .student-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        
+        .card-header {
+          background-color: #f9fafb;
+          padding: 12px 16px;
+          border-bottom: 1px solid #e5e7eb;
+          
+          .student-info {
+            .student-name {
+              font-weight: 600;
+              color: $dark-color;
+              font-size: 1.1rem;
+            }
+            
+            .student-id {
+              font-size: 0.85rem;
+              color: $medium-color;
+              margin-top: 4px;
+            }
+          }
+        }
+        
+        .card-body {
+          padding: 16px;
+          
+          .form-row {
+            margin-bottom: 16px;
+            
+            &:last-child {
+              margin-bottom: 0;
+            }
+            
+            .form-group {
+              label {
+                display: block;
+                font-weight: 500;
+                color: $medium-color;
+                margin-bottom: 8px;
+                font-size: 0.9rem;
+              }
+              
+              .score-input {
+                width: 100%;
+                max-width: 120px;
+              }
+              
+              .status-buttons {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                
+                .status-button {
+                  flex: 1;
+                  min-width: 100px;
+                  justify-content: center;
+                }
+              }
+              
+              .remark-input {
+                width: 100%;
+              }
+            }
+          }
+        }
+        
+        .card-footer {
+          display: flex;
+          padding: 12px 16px;
+          border-top: 1px solid #e5e7eb;
+          gap: 12px;
+          
+          button {
+            flex: 1;
+            justify-content: center;
+            padding: 10px;
+          }
+        }
+      }
     }
     
     .student-notes-table {
       width: 100%;
       border-collapse: collapse;
+      table-layout: fixed;
       
       th, td {
         padding: 12px 16px;
@@ -379,12 +515,28 @@ $light-color: #f8fafc; // Slate
     overflow: hidden;
     animation: modal-appear 0.2s ease-out;
     
+    @media (max-width: 768px) {
+      width: 95%;
+      max-height: 95vh;
+    }
+    
+    @media (max-width: 576px) {
+      width: 100%;
+      height: 100%;
+      max-height: 100vh;
+      border-radius: 0;
+    }
+    
     .modal-header {
       padding: 16px 20px;
       border-bottom: 1px solid #e5e7eb;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      
+      @media (max-width: 576px) {
+        padding: 12px 16px;
+      }
       
       h3 {
         margin: 0;
@@ -418,6 +570,11 @@ $light-color: #f8fafc; // Slate
       overflow-y: auto;
       max-height: calc(90vh - 70px);
       
+      @media (max-width: 576px) {
+        padding: 16px;
+        max-height: calc(100vh - 60px);
+      }
+      
       .history-info {
         margin-bottom: 20px;
         padding-bottom: 15px;
@@ -435,6 +592,9 @@ $light-color: #f8fafc; // Slate
       }
       
       .history-table-container {
+        overflow-x: auto;
+        width: 100%;
+        
         .history-table {
           width: 100%;
           border-collapse: collapse;
@@ -444,6 +604,11 @@ $light-color: #f8fafc; // Slate
             text-align: left;
             border-bottom: 1px solid #e5e7eb;
             font-size: 0.9rem;
+            
+            @media (max-width: 576px) {
+              padding: 10px 12px;
+              font-size: 0.85rem;
+            }
           }
           
           th {

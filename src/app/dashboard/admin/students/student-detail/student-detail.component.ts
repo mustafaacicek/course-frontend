@@ -6,6 +6,7 @@ import { StudentService } from '../../../../services/student.service';
 import { StudentDetail } from '../../../../models/student-detail.model';
 import { Student } from '../../../../models/student.models';
 import { LessonNote } from '../../../../models/lesson-note.model';
+import { AdminService } from '../../../../services/admin.service';
 
 @Component({
   selector: 'app-student-detail',
@@ -15,11 +16,11 @@ import { LessonNote } from '../../../../models/lesson-note.model';
   styleUrls: ['./student-detail.component.scss']
 })
 export class StudentDetailComponent implements OnInit {
-  studentId: number = 0;
+  studentId: number = 0;  
   student: StudentDetail | null = null;
   isLoading = true;
   error: string | null = null;
-  activeTab = 'overview'; // 'overview', 'courses', 'notes', 'locations'
+  activeTab = 'overview'; // 'overview', 'courses', 'notes', 'locations', 'attendance'
   
   // For note history modal
   showHistoryModal = false;
@@ -27,10 +28,15 @@ export class StudentDetailComponent implements OnInit {
   
   // For teacher comment
   teacherComment: string = '';
+  
+  // For attendance data
+  attendanceData: any = null;
+  isLoadingAttendance = false;
 
   constructor(
     private route: ActivatedRoute,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private adminService: AdminService
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +71,34 @@ export class StudentDetailComponent implements OnInit {
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+    
+    // Load attendance data when switching to attendance tab
+    if (tab === 'attendance' && !this.attendanceData) {
+      this.loadAttendanceData();
+    }
+  }
+  
+  /**
+   * Load attendance data for the student
+   */
+  loadAttendanceData(): void {
+    if (!this.studentId) return;
+    
+    this.isLoadingAttendance = true;
+    this.error = null;
+    
+    this.adminService.getStudentAttendanceDetails(this.studentId).subscribe({
+      next: (data) => {
+        this.attendanceData = data;
+        this.isLoadingAttendance = false;
+        console.log('Attendance data:', this.attendanceData);
+      },
+      error: (err) => {
+        this.error = 'Yoklama bilgileri yüklenirken bir hata oluştu.';
+        this.isLoadingAttendance = false;
+        console.error('Error loading attendance data:', err);
+      }
+    });
   }
 
   getPassRatePercentage(): number {

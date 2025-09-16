@@ -71,7 +71,8 @@
     <span>Gösterilecek ders notu bulunamadı.</span>
   </div>
 
-  <div class="table-container" *ngIf="!isLoading && filteredLessonNotes.length > 0">
+  <!-- Masaüstü Tablo Görünümü -->
+  <div class="table-container desktop-view" *ngIf="!isLoading && filteredLessonNotes.length > 0">
     <table class="lesson-notes-table">
       <thead>
         <tr>
@@ -114,6 +115,55 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  
+  <!-- Mobil Kart Görünümü -->
+  <div class="cards-container mobile-view" *ngIf="!isLoading && filteredLessonNotes.length > 0">
+    <div class="note-card" *ngFor="let note of filteredLessonNotes">
+      <div class="card-header">
+        <div class="student-info">
+          <h4>{{ note.student.firstName }} {{ note.student.lastName }}</h4>
+          <span class="status-badge" [ngClass]="getPassStatusClass(note.passed)">
+            {{ getPassStatusText(note.passed) }}
+          </span>
+        </div>
+        <div class="score">{{ note.score !== null ? note.score : '-' }}</div>
+      </div>
+      
+      <div class="card-body">
+        <div class="info-row">
+          <span class="label">Kurs:</span>
+          <span class="value">{{ note.lesson.course.name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Ders:</span>
+          <span class="value">{{ note.lesson.name }}</span>
+        </div>
+        <div class="info-row" *ngIf="note.remark">
+          <span class="label">Açıklama:</span>
+          <span class="value">{{ note.remark }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Tarih:</span>
+          <span class="value">{{ note.updatedAt | date:'dd.MM.yyyy' }}</span>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <button class="card-action edit" (click)="openEditLessonNoteModal(note)">
+          <i class="fas fa-edit"></i>
+          <span>Düzenle</span>
+        </button>
+        <button class="card-action history" (click)="openHistoryModal(note)">
+          <i class="fas fa-history"></i>
+          <span>Geçmiş</span>
+        </button>
+        <button class="card-action delete" (click)="deleteLessonNote(note.id)">
+          <i class="fas fa-trash"></i>
+          <span>Sil</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 

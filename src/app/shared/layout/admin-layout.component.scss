@@ -56,6 +56,22 @@ $shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   }
 }
 
+// Mobile Overlay
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  
+  @media (max-width: 991px) {
+    display: block;
+  }
+}
+
 // Base Layout
 .admin-layout {
   display: flex;
@@ -73,6 +89,21 @@ $shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     &.sidebar-collapsed {
       .main-content {
         margin-left: 0;
+      }
+    }
+    
+    app-sidebar {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: -100%;
+      width: 85%;
+      max-width: $sidebar-width;
+      z-index: 1001;
+      transition: left $transition-speed ease;
+      
+      &.mobile-open {
+        left: 0 !important;
       }
     }
   }

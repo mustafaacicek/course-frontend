@@ -1,16 +1,43 @@
 @use '../../../../scss/variables' as vars;
 @use 'sass:color';
 
+// Responsive görünüm kontrolleri
+.desktop-view {
+  display: block;
+  
+  @media (max-width: 991px) {
+    display: none;
+  }
+}
+
+.mobile-view {
+  display: none;
+  
+  @media (max-width: 991px) {
+    display: block;
+  }
+}
+
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
   h2 {
     margin: 0;
     font-size: 1.75rem;
     color: vars.$dark;
+    
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
   }
 
   .add-button {
@@ -25,6 +52,11 @@
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
+    
+    @media (max-width: 768px) {
+      width: 100%;
+      justify-content: center;
+    }
 
     &:hover:not(:disabled) {
       background-color: color.adjust(vars.$primary, $lightness: -5%);
@@ -90,17 +122,32 @@
 .course-selection-section {
   margin-bottom: 2rem;
   
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
+  
   h3 {
     margin-top: 0;
     margin-bottom: 1rem;
     font-size: 1.25rem;
     color: vars.$dark;
+    
+    @media (max-width: 768px) {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
   }
   
   .course-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
+    max-width: 100%;
+    overflow-x: hidden;
+    
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
     
     .course-card {
       background-color: white;
@@ -201,17 +248,22 @@
   background-color: white;
   border-radius: vars.$border-radius-sm;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .data-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 
   th, td {
     padding: 0.75rem 1rem;
     text-align: left;
     border-bottom: 1px solid #e9ecef;
+    word-wrap: break-word;
   }
 
   th {
@@ -278,6 +330,111 @@
   }
 }
 
+// Mobil kart görünümü
+.lesson-mobile-card {
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
+  .card-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #333;
+      font-weight: 600;
+    }
+    
+    .lesson-id {
+      font-size: 0.85rem;
+      color: #6c757d;
+      background-color: #e9ecef;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+  }
+  
+  .card-body {
+    padding: 1rem;
+    
+    .info-row {
+      display: flex;
+      margin-bottom: 0.75rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      .label {
+        min-width: 100px;
+        font-weight: 500;
+        color: #495057;
+      }
+      
+      .value {
+        color: #212529;
+        flex: 1;
+      }
+      
+      @media (max-width: 576px) {
+        flex-direction: column;
+        
+        .label {
+          margin-bottom: 0.25rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  
+  .card-footer {
+    display: flex;
+    border-top: 1px solid #e9ecef;
+    
+    .card-action {
+      flex: 1;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      
+      i {
+        font-size: 1rem;
+      }
+      
+      &.edit {
+        color: vars.$primary;
+        border-right: 1px solid #e9ecef;
+        
+        &:hover {
+          background-color: rgba(vars.$primary, 0.1);
+        }
+      }
+      
+      &.delete {
+        color: vars.$danger;
+        
+        &:hover {
+          background-color: rgba(vars.$danger, 0.1);
+        }
+      }
+    }
+  }
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -317,6 +474,12 @@
     overflow-y: auto;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     z-index: 1001;
+    
+    @media (max-width: 576px) {
+      width: 95%;
+      max-height: 95vh;
+      border-radius: 8px;
+    }
   }
 
   .modal-header {
@@ -325,11 +488,19 @@
     align-items: center;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #e9ecef;
+    
+    @media (max-width: 576px) {
+      padding: 0.75rem 1rem;
+    }
 
     h3 {
       margin: 0;
       font-size: 1.25rem;
       color: vars.$dark;
+      
+      @media (max-width: 576px) {
+        font-size: 1.1rem;
+      }
     }
 
     .close-button {
@@ -351,5 +522,9 @@
 
   .modal-body {
     padding: 1.5rem;
+    
+    @media (max-width: 576px) {
+      padding: 1rem;
+    }
   }
 }

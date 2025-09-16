@@ -16,6 +16,8 @@
       </li>
     </ul>
   </div>
+  
+  <div class="form-section">
 
   <div class="form-row">
     <div class="form-group">
@@ -171,15 +173,17 @@
     </div>
   </div>
 
+  </div>
+  
   <div class="form-actions">
-    <button type="button" class="cancel-button" (click)="onCancel()">
-      <i class="fas fa-times"></i>
-      <span>İptal</span>
-    </button>
     <button type="submit" class="submit-button" [disabled]="isSubmitting || studentForm.invalid">
       <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
       <i class="fas fa-save" *ngIf="!isSubmitting"></i>
       <span>{{ student ? 'Güncelle' : 'Kaydet' }}</span>
+    </button>
+    <button type="button" class="cancel-button" (click)="onCancel()">
+      <i class="fas fa-times"></i>
+      <span>İptal</span>
     </button>
   </div>
 </form>

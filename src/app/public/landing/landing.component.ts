@@ -26,6 +26,7 @@ interface GalleryItem {
 })
 export class LandingComponent {
   currentYear = new Date().getFullYear();
+  mobileMenuOpen = false;
   
   // Dummy data for news
   newsItems: NewsItem[] = [
@@ -133,6 +134,12 @@ export class LandingComponent {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      // Mobil menüyü kapat
+      this.mobileMenuOpen = false;
     }
+  }
+  
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 }

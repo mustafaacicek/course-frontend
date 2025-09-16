@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { LessonNote, LessonNoteCreateRequest, LessonNoteUpdateRequest } from '../../../../models/lesson-note.models';
 import { Course } from '../../../../models/course.models';
 import { Lesson } from '../../../../models/lesson.models';
@@ -11,7 +12,7 @@ import { LessonService } from '../../../../services/lesson.service';
 @Component({
   selector: 'app-lesson-note-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './lesson-note-form.component.html',
   styleUrls: ['./lesson-note-form.component.scss']
 })

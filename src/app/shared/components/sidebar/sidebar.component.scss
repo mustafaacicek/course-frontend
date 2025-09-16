@@ -40,6 +40,19 @@ $shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
   box-shadow: $shadow-lg;
   overflow-y: auto;
   overflow-x: hidden;
+  
+  // Mobil görünümde sidebar'ın varsayılan stillerini kaldır
+  // çünkü bu stiller admin-layout.component.scss'de app-sidebar seçicisi ile uygulanıyor
+  @media (max-width: 991px) {
+    position: static;
+    width: 100%;
+    height: 100%;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    box-shadow: none;
+    overflow-y: auto;
+  }
 
   .sidebar-header {
     padding: 1.5rem;

@@ -5,6 +5,25 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
+  @media (max-width: 576px) {
+    gap: 15px;
+  }
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  
+  @media (max-width: 576px) {
+    padding: 15px;
+    gap: 15px;
+  }
 }
 
 .form-row {
@@ -30,6 +49,11 @@
     font-weight: 500;
     color: vars.$dark;
     
+    @media (max-width: 576px) {
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+    
     .required {
       color: vars.$danger;
     }
@@ -43,11 +67,17 @@
   }
   
   input, select, textarea {
-    padding: 10px 12px;
+    padding: 12px 14px;
     border: 1px solid #e5e7eb;
     border-radius: vars.$border-radius-sm;
     font-size: 16px;
     transition: all 0.2s;
+    width: 100%;
+    
+    @media (max-width: 576px) {
+      padding: 10px 12px;
+      font-size: 15px;
+    }
     
     &:focus {
       outline: none;
@@ -187,21 +217,37 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 24px;
+  
+  @media (max-width: 576px) {
+    flex-direction: column;
+    gap: 10px;
+  }
   
   button {
-    padding: 10px 20px;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 6px;
     font-weight: 500;
     cursor: pointer;
+    transition: all 0.2s ease;
+    
+    @media (max-width: 576px) {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+    }
     
     &.cancel-button {
-      background-color: #e5e7eb;
-      border: none;
+      background-color: #f3f4f6;
+      border: 1px solid #e5e7eb;
       color: #4b5563;
       
       &:hover {
-        background-color: cf.custom-darken(#e5e7eb, 5%);
+        background-color: #e5e7eb;
+      }
+      
+      @media (max-width: 576px) {
+        order: 2;
       }
     }
     
@@ -224,6 +270,10 @@
       &:disabled {
         background-color: cf.custom-lighten(vars.$primary, 20%);
         cursor: not-allowed;
+      }
+      
+      @media (max-width: 576px) {
+        order: 1;
       }
     }
   }
